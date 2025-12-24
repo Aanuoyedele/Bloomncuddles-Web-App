@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Enum UserRole removed for SQLite compatibility
+// Enum SubmissionStatus removed for SQLite compatibility
+
+model School {
+  id        String   @id @default(uuid())
+  name      String
+  address   String?
+  users     User[]
+  classes   Class[]
+  invites   Invite[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invite {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  role      String   @default("TEACHER") // TEACHER, ADMIN
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+  
+  createdById String
+  
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   // Was UserRole
+  address   String?
+  phone     String?
+  
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id])
+  
+  // Teacher Relations
+  classesTaught Class[]
+
+  // Parent Relations
+  children  ParentStudent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Class {
+  id        String   @id @default(uuid())
+  name      String
+  grade     String
+  schedule  String?  // e.g. "Mon, Wed 9:00 AM"
+
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+
+  teacherId String
+  teacher   User     @relation(fields: [teacherId], references: [id])
+
+  students  Student[]
+  assignments Assignment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  name      String
+  grade     String
+  dob       DateTime?
+  
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  
+  parents   ParentStudent[]
+  submissions Submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Join table for Parent-Student (Many-to-Many)
+model ParentStudent {
+  id        String   @id @default(uuid())
+  parentId  String
+  parent    User     @relation(fields: [parentId], references: [id])
+  
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+
+  @@unique([parentId, studentId])
+}
+
+model Assignment {
+  id        String   @id @default(uuid())
+  title     String
+  description String?
+  dueDate   DateTime
+  
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  
+  submissions Submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Submission {
+  id        String   @id @default(uuid())
+  grade     String?
+  feedback  String?
+  status    String   @default("PENDING") // Was SubmissionStatus
+  submittedAt DateTime?
+
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+
+  studentId    String
+  student      Student    @relation(fields: [studentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  
+  createdAt DateTime @default(now())
+}

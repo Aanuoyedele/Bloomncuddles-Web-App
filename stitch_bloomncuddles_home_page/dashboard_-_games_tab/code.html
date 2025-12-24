@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Teacher Dashboard - Interactive Games</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4871a3",
+                        "primary-hover": "#3b5c85",
+                        "accent": "#ed5667",
+                        "background-light": "#f6f7f7",
+                        "background-dark": "#15191d",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1e2329",
+                        "text-main": "#111417",
+                        "text-sub": "#627184",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem", 
+                        "lg": "1rem", 
+                        "xl": "1.5rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-gray-100 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<div class="relative flex w-full flex-col bg-card-light dark:bg-card-dark border-b border-gray-200 dark:border-gray-800">
+<div class="layout-container flex w-full flex-col">
+<div class="px-4 md:px-10 flex justify-center py-2">
+<div class="layout-content-container flex w-full max-w-[1200px] items-center justify-between">
+<!-- Left: Logo & Title -->
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Teacher Dashboard</h2>
+</div>
+<!-- Right: Navigation & Profile -->
+<div class="flex items-center gap-4 md:gap-8">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-text-sub dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Home</a>
+<a class="text-text-sub dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Students</a>
+<a class="text-primary text-sm font-bold leading-normal border-b-2 border-primary py-4" href="#">Games</a>
+<a class="text-text-sub dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Reports</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary hover:bg-primary-hover text-white text-sm font-bold leading-normal tracking-[0.015em] transition-colors shadow-sm">
+<span class="truncate">Log Out</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer" data-alt="Teacher profile picture showing a smiling woman" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBSQkpXhPA3Y47vv25q8s2iuV42kgq78stOGMHb-Q-kv8-q7G5spsfcpVUQJNtTIpd7To-rb75x2BfyYANv3qohpRtV_OFKVR1KC6j27x2bF95f28-_LzSGBPCbLfXyPlsW3qLsJVEW19ybnIFNr-bhmgt7VOUeONR7tgSN-MIMTWAwRP5Bl2u11D_y1E6CcqEkcjMnT5Mql4XZdC7xZXsvgXAdVNjJxK6_L-5KQsSWPZ_PHt9EGOu_xELfQnmRcQgSN40Q_6hguPoJ");'>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Wrapper -->
+<div class="flex flex-1 justify-center px-4 md:px-6 py-6 w-full">
+<div class="flex flex-col max-w-[1200px] flex-1 gap-6">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+<div class="flex flex-col gap-2">
+<h1 class="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Interactive Games Library</h1>
+<p class="text-text-sub dark:text-gray-400 text-base font-normal">Browse and assign learning activities to your students.</p>
+</div>
+<!-- Mini Stats (Optional context) -->
+<div class="hidden md:flex gap-4">
+<div class="flex items-center gap-2 bg-white dark:bg-card-dark px-4 py-2 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span class="text-sm font-medium text-text-sub dark:text-gray-300">12 Assigned</span>
+</div>
+</div>
+</div>
+<!-- Search & Filters Toolbar -->
+<div class="flex flex-col gap-4 bg-card-light dark:bg-card-dark p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800">
+<!-- Search -->
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-text-sub">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-12 rounded-xl border-none bg-background-light dark:bg-gray-800 pl-11 pr-4 text-text-main dark:text-white placeholder:text-text-sub focus:ring-2 focus:ring-primary/50 text-base" placeholder="Search games by title, skill, or keyword..." type="text"/>
+</div>
+<!-- Chips Row -->
+<div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar items-center">
+<span class="text-sm font-semibold text-text-sub whitespace-nowrap mr-2">Filters:</span>
+<!-- Chip: Active -->
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-text-main text-white px-4 hover:opacity-90 transition-opacity">
+<p class="text-sm font-medium">All Subjects</p>
+</button>
+<!-- Chip: Inactive -->
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors group">
+<span class="material-symbols-outlined text-base text-text-sub group-hover:text-primary">calculate</span>
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">Math</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors group">
+<span class="material-symbols-outlined text-base text-text-sub group-hover:text-primary">science</span>
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">Science</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors group">
+<span class="material-symbols-outlined text-base text-text-sub group-hover:text-primary">menu_book</span>
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">English</p>
+</button>
+<div class="h-6 w-px bg-gray-300 dark:bg-gray-700 mx-2"></div>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors">
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">Grade 1</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors">
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">Grade 2</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 transition-colors">
+<p class="text-text-main dark:text-gray-200 text-sm font-medium">Grade 3</p>
+</button>
+</div>
+</div>
+<!-- Section: Recommended -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-text-main dark:text-white text-xl font-bold leading-tight">Recommended for You</h2>
+<a class="text-primary text-sm font-bold hover:underline" href="#">View History</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Featured Card 1 -->
+<div class="group flex flex-col overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden bg-gray-100">
+<div class="absolute top-3 left-3 z-10 bg-accent text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">NEW</div>
+<img alt="" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Colorful abstract illustration of numbers floating in clouds" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp2NY3ZB3qSiLU-r-aIzeRfnpzHT8cl-nb5TeUlQ4ddMYAT5Htps1Z7zu1Bac844TzSio0kBT0TrKK2rAoxXlxV_S6xveqPjHDkufCPDbwMD7g37RJ2QRUtqJhqiJCE2FvwUSqh6l6p_WsKPx_AJROjZzjdfIHdFY1FDzA9ihx_hk3K60B_w85KrfVNmO_hdGnv8Q1gWDGaPI8wd6kX2bpkpc5vXM1WVpO67tmINuh9-W-ZqTbwQRNQznI4xdLgOOm5zPXH18-JpRj"/>
+<!-- Overlay Play Button -->
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 flex items-center justify-center transition-colors">
+<div class="bg-white/90 dark:bg-black/80 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-primary text-3xl filled">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2">
+<span class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10">Math</span>
+<span class="inline-flex items-center rounded-md bg-gray-50 dark:bg-gray-700 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 ring-1 ring-inset ring-gray-500/10">Grade 1</span>
+</div>
+<span class="material-symbols-outlined text-yellow-400 filled text-[20px]">star</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-1">Counting Clouds</h3>
+<p class="text-text-sub dark:text-gray-400 text-sm line-clamp-2 mb-4">A fun adventure where students count cumulus clouds to learn basic addition.</p>
+<div class="mt-auto flex gap-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    Preview
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">assignment_add</span>
+                                    Assign
+                                </button>
+</div>
+</div>
+</div>
+<!-- Featured Card 2 -->
+<div class="group flex flex-col overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden bg-gray-100">
+<img alt="" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Digital illustration of a forest with animals reading books" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC959k5-YH8hgsEH5k7DoAzikXrv-V24bMKxUwju37_4exOhVii9USyp0yNRcoB-JdNMjMyyrQK9ga_XQSdXFlKWLtcsEbPgm4DYCQf7WX32agdDAYMV8EwkGfF8Cdau0i1yuxgVqlg62kGd2HI7KSmHsnkzMnvt0dttCTw0t_o2nHPMibwN8CDR0MxW90Uh9J_OpHzrTqHV_6APL7saFvxoudEqG8g7iIyQ1riWd0p412TWAwaKJFNdDVg-R3dSToB0-_xbM2cpNhf"/>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 flex items-center justify-center transition-colors">
+<div class="bg-white/90 dark:bg-black/80 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-primary text-3xl filled">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2">
+<span class="inline-flex items-center rounded-md bg-purple-50 dark:bg-purple-900/30 px-2 py-1 text-xs font-medium text-purple-700 dark:text-purple-300 ring-1 ring-inset ring-purple-700/10">English</span>
+<span class="inline-flex items-center rounded-md bg-gray-50 dark:bg-gray-700 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 ring-1 ring-inset ring-gray-500/10">Grade 2</span>
+</div>
+<span class="material-symbols-outlined text-yellow-400 filled text-[20px]">star</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-1">Word Wizard Forest</h3>
+<p class="text-text-sub dark:text-gray-400 text-sm line-clamp-2 mb-4">Explore the enchanted forest and spell words to unlock secret paths.</p>
+<div class="mt-auto flex gap-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    Preview
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">assignment_add</span>
+                                    Assign
+                                </button>
+</div>
+</div>
+</div>
+<!-- Featured Card 3 -->
+<div class="group flex flex-col overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden bg-gray-100">
+<div class="absolute top-3 left-3 z-10 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">POPULAR</div>
+<img alt="" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Science laboratory beakers with colorful bubbling liquids" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxjy_VmVBSvm9Ld357qQg1IvIiuv5pM69SHlD1qvpuidq_ch4hQNXrAx6lS3bNRSmi9FaVji2GBjAScGhNaZ1OApfz9WyN_IIA3cs5R49hnZsrx-Xa53iH57awOZyeTOyIZlFVVC0o6rNA5TwsmAn8UaCfa4jfN8ZGEvTe4cryRYDNvl16rC1DaOF8JH3PTJVFmkcWVlBwaLzZmY67beKyk4tdcoZw168xHHMQ-IewIMXWXZcpknS1_igSyYmJlzQ52o442jhqf5dA"/>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 flex items-center justify-center transition-colors">
+<div class="bg-white/90 dark:bg-black/80 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-primary text-3xl filled">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2">
+<span class="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/30 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-700/10">Science</span>
+<span class="inline-flex items-center rounded-md bg-gray-50 dark:bg-gray-700 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 ring-1 ring-inset ring-gray-500/10">Grade 3</span>
+</div>
+<span class="material-symbols-outlined text-yellow-400 filled text-[20px]">star</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-1">Eco-System Builder</h3>
+<p class="text-text-sub dark:text-gray-400 text-sm line-clamp-2 mb-4">Build your own balanced terrarium and learn about food chains.</p>
+<div class="mt-auto flex gap-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    Preview
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">assignment_add</span>
+                                    Assign
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Browse All -->
+<div class="flex flex-col gap-4 mt-8">
+<div class="flex items-center justify-between">
+<h2 class="text-text-main dark:text-white text-xl font-bold leading-tight">Browse All Games</h2>
+<!-- View toggle (Icon only) -->
+<div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+<button class="p-1 rounded bg-white dark:bg-gray-600 shadow-sm text-text-main dark:text-white">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+</button>
+<button class="p-1 rounded text-text-sub dark:text-gray-400 hover:text-text-main">
+<span class="material-symbols-outlined text-[20px]">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Game Card Small 1 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Abstract colorful shapes and geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALTgjsSe1UmDXc_kFCoRiN5BlCuc71v4eyNhNPRJ4yDIg_Av8i72wtgTIgEbTbvsaoLcz5Ta8AHH6hYvqYYduZPsoiLjF13Prt-L4zkSOMtfQtCTR4chxQ3XbqistKodptW6I4PtXnTPUFv_b_ua5UMf8aHJZ8GCLgBedRjWWq-22L4e_qCk8alThsKvPSpWzNNG6Zy9CJyrQ0sKL0VLsrYZNL9bTzZ4WQxIWECjP1zafhrblhEbnEoWvbtddi4X8NeWYNwoGrjxFT"/>
+<!-- Quick Assign Button Overlay on Hover -->
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Math • Gr 1</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.8</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Shape Sorter</h4>
+</div>
+</div>
+<!-- Game Card Small 2 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Opened book with glowing letters floating out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWtUV4ugLg4nDhqB5ZvTsf6GzdIA5ZMHPU5jp5ugBOft8mEKaUxZj94-xSCIzfL3hkXptjs_RewOsf99xoXkcD9CVilM51tCjn6NsL5httqBUEmJU45UQfqQLNgp3DeMxKWxPqQ2Ij2hCQntlMg-EGy3ckue12eNoVHLRL6jT9O_ch0m583NNupXSlXzbBMXxoJ8tq_5l60hl94uqXcLZ7wh6NNMbW5HfqldRUTdIQW198jJIjF0YWFvdLC51I2l24vq8tERhMVgmd"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">English • Gr 2</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.5</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Rhyme Time</h4>
+</div>
+</div>
+<!-- Game Card Small 3 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Solar system planets orbiting the sun" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYSFDu9frSYwQ7DPhvrWq8ZSaIh8gD7g_ZtB3f_Wl6oeBXypSJYuukc4LgJIAFOd4MCUiNLi1_iND_6Ppxn2paT3u-fb2knDSf3HzC07hfFRftMazMyqESrHx6Z9MGRaLCVCwkSfNtF8SvPxtbHm1rTk0k00K9yFoGFY9PQPpAeLRCr2PZ64faE1lK86mAI28DN96UDc9B7UfiBeS272tq-fA2hFy_QK5E0f4I7Z3Hca9og7Hbf1fxxfv2ZeLJl3cIaYZUWO53JoC5"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Science • Gr 3</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.9</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Planet Hop</h4>
+</div>
+</div>
+<!-- Game Card Small 4 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Computer screen with code blocks for kids" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoIB336iSzgJjmNh-dQcLWURPpJdMV5iVPWej3fxs4VjZOK9xOHLyoodaKLTZKcr0Pf9csqCJD_eBs40rQUK67kcr481zT2KzveNGfyR3YDVl7fsAlfsnuSKmb52IhYh1mW0QgOjMuDANZnJJtqLcGJNmMRVARhNlThZOSk1VWsyziFiv6VJvxxUJ2abvSJwaERengBz_IrvchlOzWBiEoiQsGGLd5Od5Qyz8NpZFzwjIYcs2tiA-bS3uYOpRc5Zdl9cspsNCIlMIt"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Logic • Gr 3</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.7</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Logic Puzzles</h4>
+</div>
+</div>
+<!-- Game Card Small 5 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Colorful balls and physics demonstration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzZ83sFZ6Xr9yNBRK-NaGGx2BF3zbbzcle3avhWb41tM4XToROt5Sa4YTl8CBAkvk1jL0F-UAjeQXf5iDVsxpF_CDEPREr8DOdllksWWeyR7_rTgY7Pk2mBkBHny7L8AB1wnqFPay17EMTIWj4p0dBAWHktdchmHYJXCp3uZvyp7YWfD6Mio_XkefDdlgiq0KGTj8dMXdtbXLV3XAXokiSXP-DWo5MGEpb9DuwEd1HadQQuJgNCJps-vTTUTSiiox55xb6oBFgHF3W"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Math • Gr 2</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.6</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Fraction Pizza</h4>
+</div>
+</div>
+<!-- Game Card Small 6 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Book opened to a page with animal illustrations" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfb_YZLzWx1ogq-Ah_y1Szb6CgK5WdbnayV721R0p4WInKMTgTwDHLP_OlgmXkaRGCH-O8iFiEIfPAlWtxBnAvTUGdm6s6KfglziyKBvhnwtLcB8wqBEmzx1_ihqn3_b6L5qC3Nng8InR7yALWfEjj_-a8vBfxMWuYOXaSd8vLA7yxJGlZxTLGBUXlGIktDBiVNlH9sHKcCpA7bNsAlevFiFcvzTP14k6eZbzqNNjBswERH6XpIY23Es8Qx1jTHP7zl9Yxpt_kIyJk"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">English • Gr 1</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.9</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Alphabet Zoo</h4>
+</div>
+</div>
+<!-- Game Card Small 7 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Magnifying glass looking at green leaves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcuxNn1v4KyJ1MDSIm-DEe0QAsSwCsc8LFTZKffyNSIvTflqJ7rrqzDqbgPMk7-j-qurC9xoWFstQWBeiZLUoyZ2OqWrAF7cW0bujwApQdFElfSEEwBHlJNSB2SmISj8NpuVq2k1s-cD1J2Sw6WLelC5psdPvtytZeAlMkEAJChNMoYg7C1H9BpmhoeNZfGK146edI1Qf62BVKoDaUaCbgozBtmBN7tcjhoT48w3S5nrrPZXJ8gjZB5rjv6l_QomWYd1yWBrioDpIZ"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Science • Gr 2</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.4</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Bug Hunter</h4>
+</div>
+</div>
+<!-- Game Card Small 8 -->
+<div class="group flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary/50 transition-colors">
+<div class="relative h-32 w-full bg-gray-100">
+<img class="h-full w-full object-cover" data-alt="Colorful geometric blocks stacked" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk6yq8bc6dzxFv2yK-WQ1JviAFUDK7m8rrQf2zCPMNE6Ng74f5sc4tDTq_6CiMQYC8BCZxYjxh3nBgzViVxBNZF0ntzfGDMZMB6qG44M90aDGIfmFEL6ySmgY4DynMJP-zcNq5fXBscoMOHCPtoImAtA04YERygaG6cc_CBSUTnB_JUCF1KM8LVfPWOcR0VHj-CkcDIK3g-kNXqTreYnxtKuVg4DNpkoG-Hm2U0gyo5bMSqZynIcVHsG0qmi9sCIYTDxczdeu7Vy84"/>
+<button class="absolute top-2 right-2 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<div class="p-3 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-text-sub">Logic • Gr 1</span>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[14px] filled">star</span>
+<span class="text-xs text-text-sub dark:text-gray-400 ml-1">4.8</span>
+</div>
+</div>
+<h4 class="font-bold text-text-main dark:text-white leading-tight">Pattern Match</h4>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="flex justify-center mt-8">
+<button class="text-sm font-bold text-primary hover:bg-primary/10 px-6 py-3 rounded-xl transition-colors">
+                        Load More Games
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

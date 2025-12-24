@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Teacher Dashboard - Students</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#496fa2",
+                        "accent": "#ed5667",
+                        "background-light": "#f6f7f7",
+                        "background-dark": "#15181d",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e2128",
+                        "border-light": "#eaedf0",
+                        "border-dark": "#343a40",
+                        "text-primary-light": "#111417",
+                        "text-primary-dark": "#ffffff",
+                        "text-secondary-light": "#627084",
+                        "text-secondary-dark": "#9aa0a6",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary-light dark:text-text-primary-dark antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4 py-3 sm:px-10">
+<div class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Teacher Dashboard</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="flex gap-2">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-text-primary-light dark:text-text-primary-dark">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-text-primary-light dark:text-text-primary-dark">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-border-light dark:bg-border-dark"></div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end hidden md:flex">
+<span class="text-sm font-bold">Sarah Jenkins</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Grade 3 Teacher</span>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Portrait of a smiling teacher" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCLb7ZihP2mPrxPuJqg2C1XMRumKTzdnc2tdymkJBSeiQBkCRVLialAtwAZ6-kXSW0UHKAB4LAyf_7Rye2u8J5haEa4EH-zuJV8XWSrOtqK8ggj6vjakGVPrSFw93P8AinJbi15vOnw-Qn2MlNezWSHCOlrhDCi2PITico9DSvRdYc01DGnWZCkJg3k_fy9y7SFAe4oV_lpRIw5sQuGHLlsFRnJ5YgzrZU31EUsDpDRqk_PcOsO3mH2ieNV96L5QI9DS5cvf5IwIFF");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 h-full">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex w-64 flex-col border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark">
+<div class="flex flex-col justify-between h-full p-4">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2 py-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg size-10 shadow-sm" data-alt="School logo abstract graphic" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxXqKtar5zlp3RZvAPbsN0pGcELKb1bFhy0rN70qgDpmgmxYYI-ODzvxT4MxUEwBeZjawloFZLRpORuOx1KXRx6S96vRHaZYJEzmEPgc-O1wnzTfKiNUEsA_vDyFxgsdf7NgpYBCF7HzNW_plmgvW_ig-XYAGGhee-cZt_268T5KI8BFPFzWVv3M1Lh-z18NODprTo5rI3I_nbSqjuzCDt_loxgnJlrUKi84Hl6GWxzuZcOPHN23y51S4Daj8AEqX9rHiOVtkxiUcP");'></div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-normal">Sunnydale Primary</h1>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-xs font-normal">Teacher Portal</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium" href="#">
+<span class="material-symbols-outlined icon-fill">groups</span>
+<span class="text-sm">Students</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">menu_book</span>
+<span class="text-sm font-medium">Lessons</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">calendar_month</span>
+<span class="text-sm font-medium">Schedule</span>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-1 mt-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">help</span>
+<span class="text-sm font-medium">Help &amp; Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark overflow-y-auto">
+<div class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary-light dark:text-text-primary-dark">Students</h1>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-base">Manage your enrolled students, track progress, and assign activities.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium py-2.5 px-5 rounded-lg transition-all shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-xl">add</span>
+<span>Add New Student</span>
+</button>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary-light dark:text-text-secondary-dark font-medium text-sm">Total Students</p>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-1.5 rounded-md text-xl">groups</span>
+</div>
+<p class="text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">124</p>
+<p class="text-xs text-green-600 font-medium flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +3 this week
+                        </p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary-light dark:text-text-secondary-dark font-medium text-sm">Active Today</p>
+<span class="material-symbols-outlined text-green-500 bg-green-500/10 p-1.5 rounded-md text-xl">check_circle</span>
+</div>
+<p class="text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">98</p>
+<p class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium mt-1">
+                            79% of total class
+                        </p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary-light dark:text-text-secondary-dark font-medium text-sm">Needs Attention</p>
+<span class="material-symbols-outlined text-accent bg-accent/10 p-1.5 rounded-md text-xl">priority_high</span>
+</div>
+<p class="text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">5</p>
+<p class="text-xs text-accent font-medium mt-1">
+                            Requires review
+                        </p>
+</div>
+</div>
+<!-- Filters & Search -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm mb-6 p-4">
+<div class="flex flex-col md:flex-row gap-4 justify-between">
+<div class="relative flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark">search</span>
+<input class="w-full h-11 pl-10 pr-4 bg-background-light dark:bg-background-dark border-transparent focus:border-primary focus:ring-0 rounded-lg text-sm text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark transition-all" placeholder="Search students by name, ID..." type="text"/>
+</div>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="relative">
+<select class="appearance-none h-11 pl-4 pr-10 bg-background-light dark:bg-background-dark border-transparent focus:border-primary focus:ring-0 rounded-lg text-sm font-medium text-text-primary-light dark:text-text-primary-dark cursor-pointer min-w-[160px]">
+<option>All Classes</option>
+<option>Year 1 - Tigers</option>
+<option>Year 2 - Lions</option>
+<option>Year 3 - Bears</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-text-secondary-light dark:text-text-secondary-dark text-lg">expand_more</span>
+</div>
+<button class="h-11 px-4 flex items-center justify-center gap-2 border border-border-light dark:border-border-dark rounded-lg text-text-secondary-light dark:text-text-secondary-dark font-medium text-sm hover:bg-background-light dark:hover:bg-background-dark hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span>More Filters</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Students Table -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-background-light/50 dark:bg-background-dark/50 border-b border-border-light dark:border-border-dark">
+<th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark w-1/3 min-w-[240px]">Student Name</th>
+<th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Class</th>
+<th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Recent Activity</th>
+<th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Row 1 -->
+<tr class="group hover:bg-primary/5 dark:hover:bg-primary/5 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-1 ring-border-light dark:ring-border-dark" data-alt="Portrait of young boy student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDa6kDjsQj8q5OrUleCBWAST12LD6sM0TrxSD1uvDR5seguj_XHrWCeHFufyY3q9aTWxeF5OhzwhZaGrMryPC76Eqy2aqoE7qW0qtdZmRB9ALl180Lv7WOqn3_FMmue8YcqPNW5dikbXhdCeeKGn4xnnCbv5jRoQjaIBoOETnPC_99P8sly7vsRU1zS_Wn4iJlSawPnJgzMmF_IJtcv60MvfbVtIwYQHI1dgmzeStt-asnVk87N1kRDD8-JSupzryN3gkh0e41Ozg4j");'></div>
+<div class="flex flex-col">
+<span class="font-bold text-text-primary-light dark:text-text-primary-dark">Leo Davidson</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">ID: #40921</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+                                            Year 3 - Bears
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Completed Math Quiz - 90%</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">2 hours ago</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all">
+                                                View Profile
+                                            </button>
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-all shadow-sm">
+                                                Assign Lesson
+                                            </button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-primary/5 dark:hover:bg-primary/5 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-1 ring-border-light dark:ring-border-dark" data-alt="Portrait of young girl student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOTj7N6igZUEkx1_VBmw2eapYNY12tXo-IIILFLSXbhCFb-R5Ls1McgB_8f2AetYN2gU2GXWZY1bf44Z0YADPa9uiJ7O6gqpvgBjQqDDesG2S_grD5i_bHMorVYgnMzY_5QwsQsPsuqm-romFa7H_A-TZQecUgxkeaDzCgVh8TXzJrDUbWH1gf81yBT4g3cUZvw0co3HH0FYesHfOXcLR1CQuBVe8JOJ2nGKbkdjYo0B2SrUE_OpAjniKmL1Yx0rw9fAD7W4TZryk2");'></div>
+<div class="flex flex-col">
+<span class="font-bold text-text-primary-light dark:text-text-primary-dark">Mia Johnson</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">ID: #40922</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                            Year 3 - Tigers
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Started Reading: 'The Big Tree'</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">15 mins ago</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all">
+                                                View Profile
+                                            </button>
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-all shadow-sm">
+                                                Assign Lesson
+                                            </button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Alert) -->
+<tr class="group hover:bg-primary/5 dark:hover:bg-primary/5 transition-colors bg-red-50/50 dark:bg-red-900/10">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-1 ring-border-light dark:ring-border-dark" data-alt="Portrait of young boy student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIdAZpKhwa4_-3A3enrNx2iMi52r4kFlGpqLW7KN7dyxs5cRcs8nZQ2p8IVkbM-aXrX4CAzD7_EpmuGYmnpfmelEhefW2S3e25BMPEtP5ZbmWv-sD7BPvlAwYKWZ2XieYZwNsHkC8tOpmsa35a5PgAGfp61B3Vrr-ZWpfFnssK3liKAer2Ri1WvVJz9GUXg4-T-CV4ZiXEn0z_UUoffUpGJHhMBDnKhGgflFbUIip9nhUh7mbbCvUyqEZBsuh9XLbLj7SEbIdQY1br");'></div>
+<span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] text-white ring-2 ring-white dark:ring-surface-dark">!</span>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-text-primary-light dark:text-text-primary-dark">Sam Wilson</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">ID: #40925</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+                                            Year 3 - Bears
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-accent">Missed Assignment: Science 101</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Yesterday</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all">
+                                                View Profile
+                                            </button>
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-all shadow-sm">
+                                                Remind
+                                            </button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-primary/5 dark:hover:bg-primary/5 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-1 ring-border-light dark:ring-border-dark" data-alt="Portrait of young girl student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMWzteqr7_rSHUV3EsCCxwzqnUQGRo0ByF4PFs2EUR-2lKkh13ZdbPvcwVftDuqURCiZTH3gh-bXiN2pKPgf6rmcOmmK3qeZM9hAL2NbkH5ITCTCrF4fvJRIIIHYM8VzXROXo3HH7X0YwNjzb7fpg_Qz2tut9xnWIZBsQJr5CtaJhuY9dk1CBVUVKhUVXPfmpr5rZqSNR-Any-uv7pcsoZcROaRL1ggSYKdP-2JJeLg0wj1hkFsC3P3pSTfQ3wiPeeJY3nHzX8R7BM");'></div>
+<div class="flex flex-col">
+<span class="font-bold text-text-primary-light dark:text-text-primary-dark">Sophie Chen</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">ID: #40928</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                            Year 2 - Lions
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Logged In</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Just now</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all">
+                                                View Profile
+                                            </button>
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-all shadow-sm">
+                                                Assign Lesson
+                                            </button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="group hover:bg-primary/5 dark:hover:bg-primary/5 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-1 ring-border-light dark:ring-border-dark" data-alt="Portrait of young boy student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAC8AnVBRvKNSqIcTUzMoO4PCFm5TsuRvq0ZNvFkr5ghDXiIZlAlpjGYXg9gjVwoovg1mOBI_uBwOnqopmvHx7PELsyrIDijgk3LAL1Y35_3mBpFKhQhqS4ayWjkIWPbj5gtJnq0j9sroYo5Z8pQuigA55T8ZyZlED1p15HFdov1lMlzZtMGbJHI_kW7Vg-nyJLxuZ2XrKJTXUlSnbPW8J33MRiqGrvouGt-QTPxngaE_U_sUaFtojUNnpwdLUIuAcnrA72H4k9qyHu");'></div>
+<div class="flex flex-col">
+<span class="font-bold text-text-primary-light dark:text-text-primary-dark">Jackson Lee</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">ID: #40930</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                            Year 3 - Tigers
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Watched Video: 'Planets'</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">3 hours ago</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all">
+                                                View Profile
+                                            </button>
+<button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-all shadow-sm">
+                                                Assign Lesson
+                                            </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between border-t border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark px-4 py-3 sm:px-6">
+<div class="flex flex-1 justify-between sm:hidden">
+<a class="relative inline-flex items-center rounded-md border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4 py-2 text-sm font-medium text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800" href="#">Previous</a>
+<a class="relative ml-3 inline-flex items-center rounded-md border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4 py-2 text-sm font-medium text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800" href="#">Next</a>
+</div>
+<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                    Showing
+                                    <span class="font-medium text-text-primary-light dark:text-text-primary-dark">1</span>
+                                    to
+                                    <span class="font-medium text-text-primary-light dark:text-text-primary-dark">5</span>
+                                    of
+                                    <span class="font-medium text-text-primary-light dark:text-text-primary-dark">124</span>
+                                    results
+                                </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+<a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-text-secondary-light dark:text-text-secondary-dark ring-1 ring-inset ring-border-light dark:ring-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</a>
+<a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-text-primary-light dark:text-text-primary-dark ring-1 ring-inset ring-border-light dark:ring-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-text-primary-light dark:text-text-primary-dark ring-1 ring-inset ring-border-light dark:ring-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">3</a>
+<span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark ring-1 ring-inset ring-border-light dark:ring-border-dark focus:outline-offset-0">...</span>
+<a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-text-secondary-light dark:text-text-secondary-dark ring-1 ring-inset ring-border-light dark:ring-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

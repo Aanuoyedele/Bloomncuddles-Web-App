@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EarlyYears Learn - Login / Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#486fa1", // Updated primary blue
+                        "primary-hover": "#36557a", // Darker shade of new primary
+                        "secondary": "#ed5667", // Updated secondary
+                        "accent": "#ed5667", // Updated accent color
+                        "background-light": "#ffffff", // Updated to white
+                        "background-dark": "#18181b", 
+                        "card-dark": "#27272a", 
+                        "border-dark": "#3f3f46", 
+                        "text-muted": "#94a3b8", 
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'glow': '0 0 50px -12px rgba(72, 111, 161, 0.25)',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light text-slate-900 antialiased transition-colors duration-200 selection:bg-primary/20 selection:text-primary">
+<div class="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden bg-white">
+<div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] opacity-70 pointer-events-none animate-pulse" data-alt="Soft abstract blue glow"></div>
+<div class="absolute bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] opacity-60 pointer-events-none" data-alt="Soft abstract secondary glow"></div>
+<div class="absolute top-[40%] right-[-10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[80px] opacity-50 pointer-events-none" data-alt="Additional soft glow"></div>
+<header class="absolute top-0 left-0 w-full flex items-center justify-between px-6 py-4 md:px-10 z-20">
+<div class="flex items-center gap-3">
+<div class="size-10 text-white bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<h2 class="text-slate-900 text-lg font-bold tracking-tight hidden sm:block">EarlyYears Learn</h2>
+</div>
+<a class="text-sm font-semibold text-slate-500 hover:text-primary transition-colors" href="#">Help Center</a>
+</header>
+<main class="relative w-full max-w-[520px] z-10">
+<div class="bg-white/70 backdrop-blur-xl border border-white/50 shadow-glass rounded-2xl p-6 sm:p-10 transition-all relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+<div class="relative z-10">
+<div class="text-center mb-8">
+<h1 class="text-3xl font-bold mb-2 tracking-tight text-slate-900">Welcome Back</h1>
+<p class="text-slate-500 font-medium">Empowering the next generation of learners.</p>
+</div>
+<div class="mb-8">
+<div class="bg-slate-100/80 p-1.5 rounded-xl flex">
+<button class="flex-1 py-3 px-4 rounded-lg bg-white shadow-sm text-primary font-bold text-sm transition-all text-center justify-center items-center gap-2 flex border border-slate-100">
+<span class="material-symbols-outlined text-[18px]">login</span>
+                            Login
+                        </button>
+<button class="flex-1 py-3 px-4 rounded-lg text-slate-500 hover:text-primary font-bold text-sm transition-all text-center justify-center items-center gap-2 flex group hover:bg-white/50">
+<span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">person_add</span>
+                            Register
+                        </button>
+</div>
+</div>
+<form class="flex flex-col gap-5">
+<div class="space-y-2">
+<label class="block text-sm font-bold text-slate-700 ml-1" for="email">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">mail</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium focus:bg-white" id="email" placeholder="teacher@school.edu" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center ml-1">
+<label class="block text-sm font-bold text-slate-700" for="password">Password</label>
+<a class="text-xs font-bold text-secondary hover:text-secondary/80 hover:underline" href="#">Forgot Password?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">lock</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium focus:bg-white" id="password" placeholder="Enter your password" type="password"/>
+</div>
+</div>
+<button class="mt-2 w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 transform active:scale-[0.98] flex justify-center items-center gap-2" type="button">
+                        Log In
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+<div class="relative my-8">
+<div aria-hidden="true" class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200"></div>
+</div>
+<div class="relative flex justify-center">
+<span class="bg-white/50 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider backdrop-blur-sm rounded-full">Or continue with</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 bg-white/50 hover:bg-white rounded-xl transition-all group hover:shadow-md hover:border-slate-300">
+<img alt="Google" class="w-5 h-5 group-hover:scale-110 transition-transform" data-alt="Google logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWZFPZNNsiFymJYZsqer4rQFwC793UFue_ZrDK7bejJqwBSf0Grz3DL-QIfsAisiVb_2d-2CG4dZ8DFnRzz11wwsPNwFEPQEsQ1IvpE9JufhfEc4WK3vZ9_oQPaBHsmmAEt5o6uYtbIWFGjg-xsHdwAHy1DBYHq5Txv4ar_wQ3x9ojEszx63Y10WSvsZ3MVPgFRj5j7biy-axWh3b0SiqtcL2zwKXiilj5jokAgGbAYq4EZIIjdYfukysg8f1JD4blY23bWNnX8yLR"/>
+<span class="text-sm font-bold text-slate-700">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 bg-white/50 hover:bg-white rounded-xl transition-all group hover:shadow-md hover:border-slate-300">
+<img alt="Microsoft" class="w-5 h-5 group-hover:scale-110 transition-transform" data-alt="Microsoft logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzY2bONUQpgbl3T-N-MpYrfl5QeqZSucJuZ4Vd82-IvgaJIFO1a7li-UPcc_-7bsYQJxutCJvGN3gSj3iziW40OEUGjdbe9ce0SKnaqoDrQw1uc2WCslkqR4LskKma0ruGl_Y4u6D4PQ3gvDJIlwdb-SYd-JZjcWN2VN6vq0ETVzcK7BYvU2m1zWRX3vx51fM51cqgf8JeXzXn0VX6jw8JPi_eI_ehSKYBX_ayl3RPRwG6ikp121Jz3GpHLLopCtf3xWrmSsH26Fwj"/>
+<span class="text-sm font-bold text-slate-700">Microsoft</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-8 text-center relative z-10">
+<p class="text-xs text-slate-500 font-medium">
+                    By continuing, you agree to our 
+                    <a class="font-bold text-primary hover:text-primary-hover underline decoration-dotted underline-offset-4" href="#">Terms of Service</a>
+                    and 
+                    <a class="font-bold text-primary hover:text-primary-hover underline decoration-dotted underline-offset-4" href="#">Privacy Policy</a>.
+                </p>
+</div>
+</main>
+<div class="hidden xl:block absolute right-0 top-0 h-full w-1/3 z-0 pointer-events-none">
+<div class="relative h-full w-full">
+<div class="absolute inset-0 bg-gradient-to-l from-transparent to-white z-10"></div>
+<div class="absolute inset-0 bg-white/10 z-10 mix-blend-overlay"></div>
+<img alt="Abstract educational tools and books on a desk" class="h-full w-full object-cover opacity-80" data-alt="Soft focus background of educational materials and books" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0fXVYV0EQ7xaaf1lAKDm6ZPErkNEtnhP4tkx-E1XDxdRc-7vMVuDLU8PIieKxpaCKfVWK98p9Oc9es-krEV6ahXi9IEQmAXcuxprVZiX3U8VNI0_enE0z2WDnkLvgAX6mHrzHhopEANEJQRGUS9uzI-nPOuZgblVdJqWPjZiMFAv2bkuyaZLfOVnYr9QXBbLPuUC10j5y75a0ww9tD4TFkCVdWBVvDm38NRdmQtvKdx5NysAii-5B-9zFz2NuYKDJt9g9vi_Jum1g"/>
+</div>
+</div>
+</div>
+
+</body></html>
