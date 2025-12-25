@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
+import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -19,6 +19,8 @@ export default function LoginPage() {
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [isStudentLogin, setIsStudentLogin] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
@@ -53,7 +55,16 @@ export default function LoginPage() {
         if (!validateForm()) return;
 
         setLoading(true);
-        const endpoint = activeTab === 'login' ? 'http://localhost:4000/api/auth/login' : 'http://localhost:4000/api/auth/register';
+
+        // Determine endpoint based on login type
+        let endpoint: string;
+        if (activeTab === 'login') {
+            endpoint = isStudentLogin
+                ? 'http://localhost:4000/api/auth/student-login'
+                : 'http://localhost:4000/api/auth/login';
+        } else {
+            endpoint = 'http://localhost:4000/api/auth/register';
+        }
 
         // Prepare payload
         const payload = activeTab === 'login'
@@ -123,17 +134,17 @@ export default function LoginPage() {
                         )}
 
                         {/* Tab Switcher */}
-                        <div className="mb-8">
+                        <div className="mb-6">
                             <div className="bg-slate-100/80 p-1.5 rounded-2xl flex relative">
                                 <button
-                                    onClick={() => setActiveTab('login')}
+                                    onClick={() => { setActiveTab('login'); setIsStudentLogin(false); }}
                                     className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-center justify-center items-center gap-2 flex ${activeTab === 'login' ? 'bg-white text-primary shadow-sm border border-slate-100' : 'text-slate-500 hover:text-primary'}`}
                                 >
                                     <span className="material-symbols-outlined text-[20px]">login</span>
                                     Login
                                 </button>
                                 <button
-                                    onClick={() => setActiveTab('register')}
+                                    onClick={() => { setActiveTab('register'); setIsStudentLogin(false); }}
                                     className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-center justify-center items-center gap-2 flex ${activeTab === 'register' ? 'bg-white text-primary shadow-sm border border-slate-100' : 'text-slate-500 hover:text-primary'}`}
                                 >
                                     <span className="material-symbols-outlined text-[20px]">person_add</span>
@@ -141,6 +152,28 @@ export default function LoginPage() {
                                 </button>
                             </div>
                         </div>
+
+                        {/* Student Login Toggle - only shown on login tab */}
+                        {activeTab === 'login' && (
+                            <div className="mb-6 flex items-center justify-center gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsStudentLogin(false)}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!isStudentLogin ? 'bg-primary text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                >
+                                    <span className="material-symbols-outlined text-[18px] align-middle mr-1">school</span>
+                                    Staff
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsStudentLogin(true)}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${isStudentLogin ? 'bg-secondary text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                >
+                                    <span className="material-symbols-outlined text-[18px] align-middle mr-1">face</span>
+                                    Student
+                                </button>
+                            </div>
+                        )}
 
                         {/* Form Container */}
                         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -257,7 +290,13 @@ export default function LoginPage() {
                                 <div className="flex justify-between items-center ml-1">
                                     <label className="block text-sm font-bold text-slate-700" htmlFor="password">Password</label>
                                     {activeTab === 'login' && (
-                                        <a className="text-xs font-bold text-secondary hover:text-secondary/80 hover:underline" href="#">Forgot Password?</a>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowForgotPassword(true)}
+                                            className="text-xs font-bold text-secondary hover:text-secondary/80 hover:underline"
+                                        >
+                                            Forgot Password?
+                                        </button>
                                     )}
                                 </div>
                                 <div className="relative group">
@@ -321,6 +360,12 @@ export default function LoginPage() {
                     </p>
                 </div>
             </main>
+
+            {/* Forgot Password Modal */}
+            <ForgotPasswordModal
+                isOpen={showForgotPassword}
+                onClose={() => setShowForgotPassword(false)}
+            />
 
             {/* Background Image Side (Optional/Hidden on Mobile) */}
             <div className="hidden xl:block absolute right-0 top-0 h-full w-1/3 z-0 pointer-events-none">

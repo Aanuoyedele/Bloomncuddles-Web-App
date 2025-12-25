@@ -26,6 +26,13 @@ export default function ClassesPage() {
     const [formError, setFormError] = useState<string | null>(null);
     const [formData, setFormData] = useState({ name: '', grade: '', schedule: '' });
 
+    // Search, filter, sort state
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterGrade, setFilterGrade] = useState('');
+    const [sortBy, setSortBy] = useState<'name' | 'grade' | 'students'>('name');
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
+    const [showSortMenu, setShowSortMenu] = useState(false);
+
     // Edit modal state
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [editingClass, setEditingClass] = useState<ClassData | null>(null);
@@ -66,6 +73,27 @@ export default function ClassesPage() {
         fetchClasses();
         fetchTeachers();
     }, []);
+
+    // Get unique grades for filter dropdown
+    const uniqueGrades = [...new Set(classes.map(c => c.grade))].sort();
+
+    // Filter and sort classes
+    const filteredClasses = classes
+        .filter(cls => {
+            const matchesSearch = cls.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                cls.grade.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (cls.teacher?.name || '').toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesGrade = !filterGrade || cls.grade === filterGrade;
+            return matchesSearch && matchesGrade;
+        })
+        .sort((a, b) => {
+            switch (sortBy) {
+                case 'name': return a.name.localeCompare(b.name);
+                case 'grade': return a.grade.localeCompare(b.grade);
+                case 'students': return (b._count?.students || 0) - (a._count?.students || 0);
+                default: return 0;
+            }
+        });
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -175,19 +203,77 @@ export default function ClassesPage() {
                     </div>
                     <input
                         className="w-full h-12 pl-12 pr-4 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm"
-                        placeholder="Search classes..."
+                        placeholder="Search classes, grades, or teachers..."
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
                 <div className="flex gap-3">
-                    <button className="flex items-center gap-2 px-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold hover:bg-slate-50 transition-all shadow-sm">
-                        <span className="material-symbols-outlined text-slate-500">filter_list</span>
-                        <span>Filter</span>
-                    </button>
-                    <button className="flex items-center gap-2 px-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold hover:bg-slate-50 transition-all shadow-sm">
-                        <span className="material-symbols-outlined text-slate-500">sort</span>
-                        <span>Sort</span>
-                    </button>
+                    {/* Filter Dropdown */}
+                    <div className="relative">
+                        <button
+                            onClick={() => { setShowFilterMenu(!showFilterMenu); setShowSortMenu(false); }}
+                            className={`flex items-center gap-2 px-4 h-12 bg-white border rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm ${filterGrade ? 'border-primary text-primary' : 'border-slate-200 text-slate-700'}`}
+                        >
+                            <span className="material-symbols-outlined text-slate-500">filter_list</span>
+                            <span>{filterGrade || 'Filter'}</span>
+                            {filterGrade && (
+                                <span
+                                    onClick={(e) => { e.stopPropagation(); setFilterGrade(''); }}
+                                    className="material-symbols-outlined text-[16px] hover:text-red-500"
+                                >close</span>
+                            )}
+                        </button>
+                        {showFilterMenu && (
+                            <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl border border-slate-200 shadow-lg z-20 py-2">
+                                <button
+                                    onClick={() => { setFilterGrade(''); setShowFilterMenu(false); }}
+                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 ${!filterGrade ? 'text-primary font-bold' : 'text-slate-700'}`}
+                                >
+                                    All Grades
+                                </button>
+                                {uniqueGrades.map(grade => (
+                                    <button
+                                        key={grade}
+                                        onClick={() => { setFilterGrade(grade); setShowFilterMenu(false); }}
+                                        className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 ${filterGrade === grade ? 'text-primary font-bold' : 'text-slate-700'}`}
+                                    >
+                                        {grade}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Sort Dropdown */}
+                    <div className="relative">
+                        <button
+                            onClick={() => { setShowSortMenu(!showSortMenu); setShowFilterMenu(false); }}
+                            className="flex items-center gap-2 px-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-sm hover:bg-slate-50 transition-all shadow-sm"
+                        >
+                            <span className="material-symbols-outlined text-slate-500">sort</span>
+                            <span>Sort</span>
+                        </button>
+                        {showSortMenu && (
+                            <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200 shadow-lg z-20 py-2">
+                                {[
+                                    { value: 'name', label: 'Name (A-Z)' },
+                                    { value: 'grade', label: 'Grade' },
+                                    { value: 'students', label: 'Most Students' }
+                                ].map(option => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() => { setSortBy(option.value as any); setShowSortMenu(false); }}
+                                        className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center justify-between ${sortBy === option.value ? 'text-primary font-bold' : 'text-slate-700'}`}
+                                    >
+                                        {option.label}
+                                        {sortBy === option.value && <span className="material-symbols-outlined text-[18px]">check</span>}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -205,6 +291,14 @@ export default function ClassesPage() {
                 </div>
             )}
 
+            {!loading && !error && filteredClasses.length === 0 && classes.length > 0 && (
+                <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
+                    <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">search_off</span>
+                    <h3 className="text-lg font-bold text-slate-700">No Classes Found</h3>
+                    <p className="text-slate-500 mt-1">Try adjusting your search or filter.</p>
+                </div>
+            )}
+
             {!loading && !error && classes.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
                     <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">school</span>
@@ -214,9 +308,9 @@ export default function ClassesPage() {
             )}
 
             {/* Class Grid */}
-            {!loading && !error && classes.length > 0 && (
+            {!loading && !error && filteredClasses.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {classes.map((cls, index) => (
+                    {filteredClasses.map((cls, index) => (
                         <div key={cls.id} className="group bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 relative overflow-hidden">
                             <div className={`absolute top-0 left-0 w-2 h-full ${colors[index % colors.length]}`}></div>
                             <div className="flex justify-between items-start mb-4">
@@ -301,13 +395,13 @@ export default function ClassesPage() {
                                             key={teacher.id}
                                             onClick={() => setSelectedTeacherId(teacher.id)}
                                             className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left group ${selectedTeacherId === teacher.id
-                                                    ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                                                    : 'border-slate-200 hover:border-primary/50 hover:bg-primary/5'
+                                                ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                                : 'border-slate-200 hover:border-primary/50 hover:bg-primary/5'
                                                 }`}
                                         >
                                             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${selectedTeacherId === teacher.id
-                                                    ? 'bg-primary text-white'
-                                                    : 'bg-slate-100 text-slate-500 group-hover:bg-white'
+                                                ? 'bg-primary text-white'
+                                                : 'bg-slate-100 text-slate-500 group-hover:bg-white'
                                                 }`}>
                                                 {teacher.name.charAt(0)}
                                             </div>
@@ -366,7 +460,7 @@ export default function ClassesPage() {
                                     type="text"
                                     value={formData.grade}
                                     onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
-                                    placeholder="e.g. Grade 5"
+                                    placeholder="e.g. Primary 1"
                                     className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                                     required
                                 />

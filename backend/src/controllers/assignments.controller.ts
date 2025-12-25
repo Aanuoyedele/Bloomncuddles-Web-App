@@ -6,19 +6,33 @@ const prisma = new PrismaClient();
 
 export const createAssignment = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { title, description, dueDate, classId } = req.body;
-
-        // Validate class ownership or existence
-        // For now, trust the input for simplicity/demo
+        const { title, description, dueDate, classId, fileUrl } = req.body;
 
         const newAssignment = await prisma.assignment.create({
             data: {
                 title,
                 description,
                 dueDate: new Date(dueDate),
-                classId
+                classId,
+                fileUrl
             }
         });
+
+        // Create submissions for all students in the class
+        const students = await prisma.student.findMany({
+            where: { classId },
+            select: { id: true }
+        });
+
+        if (students.length > 0) {
+            await prisma.submission.createMany({
+                data: students.map(s => ({
+                    assignmentId: newAssignment.id,
+                    studentId: s.id,
+                    status: 'PENDING'
+                }))
+            });
+        }
 
         res.status(201).json(newAssignment);
     } catch (error) {
@@ -29,21 +43,21 @@ export const createAssignment = async (req: AuthRequest, res: Response): Promise
 
 export const getAssignments = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const classId = req.query.classId as string;
+        const { classId, search } = req.query;
 
-        // If classId provided, filter by it. Otherwise, return all (or handle per role)
-        const whereClause = classId ? { classId } : {};
+        const where: any = {};
+        if (classId) where.classId = classId;
+        if (search) {
+            where.title = { contains: search as string };
+        }
 
         const assignments = await prisma.assignment.findMany({
-            where: whereClause,
+            where,
             include: {
-                class: {
-                    select: { name: true }
-                }
+                class: { select: { name: true } },
+                _count: { select: { submissions: true } }
             },
-            orderBy: {
-                dueDate: 'asc'
-            }
+            orderBy: { dueDate: 'asc' }
         });
 
         res.json(assignments);
@@ -56,13 +70,14 @@ export const getAssignments = async (req: AuthRequest, res: Response): Promise<v
 export const updateAssignment = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const { title, description, dueDate, classId } = req.body;
+        const { title, description, dueDate, classId, fileUrl } = req.body;
 
         const updateData: any = {};
         if (title) updateData.title = title;
         if (description !== undefined) updateData.description = description;
         if (dueDate) updateData.dueDate = new Date(dueDate);
         if (classId) updateData.classId = classId;
+        if (fileUrl !== undefined) updateData.fileUrl = fileUrl;
 
         const updated = await prisma.assignment.update({
             where: { id },
@@ -81,6 +96,8 @@ export const deleteAssignment = async (req: AuthRequest, res: Response): Promise
     try {
         const { id } = req.params;
 
+        // Delete submissions first
+        await prisma.submission.deleteMany({ where: { assignmentId: id } });
         await prisma.assignment.delete({ where: { id } });
 
         res.json({ message: 'Assignment deleted successfully' });
@@ -89,3 +106,58 @@ export const deleteAssignment = async (req: AuthRequest, res: Response): Promise
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+// Get submissions for an assignment
+export const getSubmissions = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+
+        const submissions = await prisma.submission.findMany({
+            where: { assignmentId: id },
+            include: {
+                student: { select: { id: true, name: true, grade: true } }
+            },
+            orderBy: { student: { name: 'asc' } }
+        });
+
+        res.json(submissions);
+    } catch (error) {
+        console.error('Get Submissions error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// Grade a submission
+export const gradeSubmission = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { score, feedback } = req.body;
+
+        if (score === undefined || score < 0 || score > 100) {
+            res.status(400).json({ message: 'Score must be between 0 and 100' });
+            return;
+        }
+
+        const updated = await prisma.submission.update({
+            where: { id },
+            data: {
+                score,
+                feedback,
+                status: 'GRADED',
+                gradedAt: new Date()
+            },
+            include: {
+                student: { select: { name: true, email: true } },
+                assignment: { select: { title: true } }
+            }
+        });
+
+        // TODO: Send notification to student about their grade
+
+        res.json(updated);
+    } catch (error) {
+        console.error('Grade Submission error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+

@@ -40,6 +40,8 @@ export const getUsers = async (req: AuthRequest, res: Response): Promise<void> =
                 name: true,
                 email: true,
                 role: true,
+                isActive: true,
+                lastLoginAt: true,
                 createdAt: true
             },
             orderBy: { createdAt: 'desc' }
@@ -145,6 +147,58 @@ export const updateUser = async (req: AuthRequest, res: Response): Promise<void>
 
     } catch (error) {
         console.error('Update user error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// Toggle user active status (admin only)
+export const toggleUserStatus = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const userId = req.user?.userId;
+
+        if (!userId) {
+            res.status(401).json({ message: 'Unauthorized' });
+            return;
+        }
+
+        // Check if current user is admin
+        const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+
+        if (currentUser?.role !== 'ADMIN') {
+            res.status(403).json({ message: 'Only admins can toggle user status' });
+            return;
+        }
+
+        // Check if target user exists and is in same school
+        const targetUser = await prisma.user.findUnique({ where: { id } });
+
+        if (!targetUser || targetUser.schoolId !== currentUser.schoolId) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        // Prevent toggling own status
+        if (id === userId) {
+            res.status(400).json({ message: 'Cannot toggle your own status' });
+            return;
+        }
+
+        // Toggle the status
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: { isActive: !targetUser.isActive },
+            select: {
+                id: true,
+                name: true,
+                isActive: true
+            }
+        });
+
+        res.json(updatedUser);
+
+    } catch (error) {
+        console.error('Toggle user status error:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };

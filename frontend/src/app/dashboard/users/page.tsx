@@ -9,8 +9,8 @@ interface User {
     role: string;
     email: string;
     id?: string;
-    status?: string;
-    lastActive?: string;
+    isActive?: boolean;
+    lastLoginAt?: string;
     img?: string;
 }
 
@@ -93,6 +93,16 @@ export default function UserManagementPage() {
             fetchTeachers();
         } catch (err: any) {
             alert(err.message || 'Failed to delete teacher');
+        }
+    };
+
+    // Toggle teacher status
+    const handleToggleStatus = async (userId: string) => {
+        try {
+            await api.patch(`/users/${userId}/toggle-status`, {});
+            fetchTeachers();
+        } catch (err: any) {
+            alert(err.message || 'Failed to toggle status');
         }
     };
 
@@ -202,13 +212,16 @@ export default function UserManagementPage() {
                         <span className="material-symbols-outlined text-[20px]">upload</span>
                         Bulk Import
                     </button>
-                    <button
-                        onClick={() => setInviteModalOpen(true)}
-                        className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-[20px]">person_add</span>
-                        Invite Teacher
-                    </button>
+                    {/* Only show Invite Teacher button on Teachers/Invites tabs */}
+                    {(activeTab === 'Teachers' || activeTab === 'Invites') && (
+                        <button
+                            onClick={() => setInviteModalOpen(true)}
+                            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-[20px]">person_add</span>
+                            Invite Teacher
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -282,16 +295,23 @@ export default function UserManagementPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${user.status === 'Active'
-                                            ? 'bg-green-50 text-green-700 border-green-200'
-                                            : 'bg-slate-100 text-slate-600 border-slate-200'
-                                            }`}>
-                                            <span className={`w-1.5 h-1.5 rounded-full ${user.status === 'Active' ? 'bg-green-500' : 'bg-slate-400'}`}></span>
-                                            {user.status}
-                                        </span>
+                                        <button
+                                            onClick={() => user.id && handleToggleStatus(user.id)}
+                                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border cursor-pointer transition-colors ${user.isActive !== false
+                                                ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
+                                                : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                                                }`}
+                                            title="Click to toggle status"
+                                        >
+                                            <span className={`w-1.5 h-1.5 rounded-full ${user.isActive !== false ? 'bg-green-500' : 'bg-slate-400'}`}></span>
+                                            {user.isActive !== false ? 'Active' : 'Inactive'}
+                                        </button>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-slate-500 font-medium">
-                                        {user.lastActive}
+                                        {user.lastLoginAt
+                                            ? new Date(user.lastLoginAt).toLocaleString()
+                                            : 'Never'
+                                        }
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -538,8 +558,8 @@ export default function UserManagementPage() {
                                             key={type}
                                             onClick={() => setImportType(type)}
                                             className={`py-2 px-3 rounded-lg text-sm font-bold capitalize transition-all ${importType === type
-                                                    ? 'bg-primary text-white'
-                                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                ? 'bg-primary text-white'
+                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                                 }`}
                                         >
                                             {type}

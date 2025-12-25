@@ -9,6 +9,12 @@ import inviteRoutes from './routes/invites.routes';
 import userRoutes from './routes/users.routes';
 import statsRoutes from './routes/stats.routes';
 import importRoutes from './routes/import.routes';
+import schoolRoutes from './routes/school.routes';
+import reportsRoutes from './routes/reports.routes';
+import billingRoutes from './routes/billing.routes';
+import notificationsRoutes from './routes/notifications.routes';
+import gamesRoutes from './routes/games.routes';
+import libraryRoutes from './routes/library.routes';
 
 dotenv.config();
 
@@ -27,6 +33,12 @@ app.use('/api/invites', inviteRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/import', importRoutes);
+app.use('/api/school', schoolRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/billing', billingRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/games', gamesRoutes);
+app.use('/api/library', libraryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Bloomncuddles API is running');

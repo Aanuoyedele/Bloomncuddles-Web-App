@@ -29,6 +29,10 @@ export default function StudentsPage() {
     const [saving, setSaving] = useState(false);
     const [editError, setEditError] = useState<string | null>(null);
 
+    // Search and stats state
+    const [searchQuery, setSearchQuery] = useState('');
+    const [studentStats, setStudentStats] = useState({ total: 0, activeToday: 0, needsAttention: 0 });
+
     const fetchStudents = async () => {
         try {
             setLoading(true);
@@ -50,10 +54,29 @@ export default function StudentsPage() {
         }
     };
 
+    const fetchStudentStats = async () => {
+        try {
+            const data = await api.get('/stats/student-stats');
+            setStudentStats(data);
+        } catch (err) {
+            console.error('Failed to load student stats');
+        }
+    };
+
     useEffect(() => {
         fetchStudents();
         fetchClasses();
+        fetchStudentStats();
     }, []);
+
+    // Filter students by search
+    const filteredStudents = students.filter(student => {
+        const query = searchQuery.toLowerCase();
+        return student.name.toLowerCase().includes(query) ||
+            student.id.toLowerCase().includes(query) ||
+            student.grade.toLowerCase().includes(query) ||
+            (student.class?.name || '').toLowerCase().includes(query);
+    });
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -128,9 +151,9 @@ export default function StudentsPage() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {[
-                    { label: 'Total Students', value: students.length.toString(), sub: 'Enrolled', subIcon: 'groups', icon: 'groups', color: 'text-primary', bg: 'bg-primary/10', subColor: 'text-slate-500' },
-                    { label: 'Active Today', value: '0', sub: 'Feature coming soon', subIcon: 'check_circle', icon: 'check_circle', color: 'text-green-500', bg: 'bg-green-500/10', subColor: 'text-slate-500' },
-                    { label: 'Needs Attention', value: '0', sub: 'Feature coming soon', subIcon: 'priority_high', icon: 'priority_high', color: 'text-secondary', bg: 'bg-secondary/10', subColor: 'text-slate-500' }
+                    { label: 'Total Students', value: studentStats.total.toString(), sub: 'Enrolled', subIcon: 'groups', icon: 'groups', color: 'text-primary', bg: 'bg-primary/10', subColor: 'text-slate-500' },
+                    { label: 'Active Today', value: studentStats.activeToday.toString(), sub: 'Submitted work today', subIcon: 'check_circle', icon: 'check_circle', color: 'text-green-500', bg: 'bg-green-500/10', subColor: 'text-slate-500' },
+                    { label: 'Needs Attention', value: studentStats.needsAttention.toString(), sub: 'Missing assignments', subIcon: 'priority_high', icon: 'priority_high', color: 'text-secondary', bg: 'bg-secondary/10', subColor: studentStats.needsAttention > 0 ? 'text-secondary' : 'text-slate-500' }
                 ].map((stat, i) => (
                     <div key={i} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col gap-2">
                         <div className="flex items-center justify-between">
@@ -158,10 +181,17 @@ export default function StudentsPage() {
                         </div>
                         <input
                             className="w-full h-11 pl-10 pr-4 bg-slate-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 rounded-xl text-sm font-medium text-slate-900 placeholder-slate-400 transition-all"
-                            placeholder="Search students by name, ID..."
+                            placeholder="Search students by name, ID, grade, or class..."
                             type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+                    {searchQuery && (
+                        <div className="flex items-center text-sm text-slate-500">
+                            Found <span className="font-bold text-slate-700 mx-1">{filteredStudents.length}</span> of {students.length} students
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -179,6 +209,15 @@ export default function StudentsPage() {
                 </div>
             )}
 
+            {/* No search results */}
+            {!loading && !error && filteredStudents.length === 0 && students.length > 0 && (
+                <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
+                    <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">search_off</span>
+                    <h3 className="text-lg font-bold text-slate-700">No Students Found</h3>
+                    <p className="text-slate-500 mt-1">Try adjusting your search query.</p>
+                </div>
+            )}
+
             {!loading && !error && students.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
                     <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">groups</span>
@@ -188,7 +227,7 @@ export default function StudentsPage() {
             )}
 
             {/* Students Table */}
-            {!loading && !error && students.length > 0 && (
+            {!loading && !error && filteredStudents.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -201,7 +240,7 @@ export default function StudentsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {students.map((student) => (
+                                {filteredStudents.map((student) => (
                                     <tr key={student.id} className="group hover:bg-slate-50 transition-colors">
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-3">

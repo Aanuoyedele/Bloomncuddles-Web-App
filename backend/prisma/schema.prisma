@@ -13,14 +13,72 @@ datasource db {
 model School {
   id        String   @id @default(uuid())
   name      String
+  email     String?
   address   String?
-  users     User[]
-  classes   Class[]
-  invites   Invite[]
+  
+  // Branding
+  logoUrl      String?
+  primaryColor String?  @default("#486fa1")
+  theme        String?  @default("light")  // light, dark, system
+  
+  // Academic settings
+  academicYear String?  @default("2024-2025")
+  currentTerm  String?  @default("Term 1")
+  
+  users         User[]
+  classes       Class[]
+  invites       Invite[]
+  subscriptions Subscription[]
+  payments      Payment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model Subscription {
+  id              String    @id @default(uuid())
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id])
+  
+  plan            String    // basic, premium, enterprise
+  status          String    @default("inactive") // active, inactive, cancelled, past_due
+  interval        String    @default("monthly") // monthly, yearly
+  
+  // Pricing (in kobo for Naira)
+  amount          Int
+  currency        String    @default("NGN")
+  
+  // Paystack references
+  paystackSubscriptionCode String?
+  paystackCustomerCode     String?
+  paystackPlanCode         String?
+  paystackAuthorizationCode String?
+  
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  nextPaymentDate    DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+  
+  amount    Int      // Amount in kobo
+  currency  String   @default("NGN")
+  status    String   @default("pending") // pending, success, failed
+  
+  // Paystack references
+  paystackReference String   @unique
+  paystackChannel   String?  // card, bank, ussd, etc.
+  
+  description String?
+  paidAt      DateTime?
+  
+  createdAt DateTime @default(now())
+}
 model Invite {
   id        String   @id @default(uuid())
   email     String
@@ -45,6 +103,10 @@ model User {
   role      String   // Was UserRole
   address   String?
   phone     String?
+  
+  // Status tracking
+  isActive    Boolean  @default(true)
+  lastLoginAt DateTime?
   
   schoolId  String?
   school    School?  @relation(fields: [schoolId], references: [id])
@@ -84,6 +146,10 @@ model Student {
   grade     String
   dob       DateTime?
   
+  // Login credentials (optional - set when student is given access)
+  email     String?  @unique
+  password  String?
+  
   classId   String
   class     Class    @relation(fields: [classId], references: [id])
   
@@ -107,10 +173,11 @@ model ParentStudent {
 }
 
 model Assignment {
-  id        String   @id @default(uuid())
-  title     String
+  id          String   @id @default(uuid())
+  title       String
   description String?
-  dueDate   DateTime
+  dueDate     DateTime
+  fileUrl     String?  // PDF/DOCX file URL
   
   classId   String
   class     Class    @relation(fields: [classId], references: [id])
@@ -124,9 +191,11 @@ model Assignment {
 model Submission {
   id        String   @id @default(uuid())
   grade     String?
+  score     Int?     // Numerical score (0-100)
   feedback  String?
-  status    String   @default("PENDING") // Was SubmissionStatus
+  status    String   @default("PENDING") // PENDING, SUBMITTED, GRADED
   submittedAt DateTime?
+  gradedAt    DateTime?
 
   assignmentId String
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
@@ -147,3 +216,71 @@ model PasswordResetToken {
   
   createdAt DateTime @default(now())
 }
+
+// =============== GAMES ===============
+
+model Game {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  subject     String   // Math, Phonics, English
+  grade       String   // Primary 1, Primary 2, etc.
+  imageUrl    String
+  gameType    String   // drag_drop, match, quiz, counting, spelling
+  isActive    Boolean  @default(true)
+  
+  assignments GameAssignment[]
+  createdAt   DateTime @default(now())
+}
+
+model GameAssignment {
+  id        String   @id @default(uuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id])
+  
+  // Assignment target (one of these)
+  targetType  String   // grade, class, student
+  targetGrade String?
+  classId     String?
+  studentId   String?
+  
+  assignedBy  String
+  dueDate     DateTime?
+  
+  createdAt   DateTime @default(now())
+}
+
+// =============== LIBRARY ===============
+
+model Book {
+  id          String   @id @default(uuid())
+  title       String
+  author      String?
+  description String?
+  subject     String?  // Science, Math, Fiction, etc.
+  level       String?  // Lvl 1, Lvl 2, etc.
+  fileUrl     String   // PDF/DOCX file
+  coverUrl    String?  // Cover image
+  
+  schoolId    String
+  uploadedBy  String
+  
+  assignments BookAssignment[]
+  createdAt   DateTime @default(now())
+}
+
+model BookAssignment {
+  id        String   @id @default(uuid())
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  
+  targetType  String   // grade, class, student
+  targetGrade String?
+  classId     String?
+  studentId   String?
+  
+  assignedBy  String
+  
+  createdAt   DateTime @default(now())
+}
+

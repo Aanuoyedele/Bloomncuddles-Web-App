@@ -1,4 +1,174 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { api } from "@/lib/api";
+
+interface Game {
+    id: string;
+    title: string;
+    description: string;
+    subject: string;
+    grade: string;
+    imageUrl: string;
+    gameType: string;
+}
+
+interface ClassItem {
+    id: string;
+    name: string;
+    grade: string;
+}
+
+interface Student {
+    id: string;
+    name: string;
+}
+
 export default function GamesPage() {
+    const router = useRouter();
+    const [games, setGames] = useState<Game[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [assignedCount, setAssignedCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [subjectFilter, setSubjectFilter] = useState('all');
+    const [gradeFilter, setGradeFilter] = useState('all');
+
+    // Modal states
+    const [previewGame, setPreviewGame] = useState<Game | null>(null);
+    const [assignGame, setAssignGame] = useState<Game | null>(null);
+    const [assigning, setAssigning] = useState(false);
+    const [assignSuccess, setAssignSuccess] = useState(false);
+
+    // Assign form
+    const [assignTarget, setAssignTarget] = useState<'grade' | 'class' | 'students'>('class');
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [selectedClass, setSelectedClass] = useState('');
+    const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+    const [dueDate, setDueDate] = useState('');
+    const [classes, setClasses] = useState<ClassItem[]>([]);
+    const [students, setStudents] = useState<Student[]>([]);
+
+    // Fetch games
+    const fetchGames = async () => {
+        try {
+            setLoading(true);
+            const params = new URLSearchParams();
+            if (searchQuery) params.append('search', searchQuery);
+            if (subjectFilter !== 'all') params.append('subject', subjectFilter);
+            if (gradeFilter !== 'all') params.append('grade', gradeFilter);
+
+            const data = await api.get(`/games?${params.toString()}`);
+            setGames(data);
+        } catch (err) {
+            console.error('Failed to fetch games:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Seed games if none exist
+    const seedGames = async () => {
+        try {
+            await api.post('/games/seed', {});
+            fetchGames();
+        } catch (err) {
+            console.error('Failed to seed games:', err);
+        }
+    };
+
+    // Fetch assigned count
+    const fetchAssignedCount = async () => {
+        try {
+            const data = await api.get('/games/assigned-count');
+            setAssignedCount(data.count);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Fetch classes for assign modal
+    const fetchClasses = async () => {
+        try {
+            const data = await api.get('/classes');
+            setClasses(data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Fetch students for selected class
+    const fetchStudents = async (classId: string) => {
+        try {
+            const data = await api.get(`/students?classId=${classId}`);
+            setStudents(data.students || data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchGames();
+        fetchAssignedCount();
+        fetchClasses();
+    }, []);
+
+    useEffect(() => {
+        fetchGames();
+    }, [searchQuery, subjectFilter, gradeFilter]);
+
+    useEffect(() => {
+        if (selectedClass) {
+            fetchStudents(selectedClass);
+        }
+    }, [selectedClass]);
+
+    // Handle assign
+    const handleAssign = async () => {
+        if (!assignGame) return;
+
+        setAssigning(true);
+        try {
+            await api.post('/games/assign', {
+                gameId: assignGame.id,
+                targetType: assignTarget,
+                targetGrade: assignTarget === 'grade' ? selectedGrade : undefined,
+                classId: assignTarget === 'class' ? selectedClass : undefined,
+                studentIds: assignTarget === 'students' ? selectedStudents : undefined,
+                dueDate: dueDate || undefined
+            });
+
+            setAssignSuccess(true);
+            fetchAssignedCount();
+            setTimeout(() => {
+                setAssignGame(null);
+                setAssignSuccess(false);
+                resetAssignForm();
+            }, 1500);
+        } catch (err) {
+            console.error('Failed to assign game:', err);
+        } finally {
+            setAssigning(false);
+        }
+    };
+
+    const resetAssignForm = () => {
+        setAssignTarget('class');
+        setSelectedGrade('');
+        setSelectedClass('');
+        setSelectedStudents([]);
+        setDueDate('');
+    };
+
+    const toggleStudent = (id: string) => {
+        setSelectedStudents(prev =>
+            prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+        );
+    };
+
+    const grades = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'];
+    const subjects = ['Math', 'Phonics', 'English', 'Science'];
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -10,7 +180,7 @@ export default function GamesPage() {
                 <div className="hidden md:flex gap-4">
                     <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200">
                         <span className="material-symbols-outlined text-primary">check_circle</span>
-                        <span className="text-sm font-bold text-slate-600">12 Assigned</span>
+                        <span className="text-sm font-bold text-slate-600">{assignedCount} Assigned</span>
                     </div>
                 </div>
             </div>
@@ -25,47 +195,75 @@ export default function GamesPage() {
                         className="w-full h-12 pl-11 pr-4 bg-slate-50 border-none rounded-xl text-slate-900 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-medium"
                         placeholder="Search games by title, skill, or keyword..."
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide items-center">
-                    <span className="text-sm font-bold text-slate-500 whitespace-nowrap mr-2">Filters:</span>
-                    <button className="flex h-9 shrink-0 items-center px-4 rounded-lg bg-slate-800 text-white text-sm font-bold hover:opacity-90 transition-opacity">
-                        All Subjects
+                    <span className="text-sm font-bold text-slate-500 whitespace-nowrap mr-2">Subject:</span>
+                    <button
+                        onClick={() => setSubjectFilter('all')}
+                        className={`flex h-9 shrink-0 items-center px-4 rounded-lg text-sm font-bold transition-colors ${subjectFilter === 'all' ? 'bg-slate-800 text-white' : 'bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100'}`}
+                    >
+                        All
                     </button>
-                    {['Math', 'Science', 'English'].map(subject => (
-                        <button key={subject} className="flex h-9 shrink-0 items-center px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 text-sm font-bold transition-colors">
+                    {subjects.map(subject => (
+                        <button
+                            key={subject}
+                            onClick={() => setSubjectFilter(subject)}
+                            className={`flex h-9 shrink-0 items-center px-4 rounded-lg text-sm font-bold transition-colors ${subjectFilter === subject ? 'bg-slate-800 text-white' : 'bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100'}`}
+                        >
                             {subject}
                         </button>
                     ))}
                     <div className="h-6 w-px bg-slate-300 mx-2"></div>
-                    {['Grade 1', 'Grade 2', 'Grade 3'].map(grade => (
-                        <button key={grade} className="flex h-9 shrink-0 items-center px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 text-sm font-bold transition-colors">
-                            {grade}
-                        </button>
-                    ))}
+                    <span className="text-sm font-bold text-slate-500 whitespace-nowrap mr-2">Grade:</span>
+                    <select
+                        value={gradeFilter}
+                        onChange={(e) => setGradeFilter(e.target.value)}
+                        className="h-9 px-3 rounded-lg bg-slate-50 border border-slate-200 text-sm font-bold text-slate-600"
+                    >
+                        <option value="all">All Grades</option>
+                        {grades.map(g => (
+                            <option key={g} value={g}>{g}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
-            {/* Recommended */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-slate-900">Recommended for You</h2>
-                    <button className="text-primary text-sm font-bold hover:underline">View History</button>
+            {/* Loading */}
+            {loading && (
+                <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
+            )}
+
+            {/* Empty State / Seed Button */}
+            {!loading && games.length === 0 && (
+                <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
+                    <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">sports_esports</span>
+                    <h3 className="text-lg font-bold text-slate-700">No Games Found</h3>
+                    <p className="text-slate-500 mt-1 mb-4">Seed the games library to get started!</p>
+                    <button
+                        onClick={seedGames}
+                        className="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors"
+                    >
+                        Seed 10 Games
+                    </button>
+                </div>
+            )}
+
+            {/* Games Grid */}
+            {!loading && games.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[
-                        { title: 'Counting Clouds', desc: 'A fun adventure where students count cumulus clouds to learn basic addition.', tag: 'Math', grade: 'Grade 1', badge: 'NEW', badgeColor: 'bg-secondary', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAp2NY3ZB3qSiLU-r-aIzeRfnpzHT8cl-nb5TeUlQ4ddMYAT5Htps1Z7zu1Bac844TzSio0kBT0TrKK2rAoxXlxV_S6xveqPjHDkufCPDbwMD7g37RJ2QRUtqJhqiJCE2FvwUSqh6l6p_WsKPx_AJROjZzjdfIHdFY1FDzA9ihx_hk3K60B_w85KrfVNmO_hdGnv8Q1gWDGaPI8wd6kX2bpkpc5vXM1WVpO67tmINuh9-W-ZqTbwQRNQznI4xdLgOOm5zPXH18-JpRj' },
-                        { title: 'Word Wizard Forest', desc: 'Explore the enchanted forest and spell words to unlock secret paths.', tag: 'English', grade: 'Grade 2', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC959k5-YH8hgsEH5k7DoAzikXrv-V24bMKxUwju37_4exOhVii9USyp0yNRcoB-JdNMjMyyrQK9ga_XQSdXFlKWLtcsEbPgm4DYCQf7WX32agdDAYMV8EwkGfF8Cdau0i1yuxgVqlg62kGd2HI7KSmHsnkzMnvt0dttCTw0t_o2nHPMibwN8CDR0MxW90Uh9J_OpHzrTqHV_6APL7saFvxoudEqG8g7iIyQ1riWd0p412TWAwaKJFNdDVg-R3dSToB0-_xbM2cpNhf' },
-                        { title: 'Eco-System Builder', desc: 'Build your own balanced terrarium and learn about food chains.', tag: 'Science', grade: 'Grade 3', badge: 'POPULAR', badgeColor: 'bg-orange-500', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxjy_VmVBSvm9Ld357qQg1IvIiuv5pM69SHlD1qvpuidq_ch4hQNXrAx6lS3bNRSmi9FaVji2GBjAScGhNaZ1OApfz9WyN_IIA3cs5R49hnZsrx-Xa53iH57awOZyeTOyIZlFVVC0o6rNA5TwsmAn8UaCfa4jfN8ZGEvTe4cryRYDNvl16rC1DaOF8JH3PTJVFmkcWVlBwaLzZmY67beKyk4tdcoZw168xHHMQ-IewIMXWXZcpknS1_igSyYmJlzQ52o442jhqf5dA' }
-                    ].map((game, i) => (
-                        <div key={i} className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    {games.map((game) => (
+                        <div key={game.id} className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                             <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
-                                {game.badge && <span className={`absolute top-3 left-3 z-10 ${game.badgeColor} text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm`}>{game.badge}</span>}
                                 <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-                                    <img src={game.img} alt={game.title} className="h-full w-full object-cover" />
+                                    <img src={game.imageUrl} alt={game.title} className="h-full w-full object-cover" />
                                 </div>
                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 flex items-center justify-center transition-colors">
-                                    <div className="bg-white/90 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+                                    <div className="bg-white/90 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer" onClick={() => setPreviewGame(game)}>
                                         <span className="material-symbols-outlined text-primary text-3xl">play_arrow</span>
                                     </div>
                                 </div>
@@ -73,59 +271,207 @@ export default function GamesPage() {
                             <div className="flex flex-1 flex-col p-5">
                                 <div className="flex items-start justify-between mb-2">
                                     <div className="flex gap-2">
-                                        <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600">{game.tag}</span>
+                                        <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600">{game.subject}</span>
                                         <span className="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-bold text-slate-500">{game.grade}</span>
                                     </div>
-                                    <span className="material-symbols-outlined text-yellow-400 text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                                    <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary capitalize">{game.gameType.replace('_', ' ')}</span>
                                 </div>
                                 <h3 className="text-lg font-bold text-slate-900 mb-1 leading-tight">{game.title}</h3>
-                                <p className="text-slate-500 text-sm line-clamp-2 mb-4 font-medium">{game.desc}</p>
-                                <div className="mt-auto flex gap-3 pt-4 border-t border-slate-100">
-                                    <button className="flex-1 flex items-center justify-center gap-2 rounded-xl h-10 border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-bold transition-colors">
-                                        <span className="material-symbols-outlined text-[18px]">visibility</span>
-                                        Preview
+                                <p className="text-slate-500 text-sm line-clamp-2 mb-4 font-medium">{game.description}</p>
+                                <div className="mt-auto flex gap-2 pt-4 border-t border-slate-100">
+                                    <button
+                                        onClick={() => router.push(`/dashboard/games/play/${game.id}`)}
+                                        className="flex-1 flex items-center justify-center gap-1 rounded-xl h-10 bg-green-500 hover:bg-green-600 text-white text-sm font-bold shadow-sm transition-colors"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">play_arrow</span>
+                                        Play
                                     </button>
-                                    <button className="flex-1 flex items-center justify-center gap-2 rounded-xl h-10 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-sm transition-colors">
+                                    <button
+                                        onClick={() => setPreviewGame(game)}
+                                        className="flex items-center justify-center gap-1 rounded-xl h-10 px-3 border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-bold transition-colors"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">info</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setAssignGame(game)}
+                                        className="flex items-center justify-center gap-1 rounded-xl h-10 px-3 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-sm transition-colors"
+                                    >
                                         <span className="material-symbols-outlined text-[18px]">assignment_add</span>
-                                        Assign
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-            </div>
+            )}
 
-            {/* Browse All (Grid) */}
-            <div className="space-y-4">
-                <h2 className="text-xl font-bold text-slate-900">Browse All Games</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[
-                        { title: 'Shape Sorter', meta: 'Math • Gr 1', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuALTgjsSe1UmDXc_kFCoRiN5BlCuc71v4eyNhNPRJ4yDIg_Av8i72wtgTIgEbTbvsaoLcz5Ta8AHH6hYvqYYduZPsoiLjF13Prt-L4zkSOMtfQtCTR4chxQ3XbqistKodptW6I4PtXnTPUFv_b_ua5UMf8aHJZ8GCLgBedRjWWq-22L4e_qCk8alThsKvPSpWzNNG6Zy9CJyrQ0sKL0VLsrYZNL9bTzZ4WQxIWECjP1zafhrblhEbnEoWvbtddi4X8NeWYNwoGrjxFT' },
-                        { title: 'Rhyme Time', meta: 'English • Gr 2', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDWtUV4ugLg4nDhqB5ZvTsf6GzdIA5ZMHPU5jp5ugBOft8mEKaUxZj94-xSCIzfL3hkXptjs_RewOsf99xoXkcD9CVilM51tCjn6NsL5httqBUEmJU45UQfqQLNgp3DeMxKWxPqQ2Ij2hCQntlMg-EGy3ckue12eNoVHLRL6jT9O_ch0m583NNupXSlXzbBMXxoJ8tq_5l60hl94uqXcLZ7wh6NNMbW5HfqldRUTdIQW198jJIjF0YWFvdLC51I2l24vq8tERhMVgmd' },
-                        { title: 'Planet Hop', meta: 'Science • Gr 3', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDYSFDu9frSYwQ7DPhvrWq8ZSaIh8gD7g_ZtB3f_Wl6oeBXypSJYuukc4LgJIAFOd4MCUiNLi1_iND_6Ppxn2paT3u-fb2knDSf3HzC07hfFRftMazMyqESrHx6Z9MGRaLCVCwkSfNtF8SvPxtbHm1rTk0k00K9yFoGFY9PQPpAeLRCr2PZ64faE1lK86mAI28DN96UDc9B7UfiBeS272tq-fA2hFy_QK5E0f4I7Z3Hca9og7Hbf1fxxfv2ZeLJl3cIaYZUWO53JoC5' },
-                        { title: 'Logic Puzzles', meta: 'Logic • Gr 3', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAoIB336iSzgJjmNh-dQcLWURPpJdMV5iVPWej3fxs4VjZOK9xOHLyoodaKLTZKcr0Pf9csqCJD_eBs40rQUK67kcr481zT2KzveNGfyR3YDVl7fsAlfsnuSKmb52IhYh1mW0QgOjMuDANZnJJtqLcGJNmMRVARhNlThZOSk1VWsyziFiv6VJvxxUJ2abvSJwaERengBz_IrvchlOzWBiEoiQsGGLd5Od5Qyz8NpZFzwjIYcs2tiA-bS3uYOpRc5Zdl9cspsNCIlMIt' }
-                    ].map((game, i) => (
-                        <div key={i} className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-primary/50 hover:shadow-md transition-all">
-                            <div className="relative h-32 w-full bg-slate-100">
-                                <img src={game.img} alt={game.title} className="h-full w-full object-cover" />
-                                <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md text-primary opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-white">
-                                    <span className="material-symbols-outlined text-[20px]">add</span>
+            {/* Preview Modal */}
+            {previewGame && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setPreviewGame(null)}>
+                    <div className="bg-white rounded-2xl w-full max-w-lg p-0 shadow-xl animate-in fade-in zoom-in duration-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                        <div className="relative h-56 bg-slate-100">
+                            <img src={previewGame.imageUrl} alt={previewGame.title} className="h-full w-full object-cover" />
+                            <button onClick={() => setPreviewGame(null)} className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg text-slate-600 hover:text-slate-900">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <div className="flex gap-2 mb-3">
+                                <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600">{previewGame.subject}</span>
+                                <span className="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-bold text-slate-500">{previewGame.grade}</span>
+                                <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary capitalize">{previewGame.gameType.replace('_', ' ')}</span>
+                            </div>
+                            <h3 className="text-2xl font-bold text-slate-900 mb-2">{previewGame.title}</h3>
+                            <p className="text-slate-600 mb-6">{previewGame.description}</p>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => {
+                                        setPreviewGame(null);
+                                        router.push(`/dashboard/games/play/${previewGame.id}`);
+                                    }}
+                                    className="flex-1 py-3 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <span className="material-symbols-outlined">play_arrow</span>
+                                    Play Now
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setPreviewGame(null);
+                                        setAssignGame(previewGame);
+                                    }}
+                                    className="flex-1 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-colors"
+                                >
+                                    Assign
                                 </button>
                             </div>
-                            <div className="p-3">
-                                <div className="flex justify-between items-center mb-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{game.meta}</span>
-                                    <div className="flex text-yellow-400 text-xs font-bold gap-0.5">
-                                        <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> 4.8
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Assign Modal */}
+            {assignGame && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => { setAssignGame(null); resetAssignForm(); }}>
+                    <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl animate-in fade-in zoom-in duration-200" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-bold text-slate-900">Assign Game</h3>
+                            <button onClick={() => { setAssignGame(null); resetAssignForm(); }} className="text-slate-400 hover:text-slate-600">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        {assignSuccess ? (
+                            <div className="text-center py-8">
+                                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="material-symbols-outlined text-green-600 text-3xl">check</span>
+                                </div>
+                                <h4 className="text-lg font-bold text-slate-900">Game Assigned!</h4>
+                                <p className="text-slate-500 mt-1">Students can now play {assignGame.title}</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                <div className="p-3 bg-slate-50 rounded-xl flex items-center gap-3">
+                                    <img src={assignGame.imageUrl} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                                    <div>
+                                        <p className="font-bold text-slate-900">{assignGame.title}</p>
+                                        <p className="text-xs text-slate-500">{assignGame.subject} • {assignGame.grade}</p>
                                     </div>
                                 </div>
-                                <h4 className="font-bold text-slate-900 leading-tight">{game.title}</h4>
+
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-2">Assign To</label>
+                                    <div className="flex gap-2">
+                                        {(['grade', 'class', 'students'] as const).map((type) => (
+                                            <button
+                                                key={type}
+                                                onClick={() => setAssignTarget(type)}
+                                                className={`flex-1 py-2 rounded-lg text-sm font-bold capitalize transition-colors ${assignTarget === type ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                            >
+                                                {type}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {assignTarget === 'grade' && (
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-1">Select Grade</label>
+                                        <select
+                                            value={selectedGrade}
+                                            onChange={(e) => setSelectedGrade(e.target.value)}
+                                            className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl"
+                                        >
+                                            <option value="">Choose grade...</option>
+                                            {grades.map(g => <option key={g} value={g}>{g}</option>)}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {assignTarget === 'class' && (
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-1">Select Class</label>
+                                        <select
+                                            value={selectedClass}
+                                            onChange={(e) => setSelectedClass(e.target.value)}
+                                            className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl"
+                                        >
+                                            <option value="">Choose class...</option>
+                                            {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {assignTarget === 'students' && (
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-1">Select Class First</label>
+                                        <select
+                                            value={selectedClass}
+                                            onChange={(e) => { setSelectedClass(e.target.value); setSelectedStudents([]); }}
+                                            className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl mb-2"
+                                        >
+                                            <option value="">Choose class...</option>
+                                            {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                        </select>
+                                        {selectedClass && students.length > 0 && (
+                                            <div className="max-h-40 overflow-y-auto bg-slate-50 rounded-xl p-2 space-y-1">
+                                                {students.map(s => (
+                                                    <label key={s.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-white cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedStudents.includes(s.id)}
+                                                            onChange={() => toggleStudent(s.id)}
+                                                            className="rounded border-slate-300 text-primary"
+                                                        />
+                                                        <span className="text-sm text-slate-700">{s.name}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-1">Due Date (Optional)</label>
+                                    <input
+                                        type="date"
+                                        value={dueDate}
+                                        onChange={(e) => setDueDate(e.target.value)}
+                                        className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl"
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={handleAssign}
+                                    disabled={assigning || (assignTarget === 'grade' && !selectedGrade) || (assignTarget === 'class' && !selectedClass) || (assignTarget === 'students' && selectedStudents.length === 0)}
+                                    className={`w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-colors ${assigning ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                >
+                                    {assigning ? 'Assigning...' : 'Assign Game'}
+                                </button>
                             </div>
-                        </div>
-                    ))}
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

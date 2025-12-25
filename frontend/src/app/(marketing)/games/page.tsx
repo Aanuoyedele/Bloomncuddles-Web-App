@@ -2,27 +2,34 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+// The same games data used in the dashboard
+const GAMES = [
+    { id: 'phonics-match', title: 'Phonics Match', description: 'Match letters with their sounds!', category: 'Phonics', grade: 'Primary 1', color: 'bg-pink-500', icon: 'abc' },
+    { id: 'number-bonds', title: 'Number Bonds', description: 'Find number pairs that make 10!', category: 'Math', grade: 'Primary 1', color: 'bg-blue-500', icon: 'calculate' },
+    { id: 'rhyme-time', title: 'Rhyme Time', description: 'Find words that rhyme!', category: 'Phonics', grade: 'Primary 1', color: 'bg-purple-500', icon: 'music_note' },
+    { id: 'shape-sorter', title: 'Shape Sorter', description: 'Identify 2D and 3D shapes!', category: 'Math', grade: 'Primary 2', color: 'bg-green-500', icon: 'category' },
+    { id: 'word-builder', title: 'Word Builder', description: 'Build words by arranging letters!', category: 'Phonics', grade: 'Primary 2', color: 'bg-orange-500', icon: 'spellcheck' },
+    { id: 'counting-fun', title: 'Counting Fun 1-20', description: 'Count objects and select the number!', category: 'Math', grade: 'Primary 1', color: 'bg-teal-500', icon: 'tag' },
+    { id: 'sight-words-race', title: 'Sight Words Race', description: 'Recognize sight words quickly!', category: 'Phonics', grade: 'Primary 2', color: 'bg-indigo-500', icon: 'visibility' },
+    { id: 'simple-subtraction', title: 'Simple Subtraction', description: 'Practice subtraction problems!', category: 'Math', grade: 'Primary 2', color: 'bg-red-500', icon: 'remove' },
+    { id: 'pattern-match', title: 'Pattern Match', description: 'Complete the pattern sequence!', category: 'Math', grade: 'Primary 3', color: 'bg-amber-500', icon: 'extension' },
+];
 
 export default function PublicGamesPage() {
+    const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const [guestName, setGuestName] = useState("");
-    const [playingGame, setPlayingGame] = useState<number | null>(null);
 
-    const categories = ["All", "Math", "Science", "Language", "Logic"];
-
-    const games = [
-        { id: 1, title: "Math Blaster", category: "Math", grade: "Grade 1-3", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuOTGgtHj-gNvnQy2Gv0yqXNuvAho_ywhYnQOYsB3z-HnMg_G60x5d-GzKhw89vG5TvuXj-7W6_5A5XyvX6Q4S9a2vE52sKqD435QjE-m1lC25d2Xg5nZ3JqV7K_0h9Lp5R8A6B3D1E4F2G5H7I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6", color: "bg-blue-500" },
-        { id: 2, title: "Word Wizard", category: "Language", grade: "Grade 2-4", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuMqv55E_2Zq_5P6q0g1W2e3R4t5y6u7i8o9p0a1s2d3f4g5h6j7k8l9z0x1c2v3b4n5m6", color: "bg-purple-500" },
-        { id: 3, title: "Science Explorer", category: "Science", grade: "Grade 3-5", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuL9k8j7h6g5f4d3s2a1q0w9e8r7t6y5u4i3o2p1", color: "bg-green-500" },
-        { id: 4, title: "Logic Puzzle", category: "Logic", grade: "All Grades", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuN0m1n2b3v4c5x6z7l8k9j0h1g2f3d4s5a6", color: "bg-orange-500" },
-        { id: 5, title: "Space Math", category: "Math", grade: "Grade 4-6", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuP9o8i7u6y5t4r3e2w1q0a9s8d7f6g5h4j3k2l1", color: "bg-indigo-500" },
-        { id: 6, title: "Animal Kingdom", category: "Science", grade: "Grade 1-3", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuQ0w9e8r7t6y5u4i3o2p1a1s2d3f4g5h6j7k8l9", color: "bg-teal-500" },
-    ];
+    const categories = ["All", "Math", "Phonics"];
 
     const filteredGames = selectedCategory === "All"
-        ? games
-        : games.filter(g => g.category === selectedCategory);
+        ? GAMES
+        : GAMES.filter(g => g.category === selectedCategory);
+
+    const handlePlay = (gameId: string) => {
+        router.push(`/games/play/${gameId}`);
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans">
@@ -32,17 +39,32 @@ export default function PublicGamesPage() {
                 <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 text-center">
                     <span className="inline-block py-1 px-3 rounded-full bg-secondary/10 text-secondary font-bold text-sm mb-6 animate-bounce">
                         🎮 Free for Everyone!
                     </span>
                     <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6 font-display tracking-tight">
                         Game <span className="text-primary">Zone</span>
                     </h1>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Explore our collection of educational games designed to make learning fun.
-                        No account needed—just pick a game and start playing!
+                    <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Interactive phonics and math games for Primary 1-3 students.
+                        <span className="font-bold text-primary"> 20 questions per game!</span>
                     </p>
+
+                    <div className="flex flex-wrap justify-center gap-4 mb-8">
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+                            <span className="text-xl">🎯</span>
+                            <span className="font-bold text-slate-700">9 Games</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+                            <span className="text-xl">🔄</span>
+                            <span className="font-bold text-slate-700">Randomized Questions</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+                            <span className="text-xl">⭐</span>
+                            <span className="font-bold text-slate-700">Star Ratings</span>
+                        </div>
+                    </div>
 
                     <div className="flex flex-wrap justify-center gap-3">
                         {categories.map((cat) => (
@@ -54,7 +76,7 @@ export default function PublicGamesPage() {
                                     : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
-                                {cat}
+                                {cat === 'Math' ? '🧮 Math' : cat === 'Phonics' ? '📚 Phonics' : '🎮 All Games'}
                             </button>
                         ))}
                     </div>
@@ -62,17 +84,14 @@ export default function PublicGamesPage() {
             </div>
 
             {/* Games Grid */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredGames.map((game) => (
                         <div key={game.id} className="group bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100">
-                            <div className={`relative h-48 rounded-2xl overflow-hidden mb-4 ${game.color} flex items-center justify-center`}>
-                                {/* Abstract Geometric Pattern replacement for missing images */}
+                            <div className={`relative h-40 rounded-2xl overflow-hidden mb-4 ${game.color} flex items-center justify-center`}>
                                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
                                 <span className="material-symbols-outlined text-white text-6xl drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
-                                    {game.category === 'Math' ? 'calculate' :
-                                        game.category === 'Science' ? 'science' :
-                                            game.category === 'Language' ? 'auto_stories' : 'extension'}
+                                    {game.icon}
                                 </span>
                                 <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold border border-white/30">
                                     {game.grade}
@@ -86,10 +105,11 @@ export default function PublicGamesPage() {
                                         <h3 className="text-xl font-bold text-slate-900 leading-tight">{game.title}</h3>
                                     </div>
                                 </div>
+                                <p className="text-slate-500 text-sm mb-4">{game.description}</p>
 
                                 <button
-                                    onClick={() => setPlayingGame(game.id)}
-                                    className="mt-4 w-full bg-slate-900 hover:bg-primary text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-primary/20"
+                                    onClick={() => handlePlay(game.id)}
+                                    className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-green-500/30"
                                 >
                                     <span className="material-symbols-outlined">play_arrow</span>
                                     Play Now
@@ -100,44 +120,22 @@ export default function PublicGamesPage() {
                 </div>
             </div>
 
-            {/* Guest Player Modal */}
-            {playingGame && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-                    <div className="bg-white rounded-3xl w-full max-w-lg p-8 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-primary animate-gradient"></div>
-
-                        <div className="text-center mb-8">
-                            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-bounce">
-                                <span className="material-symbols-outlined text-4xl text-primary">sports_esports</span>
-                            </div>
-                            <h2 className="text-3xl font-bold text-slate-900 mb-2">Ready to Play?</h2>
-                            <p className="text-slate-500">Enter a cool nickname to start!</p>
-                        </div>
-
-                        <div className="space-y-4">
-                            <input
-                                type="text"
-                                placeholder="SuperPlayer123"
-                                className="w-full h-14 px-6 rounded-2xl bg-slate-50 border-2 border-slate-100 focus:border-primary focus:bg-white text-lg font-bold text-center text-slate-900 outline-none transition-all"
-                                value={guestName}
-                                onChange={(e) => setGuestName(e.target.value)}
-                                autoFocus
-                            />
-
-                            <button className="w-full h-14 bg-primary hover:bg-primary/90 text-white text-lg font-bold rounded-2xl shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
-                                Start Game <span className="material-symbols-outlined">rocket_launch</span>
-                            </button>
-
-                            <button
-                                onClick={() => setPlayingGame(null)}
-                                className="w-full py-3 text-slate-400 font-bold hover:text-slate-600 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
+            {/* CTA */}
+            <div className="bg-gradient-to-r from-primary to-secondary py-16 px-4">
+                <div className="max-w-4xl mx-auto text-center text-white">
+                    <h2 className="text-3xl font-bold mb-4">Want More Features?</h2>
+                    <p className="text-xl opacity-90 mb-8">
+                        Sign up to track student progress, assign games to classes, and access teacher dashboards!
+                    </p>
+                    <Link
+                        href="/register"
+                        className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+                    >
+                        <span>Get Started Free</span>
+                        <span className="material-symbols-outlined">arrow_forward</span>
+                    </Link>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

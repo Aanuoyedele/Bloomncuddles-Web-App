@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { PrismaClient } from '@prisma/client';
+import { sendPasswordResetEmail } from '../services/email.service';
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key_change_me';
@@ -141,8 +143,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             });
         }
 
-        // Generate Token
-        const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+        // Generate Token (include name for frontend greeting)
+        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
 
         res.status(201).json({
             token,
@@ -182,7 +184,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+        // Update last login timestamp
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLoginAt: new Date() }
+        });
+
+        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
 
         res.json({
             token,
@@ -293,3 +301,128 @@ export const setupPassword = async (req: Request, res: Response): Promise<void> 
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+// Request password reset (forgot password)
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            res.status(400).json({ message: 'Email is required' });
+            return;
+        }
+
+        // Look up user
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        // Always return success to prevent email enumeration
+        // (don't reveal if email exists or not)
+        if (!user) {
+            res.json({ message: 'If an account with that email exists, a reset link has been sent.' });
+            return;
+        }
+
+        // Generate a secure token
+        const token = crypto.randomBytes(32).toString('hex');
+
+        // Token expires in 1 hour
+        const expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + 1);
+
+        // Delete any existing reset tokens for this user
+        await prisma.passwordResetToken.deleteMany({
+            where: { userId: user.id }
+        });
+
+        // Create new reset token
+        await prisma.passwordResetToken.create({
+            data: {
+                token,
+                userId: user.id,
+                expiresAt
+            }
+        });
+
+        // Send email
+        await sendPasswordResetEmail({
+            to: user.email,
+            name: user.name,
+            token
+        });
+
+        res.json({ message: 'If an account with that email exists, a reset link has been sent.' });
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// Student login (separate from User login)
+export const studentLogin = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            res.status(400).json({ message: "Email and password required" });
+            return;
+        }
+
+        // Find student by email
+        const student = await prisma.student.findUnique({
+            where: { email },
+            include: {
+                class: {
+                    include: {
+                        school: true
+                    }
+                }
+            }
+        });
+
+        if (!student) {
+            res.status(401).json({ message: "Invalid credentials" });
+            return;
+        }
+
+        // Check if student has a password set
+        if (!student.password) {
+            res.status(401).json({ message: "Account not activated. Please contact your teacher." });
+            return;
+        }
+
+        const isMatch = await bcrypt.compare(password, student.password);
+        if (!isMatch) {
+            res.status(401).json({ message: "Invalid credentials" });
+            return;
+        }
+
+        // Generate token with STUDENT role
+        const token = jwt.sign(
+            {
+                studentId: student.id,
+                role: 'STUDENT',
+                name: student.name,
+                classId: student.classId,
+                schoolId: student.class.schoolId
+            },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+        res.json({
+            token,
+            student: {
+                id: student.id,
+                name: student.name,
+                grade: student.grade,
+                className: student.class.name,
+                schoolName: student.class.school.name
+            }
+        });
+
+    } catch (error) {
+        console.error('Student login error:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
