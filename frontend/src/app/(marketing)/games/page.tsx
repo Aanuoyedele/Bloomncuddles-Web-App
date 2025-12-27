@@ -4,18 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// The same games data used in the dashboard
+// The same games data used in the dashboard with proper cover images
 const GAMES = [
-    { id: 'phonics-match', title: 'Phonics Match', description: 'Match letters with their sounds!', category: 'Phonics', grade: 'Primary 1', color: 'bg-pink-500', icon: 'abc' },
-    { id: 'number-bonds', title: 'Number Bonds', description: 'Find number pairs that make 10!', category: 'Math', grade: 'Primary 1', color: 'bg-blue-500', icon: 'calculate' },
-    { id: 'rhyme-time', title: 'Rhyme Time', description: 'Find words that rhyme!', category: 'Phonics', grade: 'Primary 1', color: 'bg-purple-500', icon: 'music_note' },
-    { id: 'shape-sorter', title: 'Shape Sorter', description: 'Identify 2D and 3D shapes!', category: 'Math', grade: 'Primary 2', color: 'bg-green-500', icon: 'category' },
-    { id: 'word-builder', title: 'Word Builder', description: 'Build words by arranging letters!', category: 'Phonics', grade: 'Primary 2', color: 'bg-orange-500', icon: 'spellcheck' },
-    { id: 'counting-fun', title: 'Counting Fun 1-20', description: 'Count objects and select the number!', category: 'Math', grade: 'Primary 1', color: 'bg-teal-500', icon: 'tag' },
-    { id: 'sight-words-race', title: 'Sight Words Race', description: 'Recognize sight words quickly!', category: 'Phonics', grade: 'Primary 2', color: 'bg-indigo-500', icon: 'visibility' },
-    { id: 'simple-subtraction', title: 'Simple Subtraction', description: 'Practice subtraction problems!', category: 'Math', grade: 'Primary 2', color: 'bg-red-500', icon: 'remove' },
-    { id: 'pattern-match', title: 'Pattern Match', description: 'Complete the pattern sequence!', category: 'Math', grade: 'Primary 3', color: 'bg-amber-500', icon: 'extension' },
+    { id: 'phonics-match', title: 'Phonics Match', description: 'Match letters with their sounds!', category: 'Phonics', grade: 'Primary 1', imageUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400' },
+    { id: 'number-bonds', title: 'Number Bonds', description: 'Find number pairs that make 10!', category: 'Math', grade: 'Primary 1', imageUrl: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400' },
+    { id: 'rhyme-time', title: 'Rhyme Time', description: 'Find words that rhyme!', category: 'Phonics', grade: 'Primary 1', imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400' },
+    { id: 'shape-sorter', title: 'Shape Sorter', description: 'Identify 2D and 3D shapes!', category: 'Math', grade: 'Primary 2', imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400' },
+    { id: 'word-builder', title: 'Word Builder', description: 'Build words by arranging letters!', category: 'Phonics', grade: 'Primary 2', imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400' },
+    { id: 'counting-fun', title: 'Counting Fun 1-20', description: 'Count objects and select the number!', category: 'Math', grade: 'Primary 1', imageUrl: 'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=400' },
+    { id: 'sight-words-race', title: 'Sight Words Race', description: 'Recognize sight words quickly!', category: 'Phonics', grade: 'Primary 2', imageUrl: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=400' },
+    { id: 'simple-subtraction', title: 'Simple Subtraction', description: 'Practice subtraction problems!', category: 'Math', grade: 'Primary 2', imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400' },
+    { id: 'pattern-match', title: 'Pattern Match', description: 'Complete the pattern sequence!', category: 'Math', grade: 'Primary 3', imageUrl: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=400' },
 ];
+
 
 export default function PublicGamesPage() {
     const router = useRouter();
@@ -87,14 +88,21 @@ export default function PublicGamesPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredGames.map((game) => (
-                        <div key={game.id} className="group bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100">
-                            <div className={`relative h-40 rounded-2xl overflow-hidden mb-4 ${game.color} flex items-center justify-center`}>
-                                <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
-                                <span className="material-symbols-outlined text-white text-6xl drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
-                                    {game.icon}
-                                </span>
-                                <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold border border-white/30">
+                        <div key={game.id} className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100">
+                            <div className="relative h-40 bg-slate-100 overflow-hidden">
+                                <img
+                                    src={game.imageUrl}
+                                    alt={game.title}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+                                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-slate-700 text-xs font-bold">
                                     {game.grade}
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="bg-white/90 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer" onClick={() => handlePlay(game.id)}>
+                                        <span className="material-symbols-outlined text-primary text-3xl">play_arrow</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -121,7 +129,7 @@ export default function PublicGamesPage() {
             </div>
 
             {/* CTA */}
-            <div className="bg-gradient-to-r from-primary to-secondary py-16 px-4">
+            <div className="bg-primary py-16 px-4">
                 <div className="max-w-4xl mx-auto text-center text-white">
                     <h2 className="text-3xl font-bold mb-4">Want More Features?</h2>
                     <p className="text-xl opacity-90 mb-8">

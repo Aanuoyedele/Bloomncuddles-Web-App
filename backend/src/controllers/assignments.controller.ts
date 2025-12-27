@@ -147,7 +147,7 @@ export const gradeSubmission = async (req: AuthRequest, res: Response): Promise<
                 gradedAt: new Date()
             },
             include: {
-                student: { select: { name: true, email: true } },
+                student: { select: { name: true, parentEmail: true } },
                 assignment: { select: { title: true } }
             }
         });

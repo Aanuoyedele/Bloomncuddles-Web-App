@@ -90,9 +90,17 @@ export default function LoginPage() {
             if (!res.ok) {
                 setErrors(prev => ({ ...prev, general: data.message || 'Something went wrong' }));
             } else {
-                // Success
+                // Check if user is trying to login as parent on teacher/admin portal
+                if (data.user?.role === 'PARENT') {
+                    setErrors(prev => ({ ...prev, general: 'Parent accounts should use the Parent Portal login.' }));
+                    return;
+                }
+
+                // Success - store token and user data
                 localStorage.setItem('token', data.token);
-                // Redirect
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Redirect to dashboard
                 router.push('/dashboard');
             }
         } catch (error) {
@@ -113,7 +121,7 @@ export default function LoginPage() {
             {/* Main Content Card */}
             <main className="relative w-full max-w-[520px] z-10 my-20">
                 <div className="bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl rounded-[2rem] p-6 sm:p-10 transition-all relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 w-full h-full bg-white/40 pointer-events-none"></div>
 
                     <div className="relative z-10">
                         <div className="text-center mb-8">
@@ -359,6 +367,19 @@ export default function LoginPage() {
                         By continuing, you agree to our <a className="font-bold text-primary hover:text-primary/80 underline decoration-dotted underline-offset-4" href="#">Terms of Service</a> and <a className="font-bold text-primary hover:text-primary/80 underline decoration-dotted underline-offset-4" href="#">Privacy Policy</a>.
                     </p>
                 </div>
+
+                {/* Parent Registration Link */}
+                <div className="mt-6 text-center relative z-10">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 rounded-full">
+                        <span className="text-purple-600">👨‍👩‍👧‍👦</span>
+                        <span className="text-sm text-purple-700">
+                            Are you a parent?
+                            <Link href="/register/parent" className="font-bold text-purple-600 hover:underline ml-1">
+                                Register here
+                            </Link>
+                        </span>
+                    </div>
+                </div>
             </main>
 
             {/* Forgot Password Modal */}
@@ -370,7 +391,7 @@ export default function LoginPage() {
             {/* Background Image Side (Optional/Hidden on Mobile) */}
             <div className="hidden xl:block absolute right-0 top-0 h-full w-1/3 z-0 pointer-events-none">
                 <div className="relative h-full w-full">
-                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white z-10"></div>
+                    <div className="absolute inset-0 bg-white/50 z-10"></div>
                     <div className="absolute inset-0 bg-white/10 z-10 mix-blend-overlay"></div>
                     <img alt="Abstract educational tools" className="h-full w-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0fXVYV0EQ7xaaf1lAKDm6ZPErkNEtnhP4tkx-E1XDxdRc-7vMVuDLU8PIieKxpaCKfVWK98p9Oc9es-krEV6ahXi9IEQmAXcuxprVZiX3U8VNI0_enE0z2WDnkLvgAX6mHrzHhopEANEJQRGUS9uzI-nPOuZgblVdJqWPjZiMFAv2bkuyaZLfOVnYr9QXBbLPuUC10j5y75a0ww9tD4TFkCVdWBVvDm38NRdmQtvKdx5NysAii-5B-9zFz2NuYKDJt9g9vi_Jum1g" />
                 </div>

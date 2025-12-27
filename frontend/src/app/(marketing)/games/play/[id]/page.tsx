@@ -366,7 +366,7 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
 
     if (!currentQ) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
                 <div className="text-center">
                     <span className="material-symbols-outlined text-5xl text-slate-300">error</span>
                     <p className="text-slate-600 mt-2">Game not found</p>
@@ -384,13 +384,13 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
         const stars = percentage >= 80 ? 3 : percentage >= 60 ? 2 : percentage >= 40 ? 1 : 0;
 
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-white to-secondary/10 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
                 <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
                     <div className="text-6xl mb-4">🎉</div>
                     <h1 className="text-3xl font-bold text-slate-900 mb-2">Great Job!</h1>
                     <p className="text-slate-500 mb-6">You completed {gameTitle}</p>
 
-                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6">
+                    <div className="bg-primary/5 rounded-2xl p-6 mb-6">
                         <p className="text-5xl font-bold text-primary">{score}/{questions.length}</p>
                         <p className="text-slate-600 mt-1">Correct Answers</p>
                         <div className="flex justify-center gap-2 mt-4">
@@ -433,12 +433,12 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                 onClick={() => handleQuizAnswer(idx)}
                                 disabled={showFeedback}
                                 className={`p-6 rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-lg ${showFeedback
-                                        ? idx === currentQ.correctIndex
-                                            ? 'bg-green-500 text-white scale-105'
-                                            : selectedAnswer === idx
-                                                ? 'bg-red-500 text-white'
-                                                : 'bg-white text-slate-600 opacity-50'
-                                        : 'bg-white text-slate-900 hover:bg-primary/5 border-2 border-transparent hover:border-primary'
+                                    ? idx === currentQ.correctIndex
+                                        ? 'bg-green-500 text-white scale-105'
+                                        : selectedAnswer === idx
+                                            ? 'bg-red-500 text-white'
+                                            : 'bg-white text-slate-600 opacity-50'
+                                    : 'bg-white text-slate-900 hover:bg-primary/5 border-2 border-transparent hover:border-primary'
                                     }`}
                             >
                                 {option}
@@ -469,10 +469,10 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                 onClick={() => handleCountingAnswer(num)}
                                 disabled={showFeedback}
                                 className={`py-6 rounded-2xl text-3xl font-bold transition-all shadow-lg ${showFeedback
-                                        ? num === currentQ.count
-                                            ? 'bg-green-500 text-white scale-110'
-                                            : 'bg-white text-slate-400 opacity-50'
-                                        : 'bg-white text-slate-900 hover:bg-primary hover:text-white'
+                                    ? num === currentQ.count
+                                        ? 'bg-green-500 text-white scale-110'
+                                        : 'bg-white text-slate-400 opacity-50'
+                                    : 'bg-white text-slate-900 hover:bg-primary hover:text-white'
                                     }`}
                             >
                                 {num}
@@ -496,12 +496,12 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                 key={i}
                                 onClick={() => spellingInput[i] && handleRemoveLetter(i)}
                                 className={`w-16 h-16 rounded-xl border-4 flex items-center justify-center text-3xl font-bold cursor-pointer transition-all ${spellingInput[i]
-                                        ? showFeedback
-                                            ? isCorrect
-                                                ? 'bg-green-100 border-green-500 text-green-700'
-                                                : 'bg-red-100 border-red-500 text-red-700'
-                                            : 'bg-primary/10 border-primary text-primary'
-                                        : 'bg-slate-100 border-slate-300 border-dashed'
+                                    ? showFeedback
+                                        ? isCorrect
+                                            ? 'bg-green-100 border-green-500 text-green-700'
+                                            : 'bg-red-100 border-red-500 text-red-700'
+                                        : 'bg-primary/10 border-primary text-primary'
+                                    : 'bg-slate-100 border-slate-300 border-dashed'
                                     }`}
                             >
                                 {spellingInput[i] || ''}
@@ -537,10 +537,10 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                     onClick={() => handleMatchClick('left', idx)}
                                     disabled={isLeftMatched(idx)}
                                     className={`w-32 py-4 rounded-xl text-lg font-bold transition-all ${isLeftMatched(idx)
-                                            ? 'bg-green-100 text-green-700 border-2 border-green-500'
-                                            : selectedLeft === idx
-                                                ? 'bg-primary text-white shadow-lg scale-105'
-                                                : 'bg-white border-2 border-slate-200 text-slate-900 hover:border-primary'
+                                        ? 'bg-green-100 text-green-700 border-2 border-green-500'
+                                        : selectedLeft === idx
+                                            ? 'bg-primary text-white shadow-lg scale-105'
+                                            : 'bg-white border-2 border-slate-200 text-slate-900 hover:border-primary'
                                         }`}
                                 >
                                     {item}
@@ -554,8 +554,8 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                     onClick={() => handleMatchClick('right', idx)}
                                     disabled={isRightMatched(idx)}
                                     className={`w-32 py-4 rounded-xl text-lg font-bold transition-all ${isRightMatched(idx)
-                                            ? 'bg-green-100 text-green-700 border-2 border-green-500'
-                                            : 'bg-white border-2 border-slate-200 text-slate-900 hover:border-secondary'
+                                        ? 'bg-green-100 text-green-700 border-2 border-green-500'
+                                        : 'bg-white border-2 border-slate-200 text-slate-900 hover:border-secondary'
                                         }`}
                                 >
                                     {item}
@@ -571,7 +571,7 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 p-4 md:p-8">
+        <div className="min-h-screen bg-slate-50 p-4 md:p-8">
             <div className="max-w-3xl mx-auto mb-8">
                 <div className="flex items-center justify-between mb-4">
                     <Link href="/games" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-medium">
@@ -591,7 +591,7 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                     </div>
                     <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                            className="h-full bg-primary transition-all duration-500"
                             style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                         />
                     </div>

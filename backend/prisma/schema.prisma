@@ -146,19 +146,23 @@ model Student {
   grade     String
   dob       DateTime?
   
-  // Login credentials (optional - set when student is given access)
-  email     String?  @unique
-  password  String?
+  // Parent/guardian contact email (for sending access links)
+  parentEmail String?
+  
+  // Unique access token for magic link access (no login required)
+  accessToken String   @unique @default(uuid())
   
   classId   String
   class     Class    @relation(fields: [classId], references: [id])
   
   parents   ParentStudent[]
   submissions Submission[]
+  bookRequests BookRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 // Join table for Parent-Student (Many-to-Many)
 model ParentStudent {
@@ -196,6 +200,7 @@ model Submission {
   status    String   @default("PENDING") // PENDING, SUBMITTED, GRADED
   submittedAt DateTime?
   gradedAt    DateTime?
+  submissionFileUrl String?  // Student's uploaded file
 
   assignmentId String
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
@@ -266,6 +271,7 @@ model Book {
   uploadedBy  String
   
   assignments BookAssignment[]
+  requests    BookRequest[]
   createdAt   DateTime @default(now())
 }
 
@@ -284,3 +290,19 @@ model BookAssignment {
   createdAt   DateTime @default(now())
 }
 
+// =============== BOOK REQUESTS ===============
+
+model BookRequest {
+  id        String   @id @default(uuid())
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  
+  status    String   @default("PENDING")  // PENDING, APPROVED, DENIED
+  note      String?  // Optional note from student
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

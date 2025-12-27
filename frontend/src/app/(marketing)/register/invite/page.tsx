@@ -126,7 +126,7 @@ export default function InviteRegistrationPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
             <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
                 <div className="text-center mb-8">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">

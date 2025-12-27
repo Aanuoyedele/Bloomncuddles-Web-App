@@ -9,6 +9,9 @@ interface StudentData {
     name: string;
     grade: string;
     dob?: string;
+    classId?: string;
+    accessToken?: string;
+    parentEmail?: string;
     class?: { name: string; grade: string };
 }
 
@@ -19,18 +22,26 @@ export default function StudentsPage() {
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [creating, setCreating] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
-    const [formData, setFormData] = useState({ name: '', grade: '', classId: '' });
+    const [formData, setFormData] = useState({ name: '', grade: '', classId: '', parentEmail: '' });
     const [classes, setClasses] = useState<{ id: string; name: string }[]>([]);
 
     // Edit modal state
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [editingStudent, setEditingStudent] = useState<StudentData | null>(null);
-    const [editForm, setEditForm] = useState({ name: '', grade: '', classId: '' });
+    const [editForm, setEditForm] = useState({ name: '', grade: '', classId: '', parentEmail: '' });
     const [saving, setSaving] = useState(false);
     const [editError, setEditError] = useState<string | null>(null);
 
     // Search and stats state
     const [searchQuery, setSearchQuery] = useState('');
+
+    // Access link modal state
+    const [linkModalOpen, setLinkModalOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
+    const [linkCopied, setLinkCopied] = useState(false);
+    const [regenerating, setRegenerating] = useState(false);
+    const [sendingEmail, setSendingEmail] = useState(false);
+    const [emailSent, setEmailSent] = useState(false);
     const [studentStats, setStudentStats] = useState({ total: 0, activeToday: 0, needsAttention: 0 });
 
     const fetchStudents = async () => {
@@ -86,7 +97,7 @@ export default function StudentsPage() {
         try {
             await api.post('/students', formData);
             setCreateModalOpen(false);
-            setFormData({ name: '', grade: '', classId: '' });
+            setFormData({ name: '', grade: '', classId: '', parentEmail: '' });
             fetchStudents();
         } catch (err: any) {
             setFormError(err.message || 'Failed to create student');
@@ -98,7 +109,12 @@ export default function StudentsPage() {
     // Open edit modal
     const openEditModal = (student: StudentData) => {
         setEditingStudent(student);
-        setEditForm({ name: student.name, grade: student.grade, classId: student.class?.name || '' });
+        setEditForm({
+            name: student.name,
+            grade: student.grade,
+            classId: student.classId || '',
+            parentEmail: student.parentEmail || ''
+        });
         setEditError(null);
         setEditModalOpen(true);
     };
@@ -264,6 +280,13 @@ export default function StudentsPage() {
                                         <td className="py-4 px-6">
                                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button
+                                                    onClick={() => { setSelectedStudent(student); setLinkModalOpen(true); setLinkCopied(false); }}
+                                                    className="p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                                    title="Access Link"
+                                                >
+                                                    <span className="material-symbols-outlined text-[20px]">link</span>
+                                                </button>
+                                                <button
                                                     onClick={() => openEditModal(student)}
                                                     className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
                                                     title="Edit"
@@ -340,6 +363,17 @@ export default function StudentsPage() {
                                     <p className="text-xs text-slate-500 mt-1">No classes available. Create a class first!</p>
                                 )}
                             </div>
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1">Parent Email</label>
+                                <input
+                                    type="email"
+                                    value={formData.parentEmail}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, parentEmail: e.target.value }))}
+                                    placeholder="e.g. parent@example.com"
+                                    className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                />
+                                <p className="text-xs text-slate-500 mt-1">For sending access links. Auto-links if parent is registered.</p>
+                            </div>
                             <button
                                 type="submit"
                                 disabled={creating || classes.length === 0}
@@ -401,6 +435,17 @@ export default function StudentsPage() {
                                     ))}
                                 </select>
                             </div>
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1">Parent Email</label>
+                                <input
+                                    type="email"
+                                    value={editForm.parentEmail}
+                                    onChange={(e) => setEditForm(prev => ({ ...prev, parentEmail: e.target.value }))}
+                                    placeholder="e.g. parent@example.com"
+                                    className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                />
+                                <p className="text-xs text-slate-500 mt-1">For sending access links. Auto-links if parent is registered.</p>
+                            </div>
                             <button
                                 onClick={handleSaveEdit}
                                 disabled={saving}
@@ -408,6 +453,113 @@ export default function StudentsPage() {
                             >
                                 {saving ? 'Saving...' : 'Save Changes'}
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Access Link Modal */}
+            {linkModalOpen && selectedStudent && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl animate-in fade-in zoom-in duration-200">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-bold text-slate-900">Student Access Link</h3>
+                            <button onClick={() => { setLinkModalOpen(false); setSelectedStudent(null); }} className="text-slate-400 hover:text-slate-600">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                                    {selectedStudent.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className="font-bold text-slate-900">{selectedStudent.name}</p>
+                                    <p className="text-sm text-slate-500">{selectedStudent.grade} • {selectedStudent.class?.name || 'No class'}</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-2">Access Link</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        readOnly
+                                        value={`${window.location.origin}/student/access/${selectedStudent.accessToken}`}
+                                        className="flex-1 h-11 px-4 bg-slate-100 border border-slate-200 rounded-xl text-slate-700 text-sm"
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(`${window.location.origin}/student/access/${selectedStudent.accessToken}`);
+                                            setLinkCopied(true);
+                                            setTimeout(() => setLinkCopied(false), 2000);
+                                        }}
+                                        className={`px-4 h-11 rounded-xl font-bold transition-colors flex items-center gap-2 ${linkCopied ? 'bg-green-500 text-white' : 'bg-primary text-white hover:bg-primary/90'
+                                            }`}
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">{linkCopied ? 'check' : 'content_copy'}</span>
+                                        {linkCopied ? 'Copied!' : 'Copy'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {selectedStudent.parentEmail && (
+                                <div className="text-sm text-slate-500">
+                                    <span className="font-medium">Parent Email:</span> {selectedStudent.parentEmail}
+                                </div>
+                            )}
+
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    onClick={async () => {
+                                        setRegenerating(true);
+                                        try {
+                                            const data = await api.post(`/student/${selectedStudent.id}/regenerate-token`);
+                                            setSelectedStudent({ ...selectedStudent, accessToken: data.accessToken });
+                                            fetchStudents();
+                                        } catch (err) {
+                                            console.error('Failed to regenerate token');
+                                        } finally {
+                                            setRegenerating(false);
+                                        }
+                                    }}
+                                    disabled={regenerating}
+                                    className="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">refresh</span>
+                                    {regenerating ? 'Regenerating...' : 'Regenerate'}
+                                </button>
+                                {selectedStudent.parentEmail && (
+                                    <button
+                                        onClick={async () => {
+                                            setSendingEmail(true);
+                                            setEmailSent(false);
+                                            try {
+                                                await api.post(`/student/${selectedStudent.id}/send-access-email`);
+                                                setEmailSent(true);
+                                                setTimeout(() => setEmailSent(false), 3000);
+                                            } catch (err) {
+                                                console.error('Failed to send email');
+                                            } finally {
+                                                setSendingEmail(false);
+                                            }
+                                        }}
+                                        disabled={sendingEmail}
+                                        className={`flex-1 py-3 font-bold rounded-xl transition-colors flex items-center justify-center gap-2 ${emailSent
+                                            ? 'bg-green-500 text-white'
+                                            : 'bg-blue-500 text-white hover:bg-blue-600'
+                                            }`}
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">{emailSent ? 'check' : 'email'}</span>
+                                        {sendingEmail ? 'Sending...' : emailSent ? 'Sent!' : 'Send to Parent'}
+                                    </button>
+                                )}
+                            </div>
+
+                            <p className="text-xs text-slate-400 text-center">
+                                Share this link with the student or their parent. They can access their dashboard, assignments, and games.
+                            </p>
                         </div>
                     </div>
                 </div>

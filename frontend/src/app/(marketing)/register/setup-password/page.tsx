@@ -70,7 +70,7 @@ function SetupPasswordContent() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                     <p className="mt-4 text-slate-600">Validating your link...</p>
@@ -81,7 +81,7 @@ function SetupPasswordContent() {
 
     if (validating === false && error && !tokenData) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
                 <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
                     <span className="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
                     <h1 className="text-2xl font-bold text-slate-900 mb-2">Invalid Link</h1>
@@ -96,7 +96,7 @@ function SetupPasswordContent() {
 
     if (success) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
                 <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
                     <span className="material-symbols-outlined text-6xl text-green-500 mb-4">check_circle</span>
                     <h1 className="text-2xl font-bold text-slate-900 mb-2">Password Set Successfully!</h1>
@@ -107,7 +107,7 @@ function SetupPasswordContent() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
             <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-slate-900">Set Your Password</h1>
@@ -163,7 +163,7 @@ function SetupPasswordContent() {
 export default function SetupPasswordPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
             </div>
         }>

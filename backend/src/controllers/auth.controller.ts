@@ -124,7 +124,45 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             });
         }
         // ===============================
-        // FLOW 3: Independent Teacher Registration
+        // FLOW 3: Parent Registration
+        // ===============================
+        else if (registrationType === 'parent') {
+            // Create parent user (no school required)
+            user = await prisma.user.create({
+                data: {
+                    email,
+                    password: hashedPassword,
+                    name,
+                    role: 'PARENT',
+                    address,
+                    phone
+                }
+            });
+
+            // Auto-link to students with matching parentEmail
+            const matchingStudents = await prisma.student.findMany({
+                where: { parentEmail: email.toLowerCase() }
+            });
+
+            for (const student of matchingStudents) {
+                try {
+                    await prisma.parentStudent.create({
+                        data: {
+                            parentId: user!.id,
+                            studentId: student.id
+                        }
+                    });
+                } catch (e) {
+                    // Skip if already exists
+                }
+            }
+
+            if (matchingStudents.length > 0) {
+                console.log(`Auto-linked parent ${name} to ${matchingStudents.length} student(s)`);
+            }
+        }
+        // ===============================
+        // FLOW 4: Independent Teacher Registration
         // ===============================
         else {
             // Create personal school for independent teacher
@@ -172,6 +210,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
+        // Find user (admin/teacher/parent)
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) {
             res.status(401).json({ message: "Invalid credentials" });
@@ -208,6 +247,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
 
 // Validate password setup token (for bulk imported users)
 export const validateSetupToken = async (req: Request, res: Response): Promise<void> => {
@@ -356,73 +396,3 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-// Student login (separate from User login)
-export const studentLogin = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            res.status(400).json({ message: "Email and password required" });
-            return;
-        }
-
-        // Find student by email
-        const student = await prisma.student.findUnique({
-            where: { email },
-            include: {
-                class: {
-                    include: {
-                        school: true
-                    }
-                }
-            }
-        });
-
-        if (!student) {
-            res.status(401).json({ message: "Invalid credentials" });
-            return;
-        }
-
-        // Check if student has a password set
-        if (!student.password) {
-            res.status(401).json({ message: "Account not activated. Please contact your teacher." });
-            return;
-        }
-
-        const isMatch = await bcrypt.compare(password, student.password);
-        if (!isMatch) {
-            res.status(401).json({ message: "Invalid credentials" });
-            return;
-        }
-
-        // Generate token with STUDENT role
-        const token = jwt.sign(
-            {
-                studentId: student.id,
-                role: 'STUDENT',
-                name: student.name,
-                classId: student.classId,
-                schoolId: student.class.schoolId
-            },
-            JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
-        res.json({
-            token,
-            student: {
-                id: student.id,
-                name: student.name,
-                grade: student.grade,
-                className: student.class.name,
-                schoolName: student.class.school.name
-            }
-        });
-
-    } catch (error) {
-        console.error('Student login error:', error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-};
-

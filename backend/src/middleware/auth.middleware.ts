@@ -5,10 +5,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key_change_me';
 
 export interface AuthRequest extends Request {
     user?: {
-        userId: string;
+        userId?: string;    // For admin/teacher/parent
+        studentId?: string; // For students
         role: string;
+        name?: string;
+        classId?: string;   // Student's class
+        grade?: string;     // Student's grade
     };
 }
+
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');

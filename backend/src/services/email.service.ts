@@ -231,3 +231,71 @@ export const sendPasswordResetEmail = async (data: PasswordResetEmailData): Prom
 
     return sendEmailWithFallback(mailOptions, `Password reset email sent to ${to}`);
 };
+
+// Student access link email for parents
+export interface StudentAccessLinkEmailData {
+    to: string;
+    studentName: string;
+    schoolName: string;
+    className: string;
+    accessToken: string;
+}
+
+export const sendStudentAccessLinkEmail = async (data: StudentAccessLinkEmailData): Promise<boolean> => {
+    const { to, studentName, schoolName, className, accessToken } = data;
+    const accessUrl = `${APP_URL}/student/access/${accessToken}`;
+
+    const mailOptions = {
+        from: `"Bloom n Cuddles" <${FROM_EMAIL}>`,
+        to,
+        subject: `${studentName}'s Learning Portal Access - ${schoolName}`,
+        html: `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #6366f1; margin: 0;">🌸 Bloom n Cuddles</h1>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <h2 style="color: #1e293b; margin-top: 0;">Hello! 👋</h2>
+                    
+                    <p style="color: #475569; font-size: 16px; line-height: 1.6;">
+                        Here is the learning portal access link for <strong>${studentName}</strong> from <strong>${className}</strong> at <strong>${schoolName}</strong>.
+                    </p>
+                    
+                    <p style="color: #475569; font-size: 16px; line-height: 1.6;">
+                        Click the button below to access the student dashboard where ${studentName} can view assignments, play educational games, and track progress:
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="${accessUrl}" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+                            Open Learning Portal 📚
+                        </a>
+                    </div>
+                    
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                        <p style="color: #92400e; font-size: 14px; margin: 0;">
+                            <strong>💡 Tip:</strong> Bookmark this link for easy access! No login or password is needed.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px; color: #94a3b8; font-size: 12px;">
+                    <p>© ${new Date().getFullYear()} Bloom n Cuddles. All rights reserved.</p>
+                </div>
+            </div>
+        `,
+        text: `
+            ${studentName}'s Learning Portal Access - ${schoolName}
+            
+            Hello!
+            
+            Here is the learning portal access link for ${studentName} from ${className} at ${schoolName}.
+            
+            Click here to access: ${accessUrl}
+            
+            No login or password is needed. Bookmark this link for easy access!
+        `,
+    };
+
+    return sendEmailWithFallback(mailOptions, `Student access link email sent to ${to} for ${studentName}`);
+};

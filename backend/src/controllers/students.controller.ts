@@ -6,18 +6,47 @@ const prisma = new PrismaClient();
 
 export const createStudent = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { name, grade, classId, dateOfBirth } = req.body;
+        const { name, grade, classId, dateOfBirth, parentEmail } = req.body;
 
-        // In a real app, verify the class belongs to the teacher's school or the teacher themselves
-
+        // Create the student
         const newStudent = await prisma.student.create({
             data: {
                 name,
                 grade,
                 dob: dateOfBirth ? new Date(dateOfBirth) : undefined,
-                classId
+                classId,
+                parentEmail: parentEmail || null
             }
         });
+
+        // Auto-link to parent if email matches a registered parent
+        if (parentEmail) {
+            const parentUser = await prisma.user.findUnique({
+                where: { email: parentEmail }
+            });
+
+            if (parentUser && parentUser.role === 'PARENT') {
+                // Check if link already exists
+                const existingLink = await prisma.parentStudent.findUnique({
+                    where: {
+                        parentId_studentId: {
+                            parentId: parentUser.id,
+                            studentId: newStudent.id
+                        }
+                    }
+                });
+
+                if (!existingLink) {
+                    await prisma.parentStudent.create({
+                        data: {
+                            parentId: parentUser.id,
+                            studentId: newStudent.id
+                        }
+                    });
+                    console.log(`Auto-linked student ${newStudent.name} to parent ${parentUser.name}`);
+                }
+            }
+        }
 
         res.status(201).json(newStudent);
     } catch (error) {
@@ -72,13 +101,14 @@ export const getStudents = async (req: AuthRequest, res: Response): Promise<void
 export const updateStudent = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const { name, grade, classId, dateOfBirth } = req.body;
+        const { name, grade, classId, dateOfBirth, parentEmail } = req.body;
 
         const updateData: any = {};
         if (name) updateData.name = name;
         if (grade) updateData.grade = grade;
         if (classId) updateData.classId = classId;
         if (dateOfBirth) updateData.dob = new Date(dateOfBirth);
+        if (parentEmail !== undefined) updateData.parentEmail = parentEmail || null;
 
         const updatedStudent = await prisma.student.update({
             where: { id },
@@ -87,6 +117,35 @@ export const updateStudent = async (req: AuthRequest, res: Response): Promise<vo
                 class: { select: { name: true, grade: true } }
             }
         });
+
+        // Auto-link to parent if email matches a registered parent
+        if (parentEmail) {
+            const parentUser = await prisma.user.findUnique({
+                where: { email: parentEmail }
+            });
+
+            if (parentUser && parentUser.role === 'PARENT') {
+                // Check if link already exists
+                const existingLink = await prisma.parentStudent.findUnique({
+                    where: {
+                        parentId_studentId: {
+                            parentId: parentUser.id,
+                            studentId: updatedStudent.id
+                        }
+                    }
+                });
+
+                if (!existingLink) {
+                    await prisma.parentStudent.create({
+                        data: {
+                            parentId: parentUser.id,
+                            studentId: updatedStudent.id
+                        }
+                    });
+                    console.log(`Auto-linked student ${updatedStudent.name} to parent ${parentUser.name}`);
+                }
+            }
+        }
 
         res.json(updatedStudent);
     } catch (error) {
