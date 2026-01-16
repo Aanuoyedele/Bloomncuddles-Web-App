@@ -9,6 +9,7 @@ export interface AuthRequest extends Request {
         studentId?: string; // For students
         role: string;
         name?: string;
+        schoolId?: string;  // User's school
         classId?: string;   // Student's class
         grade?: string;     // Student's grade
     };

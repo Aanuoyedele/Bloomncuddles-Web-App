@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
 
 export default function ParentLoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [sessionExpired, setSessionExpired] = useState(false);
+
+    useEffect(() => {
+        // Check if redirected due to session expiry
+        if (searchParams.get('expired') === 'true') {
+            setSessionExpired(true);
+        }
+    }, [searchParams]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,6 +75,17 @@ export default function ParentLoginPage() {
                             <p className="text-sm text-slate-500">Sign in to view your children's progress</p>
                         </div>
                     </div>
+
+                    {/* Session Expired Banner */}
+                    {sessionExpired && (
+                        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-700 flex items-center gap-3">
+                            <span className="material-symbols-outlined text-[24px]">schedule</span>
+                            <div>
+                                <p className="font-bold text-sm">Session Expired</p>
+                                <p className="text-xs text-amber-600">Your session has expired. Please login again to continue.</p>
+                            </div>
+                        </div>
+                    )}
 
                     {error && (
                         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 flex items-center gap-2">

@@ -16,6 +16,8 @@ import notificationsRoutes from './routes/notifications.routes';
 import gamesRoutes from './routes/games.routes';
 import libraryRoutes from './routes/library.routes';
 import studentPortalRoutes from './routes/student.routes';
+import messageRoutes from './routes/messages.routes';
+import presenceRoutes from './routes/presence.routes';
 
 dotenv.config();
 
@@ -41,6 +43,8 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/games', gamesRoutes);
 app.use('/api/library', libraryRoutes);
 app.use('/api/student', studentPortalRoutes);  // Student Portal routes
+app.use('/api/messages', messageRoutes);
+app.use('/api/presence', presenceRoutes);
 
 
 app.get('/', (req, res) => {

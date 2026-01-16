@@ -1,16 +1,39 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #486fa1;
+  /* Primary Palette - Explorer Design */
+  --color-primary: #3b6cb5;
+  --color-primary-light: #5b8bd5;
+  --color-primary-dark: #2b5090;
   --color-secondary: #ed5667;
+  --color-secondary-light: #ff7a8a;
+
+  /* Accent Colors - Vibrant Kid-Friendly */
   --color-accent: #f4f7fb;
+  --color-accent-blue: #e8f4fd;
+  --color-accent-green: #e6f7ed;
+  --color-accent-orange: #fff3e6;
+  --color-accent-pink: #fce8eb;
+  --color-accent-purple: #f3e8ff;
+
+  /* Card Colors */
+  --color-card-blue: #3b6cb5;
+  --color-card-green: #22c55e;
+  --color-card-orange: #f97316;
+  --color-card-pink: #ec4899;
+  --color-card-teal: #14b8a6;
+
+  /* Backgrounds */
   --color-background-light: #ffffff;
+  --color-background-cream: #f8f9fc;
   --color-background-dark: #1e293b;
 
   --font-display: var(--font-manrope), sans-serif;
   --font-sans: var(--font-outfit), sans-serif;
 
   --radius-xl: 2.5rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
 }
 
 body {
@@ -81,4 +104,66 @@ html.dark textarea {
 
 html.dark .hover\:bg-slate-50:hover {
   background-color: #334155 !important;
+}
+
+/* Floating Bubble Animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+
+  50% {
+    transform: translateY(-10px) translateX(-5px);
+  }
+
+  75% {
+    transform: translateY(-25px) translateX(5px);
+  }
+}
+
+@keyframes float-delayed {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  33% {
+    transform: translateY(-15px) translateX(-10px);
+  }
+
+  66% {
+    transform: translateY(-30px) translateX(15px);
+  }
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-40px) translateX(20px) scale(1.05);
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 10s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-slow {
+  animation: float-slow 15s ease-in-out infinite;
 }

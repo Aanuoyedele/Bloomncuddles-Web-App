@@ -38,6 +38,7 @@ export default function UserManagementPage() {
     // Edit modal state
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<any>(null);
     const [editForm, setEditForm] = useState({ name: '', email: '', role: '' });
     const [saving, setSaving] = useState(false);
     const [editError, setEditError] = useState<string | null>(null);
@@ -49,7 +50,9 @@ export default function UserManagementPage() {
     const [importing, setImporting] = useState(false);
     const [importResult, setImportResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
 
-    const tabs = ["Teachers", "Invites", "Parents", "Students"];
+    const tabs = currentUser?.role === 'ADMIN'
+        ? ["Teachers", "Invites", "Parents", "Students"]
+        : ["Teachers", "Parents", "Students"];
 
     // Fetch teachers from backend
     const fetchTeachers = async () => {
@@ -154,7 +157,14 @@ export default function UserManagementPage() {
     };
 
     useEffect(() => {
-        fetchInvites();
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            const user = JSON.parse(userData);
+            setCurrentUser(user);
+            if (user.role === 'ADMIN') {
+                fetchInvites();
+            }
+        }
         fetchTeachers();
     }, []);
 

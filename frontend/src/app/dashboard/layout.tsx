@@ -17,6 +17,7 @@ const TEACHER_NAV = [
     { name: 'Assignments', icon: 'assignment', href: '/dashboard/assignments' },
     { name: 'Games', icon: 'sports_esports', href: '/dashboard/games' },
     { name: 'Library', icon: 'local_library', href: '/dashboard/library' },
+    { name: 'Messages', icon: 'chat', href: '/dashboard/messages' },
     { name: 'Reports', icon: 'analytics', href: '/dashboard/reports' },
 ];
 
@@ -25,6 +26,7 @@ const ADMIN_NAV = [
     { name: 'User Management', icon: 'manage_accounts', href: '/dashboard/users' },
     { name: 'Classes', icon: 'class', href: '/dashboard/classes' },
     { name: 'Students', icon: 'groups', href: '/dashboard/students' },
+    { name: 'Messages', icon: 'chat', href: '/dashboard/messages' },
     { name: 'School Settings', icon: 'domain', href: '/dashboard/settings' },
     { name: 'Billing', icon: 'receipt_long', href: '/dashboard/billing' },
     { name: 'Reports', icon: 'analytics', href: '/dashboard/reports' },

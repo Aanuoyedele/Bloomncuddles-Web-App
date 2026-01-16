@@ -182,7 +182,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         }
 
         // Generate Token (include name for frontend greeting)
-        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name, schoolId: user.schoolId }, JWT_SECRET, { expiresIn: '7d' });
 
         res.status(201).json({
             token,
@@ -229,7 +229,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             data: { lastLoginAt: new Date() }
         });
 
-        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ userId: user.id, role: user.role, name: user.name, schoolId: user.schoolId }, JWT_SECRET, { expiresIn: '7d' });
 
         res.json({
             token,

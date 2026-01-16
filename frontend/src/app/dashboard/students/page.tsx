@@ -515,7 +515,7 @@ export default function StudentsPage() {
                                     onClick={async () => {
                                         setRegenerating(true);
                                         try {
-                                            const data = await api.post(`/student/${selectedStudent.id}/regenerate-token`);
+                                            const data = await api.post(`/student/${selectedStudent.id}/regenerate-token`, {});
                                             setSelectedStudent({ ...selectedStudent, accessToken: data.accessToken });
                                             fetchStudents();
                                         } catch (err) {
@@ -536,7 +536,7 @@ export default function StudentsPage() {
                                             setSendingEmail(true);
                                             setEmailSent(false);
                                             try {
-                                                await api.post(`/student/${selectedStudent.id}/send-access-email`);
+                                                await api.post(`/student/${selectedStudent.id}/send-access-email`, {});
                                                 setEmailSent(true);
                                                 setTimeout(() => setEmailSent(false), 3000);
                                             } catch (err) {

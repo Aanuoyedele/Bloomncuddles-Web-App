@@ -299,10 +299,10 @@ export default function BillingPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${payment.status === 'success'
-                                                ? 'bg-green-100 text-green-700'
-                                                : payment.status === 'pending'
-                                                    ? 'bg-yellow-100 text-yellow-700'
-                                                    : 'bg-red-100 text-red-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : payment.status === 'pending'
+                                                ? 'bg-yellow-100 text-yellow-700'
+                                                : 'bg-red-100 text-red-700'
                                             }`}>
                                             {payment.status}
                                         </span>
@@ -360,7 +360,7 @@ export default function BillingPage() {
                                         </p>
 
                                         <ul className="mt-6 space-y-3">
-                                            {plan.features.map((feature, i) => (
+                                            {plan.features.map((feature: string, i: number) => (
                                                 <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
                                                     <span className="material-symbols-outlined text-green-500 text-[18px]">check</span>
                                                     {feature}
@@ -372,8 +372,8 @@ export default function BillingPage() {
                                             onClick={() => handleSubscribe(key)}
                                             disabled={isCurrentPlan || processingPayment}
                                             className={`w-full mt-6 py-2.5 rounded-xl font-bold transition-colors ${isCurrentPlan
-                                                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                                                    : 'bg-primary text-white hover:bg-primary/90'
+                                                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                                : 'bg-primary text-white hover:bg-primary/90'
                                                 }`}
                                         >
                                             {isCurrentPlan ? 'Current Plan' : processingPayment ? 'Processing...' : 'Subscribe'}

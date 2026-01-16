@@ -30,6 +30,7 @@ model School {
   invites       Invite[]
   subscriptions Subscription[]
   payments      Payment[]
+  messages      Message[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -108,6 +109,11 @@ model User {
   isActive    Boolean  @default(true)
   lastLoginAt DateTime?
   
+  // Presence & Availability (for messaging)
+  isOnline          Boolean  @default(false)
+  lastSeenAt        DateTime?
+  isAvailableToChat Boolean  @default(true)  // Teachers can toggle off even when online
+  
   schoolId  String?
   school    School?  @relation(fields: [schoolId], references: [id])
   
@@ -116,6 +122,10 @@ model User {
 
   // Parent Relations
   children  ParentStudent[]
+
+  // Messaging
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -302,6 +312,31 @@ model BookRequest {
   
   status    String   @default("PENDING")  // PENDING, APPROVED, DENIED
   note      String?  // Optional note from student
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// =============== MESSAGING ===============
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  
+  senderId  String
+  sender    User     @relation("SentMessages", fields: [senderId], references: [id])
+  
+  receiverId String? 
+  receiver  User?    @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id])
+
+  // Context for feedback
+  type      String   @default("general") // general, assignment, game, class
+  contextId String?  // ID of the related item
+  
+  isRead    Boolean  @default(false)
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
