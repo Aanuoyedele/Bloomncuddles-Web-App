@@ -1,8 +1,6 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
 
 // Get contacts for the current user (Parent perspective)
 export const getContacts = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -273,7 +271,7 @@ export const getContacts = async (req: AuthRequest, res: Response): Promise<void
 export const getMessages = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const userId = req.user?.userId;
-        const { contactId } = req.params;
+        const contactId = req.params.contactId as string;
 
         if (!userId) {
             res.status(400).json({ message: 'User context missing' });

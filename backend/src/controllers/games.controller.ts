@@ -1,8 +1,6 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
 
 // Get all games with filters
 export const getGames = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -40,7 +38,7 @@ export const getGames = async (req: AuthRequest, res: Response): Promise<void> =
 // Get single game
 export const getGame = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const game = await prisma.game.findUnique({
             where: { id }

@@ -12,6 +12,7 @@ interface DecodedToken {
     studentId?: string;  // For student logins
     role: string;
     name?: string;
+    plan?: string;
     iat: number;
     exp: number;
 }
@@ -32,6 +33,7 @@ interface DashboardContextType {
     userRole: UserRole;
     userId: string | null;
     userName: string;
+    userPlan: string;
     isLoading: boolean;
     logout: () => void;
     // School settings
@@ -70,6 +72,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     const [userRole, setUserRole] = useState<UserRole>('Teacher');
     const [userId, setUserId] = useState<string | null>(null);
     const [userName, setUserName] = useState<string>('');
+    const [userPlan, setUserPlan] = useState<string>('basic');
     const [isLoading, setIsLoading] = useState(true);
     const [schoolSettings, setSchoolSettings] = useState<SchoolSettings | null>(null);
     const router = useRouter();
@@ -134,6 +137,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             setUserId(decoded.userId || decoded.studentId || null);
             setUserRole(mappedRole);
             setUserName(decoded.name || '');
+            setUserPlan(decoded.plan || 'basic');
 
             // Fetch school settings
             fetchSchoolSettings().finally(() => {
@@ -151,6 +155,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
         setUserId(null);
         setUserRole('Teacher');
         setUserName('');
+        setUserPlan('basic');
         router.push('/login');
     };
 
@@ -163,6 +168,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             userRole,
             userId,
             userName,
+            userPlan,
             isLoading,
             logout,
             schoolSettings,

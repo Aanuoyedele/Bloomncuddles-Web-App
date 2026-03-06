@@ -1,10 +1,8 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { sendInviteEmail } from '../services/email.service';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
 
 // Create invite and send email
 export const createInvite = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -112,7 +110,7 @@ export const createInvite = async (req: AuthRequest, res: Response): Promise<voi
 // Validate invite token (for registration page)
 export const validateInvite = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
 
         const invite = await prisma.invite.findUnique({
             where: { token },
@@ -186,7 +184,7 @@ export const getInvites = async (req: AuthRequest, res: Response): Promise<void>
 // Revoke (delete) an invite
 export const revokeInvite = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const userId = req.user?.userId;
 
         if (!userId) {

@@ -16,6 +16,13 @@ model School {
   email     String?
   address   String?
   
+  // Registration details
+  numberOfPupils   String?   // "1-50", "51-100", "101-200", "201-500", "500+"
+  termRevenueRange String?   // "<1M", "1M-5M", "5M-10M", "10M+"
+  certificateUrl   String?   // Certificate of school registration (file)
+  adminIdUrl       String?   // Government-issued ID upload (file)
+  isActive         Boolean   @default(false)  // false until payment confirmed
+  
   // Branding
   logoUrl      String?
   primaryColor String?  @default("#486fa1")

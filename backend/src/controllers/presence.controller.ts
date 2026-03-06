@@ -1,8 +1,6 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
 
 // Update user's online status (called on login/logout or periodically)
 export const updatePresence = async (req: AuthRequest, res: Response): Promise<void> => {

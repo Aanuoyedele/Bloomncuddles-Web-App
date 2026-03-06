@@ -2,43 +2,104 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-50 border-t border-slate-200 pt-16 pb-8">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12 text-center md:text-left">
-                    <div className="col-span-1 md:col-span-2">
-                        <Link href="/" className="flex items-center justify-center md:justify-start gap-2 mb-4 group">
-                            <div className="flex items-center justify-center size-8 rounded-full bg-primary text-white group-hover:bg-primary/90 transition-colors">
-                                <span className="material-symbols-outlined text-[20px]">school</span>
-                            </div>
-                            <span className="text-lg font-bold text-slate-900 font-display">Bloomncuddles</span>
-                        </Link>
-                        <p className="text-sm text-slate-500 max-w-xs mx-auto md:mx-0 mb-6">
-                            Making digital learning safe, healthy, and happy for the next generation.
+        <footer className="bg-navy font-sans relative overflow-hidden">
+            {/* Main Footer Content */}
+            <div className="max-w-7xl mx-auto px-6 pt-20 pb-12">
+                {/* Top row: CTA headline + social */}
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 mb-20">
+                    <div>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight max-w-md">
+                            Learning is better<br />when it&apos;s <span className="text-ice">playful</span>
+                        </h2>
+                        <p className="text-white/40 mt-4 text-sm max-w-sm">
+                            Nurturing curiosity and wellness in the digital age of early education.
                         </p>
                     </div>
+                    <Link
+                        href="/register"
+                        className="inline-flex items-center gap-2 bg-white text-navy px-8 py-4 rounded-full text-sm font-bold hover:bg-ice transition-colors group"
+                    >
+                        Join Bloomncuddles
+                        <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </Link>
+                </div>
 
-                    <div className="flex flex-col gap-4">
-                        <h3 className="font-bold text-slate-900">Platform</h3>
-                        <Link href="/about" className="text-sm text-slate-600 hover:text-primary">About Us</Link>
-                        <Link href="/#features" className="text-sm text-slate-600 hover:text-primary">Features</Link>
-                        <Link href="/login" className="text-sm text-slate-600 hover:text-primary">Teacher Login</Link>
+                {/* Navigation columns */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+                    <div>
+                        <h4 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] mb-5">Product</h4>
+                        <ul className="flex flex-col gap-3 text-white/60 text-sm">
+                            <li><Link className="hover:text-white transition-colors" href="/#features">Features</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/games">Games</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/#pricing">Pricing</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="#">Safety</Link></li>
+                        </ul>
                     </div>
-
-                    <div className="flex flex-col gap-4">
-                        <h3 className="font-bold text-slate-900">Support</h3>
-                        <Link href="/contact" className="text-sm text-slate-600 hover:text-primary">Contact Us</Link>
-                        <Link href="#" className="text-sm text-slate-600 hover:text-primary">Help Center</Link>
-                        <Link href="#" className="text-sm text-slate-600 hover:text-primary">Privacy Policy</Link>
+                    <div>
+                        <h4 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] mb-5">Company</h4>
+                        <ul className="flex flex-col gap-3 text-white/60 text-sm">
+                            <li><Link className="hover:text-white transition-colors" href="/about">About Us</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/contact">Contact</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/login">Login</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] mb-5">Legal</h4>
+                        <ul className="flex flex-col gap-3 text-white/60 text-sm">
+                            <li><Link className="hover:text-white transition-colors" href="#">Terms &amp; Conditions</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="#">Disclaimer</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] mb-5">Stay Connected</h4>
+                        <div className="flex gap-3 mb-6">
+                            {[
+                                { icon: "photo_camera", label: "Instagram" },
+                                { icon: "thumb_up", label: "Facebook" },
+                                { icon: "play_arrow", label: "YouTube" },
+                                { icon: "tag", label: "Twitter" },
+                            ].map((social, i) => (
+                                <a
+                                    key={i}
+                                    href="#"
+                                    aria-label={social.label}
+                                    className="size-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-white hover:bg-white/15 hover:border-white/20 transition-all"
+                                >
+                                    <span className="material-symbols-outlined text-lg">{social.icon}</span>
+                                </a>
+                            ))}
+                        </div>
+                        {/* Newsletter mini */}
+                        <form className="flex gap-1.5">
+                            <label htmlFor="footer-email" className="sr-only">Email address</label>
+                            <input
+                                id="footer-email"
+                                type="email"
+                                className="flex-1 bg-white/5 border border-white/10 rounded-lg text-xs px-3 py-2.5 focus:ring-1 focus:ring-ice focus:border-ice text-white placeholder-white/30 outline-none transition-all"
+                                placeholder="Your email"
+                            />
+                            <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition-colors border border-white/10">
+                                Join
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-slate-500">© 2025 Bloomncuddles Inc. All rights reserved.</p>
-                    <div className="flex gap-4">
-                        <Link href="#" className="text-slate-400 hover:text-primary transition-colors">
-                            <span className="sr-only">Twitter</span>
-                            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                        </Link>
+
+                {/* Copyright bar */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30 border-t border-white/5 pt-8">
+                    <p>© 2026 Bloomncuddles Inc. All rights reserved.</p>
+                    <div className="flex gap-6">
+                        <Link className="hover:text-white/60 transition-colors" href="#">Privacy Policy</Link>
+                        <Link className="hover:text-white/60 transition-colors" href="#">Terms of Service</Link>
                     </div>
+                </div>
+            </div>
+
+            {/* Giant BLOOM text at the bottom */}
+            <div className="relative w-full overflow-hidden select-none pointer-events-none" aria-hidden="true">
+                <div className="text-[20vw] md:text-[18vw] font-black text-white/[0.03] leading-[0.85] tracking-tighter text-center whitespace-nowrap pb-0">
+                    BLOOM
                 </div>
             </div>
         </footer>

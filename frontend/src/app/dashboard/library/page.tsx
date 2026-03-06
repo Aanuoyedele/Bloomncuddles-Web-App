@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
+import RequirePlan from "@/components/RequirePlan";
 
 interface Book {
     id: string;
@@ -195,7 +196,17 @@ export default function LibraryPage() {
     };
 
     return (
-        <div className="space-y-8">
+        <RequirePlan 
+            allowed={['premium', 'enterprise']} 
+            fallback={
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200 text-center px-4 mt-8">
+                    <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">lock</span>
+                    <h2 className="text-2xl font-bold text-slate-900 font-display">Premium Feature</h2>
+                    <p className="text-slate-500 mt-2 max-w-lg mx-auto">Reading library is available on our Premium and Enterprise plans. Upgrade your school's subscription to unlock this feature.</p>
+                </div>
+            }
+        >
+            <div className="space-y-8">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
                 <div>
@@ -586,6 +597,7 @@ export default function LibraryPage() {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+        </RequirePlan>
     );
 }

@@ -1,6 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
+import { errorHandler, notFoundHandler } from './middleware/error.middleware';
+import { requestLogger } from './middleware/requestLogger.middleware';
+import logger from './config/logger';
+
+// Route imports
 import authRoutes from './routes/auth.routes';
 import classRoutes from './routes/classes.routes';
 import studentRoutes from './routes/students.routes';
@@ -24,10 +32,56 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(cors());
-app.use(express.json({ limit: '10mb' })); // Increase limit for CSV uploads
+// ============================================
+// SECURITY MIDDLEWARE
+// ============================================
 
-// Routes
+// Request logging (structured, via Winston)
+app.use(requestLogger);
+
+// HTTP Security Headers (Helmet)
+app.use(helmet());
+
+// CORS — restrict to known origins
+const allowedOrigins = [
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,
+].filter(Boolean) as string[];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS: Origin ${origin} not allowed`));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Global Rate Limiter — 100 requests per minute per IP
+const globalLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many requests, please try again later.' },
+});
+app.use(globalLimiter);
+
+// Response compression (gzip/brotli)
+app.use(compression());
+
+// Body parsing
+app.use(express.json({ limit: '10mb' })); // Support CSV uploads
+
+// ============================================
+// ROUTES
+// ============================================
+
 app.use('/api/auth', authRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/students', studentRoutes);
@@ -46,12 +100,26 @@ app.use('/api/student', studentPortalRoutes);  // Student Portal routes
 app.use('/api/messages', messageRoutes);
 app.use('/api/presence', presenceRoutes);
 
-
-app.get('/', (req, res) => {
-  res.send('Bloomncuddles API is running');
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Start Server
+app.get('/', (req, res) => {
+    res.send('Bloomncuddles API is running');
+});
+
+// ============================================
+// ERROR HANDLING (must be AFTER all routes)
+// ============================================
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// ============================================
+// START SERVER
+// ============================================
+
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+    logger.info(`Server is running at http://localhost:${port}`);
 });

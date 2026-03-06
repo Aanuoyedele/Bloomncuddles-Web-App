@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { getGames, getGame, assignGame, getAssignedGamesCount, seedGames } from '../controllers/games.controller';
-import { authenticate } from '../middleware/auth.middleware';
+import { authenticate, requirePlan } from '../middleware/auth.middleware';
 
 const router = Router();
 
 router.use(authenticate);
+router.use(requirePlan(['premium', 'enterprise']));
 
 router.get('/', getGames);
 router.get('/assigned-count', getAssignedGamesCount);

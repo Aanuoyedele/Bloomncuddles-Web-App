@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Outfit } from "next/font/google";
+import { Bricolage_Grotesque, Outfit } from "next/font/google";
 import "./globals.css";
 
-const manrope = Manrope({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-bricolage",
   display: "swap",
 });
 
@@ -25,13 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bricolage.variable} ${outfit.variable}`}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body
         suppressHydrationWarning={true}
-        className={`${manrope.variable} ${outfit.variable} antialiased font-sans bg-background-light text-slate-900`}
+        className="antialiased font-sans bg-background-light text-slate-900"
       >
         {children}
       </body>

@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { getBooks, createBook, getBook, assignBook, deleteBook } from '../controllers/library.controller';
-import { authenticate } from '../middleware/auth.middleware';
+import { authenticate, requirePlan } from '../middleware/auth.middleware';
 
 const router = Router();
 
 router.use(authenticate);
+router.use(requirePlan(['premium', 'enterprise']));
 
 router.get('/', getBooks);
 router.post('/', createBook);

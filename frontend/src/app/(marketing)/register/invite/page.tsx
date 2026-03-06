@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ interface InviteData {
     schoolId: string;
 }
 
-export default function InviteRegistrationPage() {
+function InviteFormContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
@@ -210,5 +210,20 @@ export default function InviteRegistrationPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function InviteRegistrationPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-slate-600 font-medium">Loading invite...</p>
+                </div>
+            </div>
+        }>
+            <InviteFormContent />
+        </Suspense>
     );
 }

@@ -1,44 +1,36 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* Primary Palette - Explorer Design */
-  --color-primary: #3b6cb5;
-  --color-primary-light: #5b8bd5;
-  --color-primary-dark: #2b5090;
+@theme {
+  /* Blue Palette */
+  --color-primary: #486fa1;
+  --color-primary-light: #4988C4;
+  --color-primary-dark: #1C4D8D;
+  --color-navy: #0F2854;
+  --color-ice: #BDE8F5;
   --color-secondary: #ed5667;
   --color-secondary-light: #ff7a8a;
 
-  /* Accent Colors - Vibrant Kid-Friendly */
-  --color-accent: #f4f7fb;
-  --color-accent-blue: #e8f4fd;
-  --color-accent-green: #e6f7ed;
-  --color-accent-orange: #fff3e6;
-  --color-accent-pink: #fce8eb;
-  --color-accent-purple: #f3e8ff;
-
   /* Card Colors */
-  --color-card-blue: #3b6cb5;
+  --color-card-pink: #ed5667;
   --color-card-green: #22c55e;
   --color-card-orange: #f97316;
-  --color-card-pink: #ec4899;
-  --color-card-teal: #14b8a6;
+  --color-card-blue: #486fa1;
 
   /* Backgrounds */
-  --color-background-light: #ffffff;
-  --color-background-cream: #f8f9fc;
-  --color-background-dark: #1e293b;
+  --color-background-light: #f0f7fb;
+  --color-background-dark: #0F2854;
+  /* Fonts */
+  --font-display: var(--font-bricolage), "Bricolage Grotesque", sans-serif;
+  --font-sans: var(--font-outfit), "Outfit", sans-serif;
 
-  --font-display: var(--font-manrope), sans-serif;
-  --font-sans: var(--font-outfit), sans-serif;
-
-  --radius-xl: 2.5rem;
+  --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
 }
 
 body {
   background-color: var(--color-background-light);
-  color: #1e293b;
+  color: #0F2854;
   font-family: var(--font-sans);
 }
 
@@ -53,6 +45,12 @@ h6 {
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Backgrounds */
+.bg-dots {
+  background-image: radial-gradient(circle at 2px 2px, #486fa122 1px, transparent 0);
+  background-size: 24px 24px;
 }
 
 /* Dark mode styles */
@@ -104,66 +102,4 @@ html.dark textarea {
 
 html.dark .hover\:bg-slate-50:hover {
   background-color: #334155 !important;
-}
-
-/* Floating Bubble Animations */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-
-  25% {
-    transform: translateY(-20px) translateX(10px);
-  }
-
-  50% {
-    transform: translateY(-10px) translateX(-5px);
-  }
-
-  75% {
-    transform: translateY(-25px) translateX(5px);
-  }
-}
-
-@keyframes float-delayed {
-
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-
-  33% {
-    transform: translateY(-15px) translateX(-10px);
-  }
-
-  66% {
-    transform: translateY(-30px) translateX(15px);
-  }
-}
-
-@keyframes float-slow {
-
-  0%,
-  100% {
-    transform: translateY(0) translateX(0) scale(1);
-  }
-
-  50% {
-    transform: translateY(-40px) translateX(20px) scale(1.05);
-  }
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float-delayed 10s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.animate-float-slow {
-  animation: float-slow 15s ease-in-out infinite;
 }

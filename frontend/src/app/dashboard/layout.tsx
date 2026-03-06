@@ -15,8 +15,8 @@ const TEACHER_NAV = [
     { name: 'Classes', icon: 'class', href: '/dashboard/classes' },
     { name: 'Students', icon: 'groups', href: '/dashboard/students' },
     { name: 'Assignments', icon: 'assignment', href: '/dashboard/assignments' },
-    { name: 'Games', icon: 'sports_esports', href: '/dashboard/games' },
-    { name: 'Library', icon: 'local_library', href: '/dashboard/library' },
+    { name: 'Games', icon: 'sports_esports', href: '/dashboard/games', minPlan: 'premium' },
+    { name: 'Library', icon: 'local_library', href: '/dashboard/library', minPlan: 'premium' },
     { name: 'Messages', icon: 'chat', href: '/dashboard/messages' },
     { name: 'Reports', icon: 'analytics', href: '/dashboard/reports' },
 ];
@@ -41,12 +41,12 @@ const PARENT_NAV = [
 const STUDENT_NAV = [
     { name: 'Overview', icon: 'dashboard', href: '/dashboard' },
     { name: 'My Assignments', icon: 'assignment', href: '/dashboard/assignments' },
-    { name: 'Games', icon: 'sports_esports', href: '/dashboard/games' },
+    { name: 'Games', icon: 'sports_esports', href: '/dashboard/games', minPlan: 'premium' },
     { name: 'My Grades', icon: 'grade', href: '/dashboard/grades' },
 ];
 
 function DashboardContent({ children }: { children: React.ReactNode }) {
-    const { userRole, userName, isLoading, logout, schoolSettings } = useDashboard();
+    const { userRole, userName, userPlan, isLoading, logout, schoolSettings } = useDashboard();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -126,12 +126,19 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
 
     // Choose Navigation based on Role
     const getNavItems = () => {
+        let items: any[] = [];
         switch (userRole) {
-            case 'Admin': return ADMIN_NAV;
-            case 'Parent': return PARENT_NAV;
-            case 'Student': return STUDENT_NAV;
-            default: return TEACHER_NAV;
+            case 'Admin': items = ADMIN_NAV; break;
+            case 'Parent': items = PARENT_NAV; break;
+            case 'Student': items = STUDENT_NAV; break;
+            default: items = TEACHER_NAV; break;
         }
+        
+        return items.filter(item => {
+            if (item.minPlan === 'premium' && !['premium', 'enterprise'].includes(userPlan || 'basic')) return false;
+            if (item.minPlan === 'enterprise' && userPlan !== 'enterprise') return false;
+            return true;
+        });
     };
     const navItems = getNavItems();
 

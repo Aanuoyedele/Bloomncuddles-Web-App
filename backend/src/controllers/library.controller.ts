@@ -1,8 +1,6 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
 
 // Get all books with filters and pagination
 export const getBooks = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -93,7 +91,7 @@ export const createBook = async (req: AuthRequest, res: Response): Promise<void>
 // Get single book
 export const getBook = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const book = await prisma.book.findUnique({
             where: { id }
@@ -169,7 +167,7 @@ export const assignBook = async (req: AuthRequest, res: Response): Promise<void>
 // Delete book
 export const deleteBook = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         await prisma.bookAssignment.deleteMany({ where: { bookId: id } });
         await prisma.book.delete({ where: { id } });

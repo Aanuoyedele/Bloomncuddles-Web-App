@@ -13,6 +13,7 @@ export default function StudentHeader({ studentName, avatarUrl }: StudentHeaderP
 
     const navLinks = [
         { name: "Home", href: "/student", icon: "home" },
+        { name: "Games", href: "/student/games", icon: "sports_esports" },
         { name: "My Rewards", href: "/student/rewards", icon: "emoji_events" },
         { name: "Get Help", href: "/student/help", icon: "help" },
     ];

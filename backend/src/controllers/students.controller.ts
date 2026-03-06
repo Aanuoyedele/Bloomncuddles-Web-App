@@ -1,12 +1,23 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
+import logger from '../config/logger';
 
 export const createStudent = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { name, grade, classId, dateOfBirth, parentEmail } = req.body;
+        const schoolId = req.user?.schoolId;
+
+        // IDOR: Verify the class belongs to the user's school
+        if (schoolId && classId) {
+            const targetClass = await prisma.class.findFirst({
+                where: { id: classId, schoolId }
+            });
+            if (!targetClass) {
+                res.status(403).json({ message: 'You can only add students to your own school\'s classes' });
+                return;
+            }
+        }
 
         // Create the student
         const newStudent = await prisma.student.create({
@@ -26,7 +37,6 @@ export const createStudent = async (req: AuthRequest, res: Response): Promise<vo
             });
 
             if (parentUser && parentUser.role === 'PARENT') {
-                // Check if link already exists
                 const existingLink = await prisma.parentStudent.findUnique({
                     where: {
                         parentId_studentId: {
@@ -43,14 +53,14 @@ export const createStudent = async (req: AuthRequest, res: Response): Promise<vo
                             studentId: newStudent.id
                         }
                     });
-                    console.log(`Auto-linked student ${newStudent.name} to parent ${parentUser.name}`);
+                    logger.info(`Auto-linked student ${newStudent.name} to parent ${parentUser.name}`);
                 }
             }
         }
 
         res.status(201).json(newStudent);
     } catch (error) {
-        console.error('Create Student error:', error);
+        logger.error('Create Student error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
@@ -63,13 +73,10 @@ export const getStudents = async (req: AuthRequest, res: Response): Promise<void
         let whereClause = {};
 
         if (role === 'TEACHER') {
-            // Find classes taught by this teacher
             const classes = await prisma.class.findMany({ where: { teacherId: userId }, select: { id: true } });
             const classIds = classes.map(c => c.id);
             whereClause = { classId: { in: classIds } };
         } else if (role === 'PARENT') {
-            // Find students linked to this parent
-            // We query the mock relation for now, or the real one via ParentStudent table
             whereClause = {
                 parents: {
                     some: {
@@ -78,8 +85,13 @@ export const getStudents = async (req: AuthRequest, res: Response): Promise<void
                 }
             };
         } else if (role === 'ADMIN') {
-            // Admin sees all (or filtered by school)
-            // For simplicity: all
+            if (req.user?.schoolId) {
+                whereClause = {
+                    class: {
+                        schoolId: req.user.schoolId
+                    }
+                };
+            }
         }
 
         const students = await prisma.student.findMany({
@@ -93,21 +105,36 @@ export const getStudents = async (req: AuthRequest, res: Response): Promise<void
 
         res.json(students);
     } catch (error) {
-        console.error('Get Students error:', error);
+        logger.error('Get Students error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 export const updateStudent = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const { name, grade, classId, dateOfBirth, parentEmail } = req.body;
+        const schoolId = req.user?.schoolId;
 
-        const updateData: any = {};
-        if (name) updateData.name = name;
-        if (grade) updateData.grade = grade;
-        if (classId) updateData.classId = classId;
-        if (dateOfBirth) updateData.dob = new Date(dateOfBirth);
+        // IDOR: Verify student belongs to user's school
+        if (schoolId) {
+            const student = await prisma.student.findFirst({
+                where: { id },
+                include: { class: true }
+            });
+
+            if (!student || student.class?.schoolId !== schoolId) {
+                res.status(404).json({ message: 'Student not found' });
+                return;
+            }
+        }
+
+        // Explicit field whitelisting (mass assignment protection)
+        const updateData: Record<string, any> = {};
+        if (name !== undefined) updateData.name = name;
+        if (grade !== undefined) updateData.grade = grade;
+        if (classId !== undefined) updateData.classId = classId;
+        if (dateOfBirth !== undefined) updateData.dob = new Date(dateOfBirth);
         if (parentEmail !== undefined) updateData.parentEmail = parentEmail || null;
 
         const updatedStudent = await prisma.student.update({
@@ -125,7 +152,6 @@ export const updateStudent = async (req: AuthRequest, res: Response): Promise<vo
             });
 
             if (parentUser && parentUser.role === 'PARENT') {
-                // Check if link already exists
                 const existingLink = await prisma.parentStudent.findUnique({
                     where: {
                         parentId_studentId: {
@@ -142,27 +168,41 @@ export const updateStudent = async (req: AuthRequest, res: Response): Promise<vo
                             studentId: updatedStudent.id
                         }
                     });
-                    console.log(`Auto-linked student ${updatedStudent.name} to parent ${parentUser.name}`);
+                    logger.info(`Auto-linked student ${updatedStudent.name} to parent ${parentUser.name}`);
                 }
             }
         }
 
         res.json(updatedStudent);
     } catch (error) {
-        console.error('Update Student error:', error);
+        logger.error('Update Student error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 export const deleteStudent = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
+        const schoolId = req.user?.schoolId;
+
+        // IDOR: Verify student belongs to user's school
+        if (schoolId) {
+            const student = await prisma.student.findFirst({
+                where: { id },
+                include: { class: true }
+            });
+
+            if (!student || student.class?.schoolId !== schoolId) {
+                res.status(404).json({ message: 'Student not found' });
+                return;
+            }
+        }
 
         await prisma.student.delete({ where: { id } });
 
         res.json({ message: 'Student deleted successfully' });
     } catch (error) {
-        console.error('Delete Student error:', error);
+        logger.error('Delete Student error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };

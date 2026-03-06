@@ -1,11 +1,9 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { sendPasswordSetupEmail } from '../services/email.service';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
 
 interface TeacherRow {
     firstName: string;
@@ -113,7 +111,7 @@ export const bulkImportTeachers = async (req: AuthRequest, res: Response): Promi
 
                 // Create user with temp password
                 const tempPassword = generateTempPassword();
-                const hashedPassword = await bcrypt.hash(tempPassword, 10);
+                const hashedPassword = await bcrypt.hash(tempPassword, 12);
 
                 const newUser = await prisma.user.create({
                     data: {
@@ -302,7 +300,7 @@ export const bulkImportParents = async (req: AuthRequest, res: Response): Promis
 
                 // Create user with temp password
                 const tempPassword = generateTempPassword();
-                const hashedPassword = await bcrypt.hash(tempPassword, 10);
+                const hashedPassword = await bcrypt.hash(tempPassword, 12);
 
                 const newUser = await prisma.user.create({
                     data: {

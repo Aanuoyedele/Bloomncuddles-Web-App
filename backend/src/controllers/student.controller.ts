@@ -1,16 +1,14 @@
 import { Response, Request } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
 
 // ==================== TOKEN-BASED ACCESS ====================
 
 // Validate student access token and return student data
 export const validateAccessToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
 
         if (!token) {
             res.status(400).json({ message: 'Access token is required' });
@@ -52,7 +50,7 @@ export const validateAccessToken = async (req: Request, res: Response): Promise<
 // Get student dashboard stats by token
 export const getStudentDashboardByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
 
         const student = await prisma.student.findUnique({
             where: { accessToken: token },
@@ -127,7 +125,7 @@ export const getStudentDashboardByToken = async (req: Request, res: Response): P
 // Get assignments for student by token
 export const getStudentAssignmentsByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
         const { status } = req.query;
 
         const student = await prisma.student.findUnique({
@@ -186,7 +184,8 @@ export const getStudentAssignmentsByToken = async (req: Request, res: Response):
 // Submit assignment by token
 export const submitAssignmentByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token, assignmentId } = req.params;
+        const token = req.params.token as string;
+        const assignmentId = req.params.assignmentId as string;
         const { fileUrl } = req.body;
 
         const student = await prisma.student.findUnique({
@@ -234,7 +233,7 @@ export const submitAssignmentByToken = async (req: Request, res: Response): Prom
 // Get games for student by token
 export const getStudentGamesByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
         const { subject } = req.query;
 
         const student = await prisma.student.findUnique({
@@ -296,7 +295,7 @@ export const getStudentGamesByToken = async (req: Request, res: Response): Promi
 // Get library for student by token
 export const getStudentLibraryByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
         const { subject, level, search } = req.query;
 
         const student = await prisma.student.findUnique({
@@ -358,7 +357,8 @@ export const getStudentLibraryByToken = async (req: Request, res: Response): Pro
 // Request book by token
 export const requestBookByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token, bookId } = req.params;
+        const token = req.params.token as string;
+        const bookId = req.params.bookId as string;
         const { note } = req.body;
 
         const student = await prisma.student.findUnique({
@@ -394,7 +394,7 @@ export const requestBookByToken = async (req: Request, res: Response): Promise<v
 // Get grades by token
 export const getStudentGradesByToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { token } = req.params;
+        const token = req.params.token as string;
 
         const student = await prisma.student.findUnique({
             where: { accessToken: token },
@@ -447,7 +447,7 @@ export const getStudentGradesByToken = async (req: Request, res: Response): Prom
 // Regenerate student access token
 export const regenerateAccessToken = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { studentId } = req.params;
+        const studentId = req.params.studentId as string;
 
         const newToken = crypto.randomUUID();
 
@@ -470,7 +470,7 @@ export const regenerateAccessToken = async (req: AuthRequest, res: Response): Pr
 // Get student access link (for teacher to copy/share)
 export const getStudentAccessLink = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { studentId } = req.params;
+        const studentId = req.params.studentId as string;
 
         const student = await prisma.student.findUnique({
             where: { id: studentId },
@@ -497,7 +497,7 @@ export const getStudentAccessLink = async (req: AuthRequest, res: Response): Pro
 // Send access link email to parent
 export const sendAccessLinkEmail = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { studentId } = req.params;
+        const studentId = req.params.studentId as string;
 
         const student = await prisma.student.findUnique({
             where: { id: studentId },

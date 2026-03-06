@@ -1,12 +1,23 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
+import logger from '../config/logger';
 
 export const createAssignment = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { title, description, dueDate, classId, fileUrl } = req.body;
+        const schoolId = req.user?.schoolId;
+
+        // IDOR: Verify classId belongs to user's school
+        if (schoolId && classId) {
+            const targetClass = await prisma.class.findFirst({
+                where: { id: classId, schoolId }
+            });
+            if (!targetClass) {
+                res.status(403).json({ message: 'You can only create assignments for your own school\'s classes' });
+                return;
+            }
+        }
 
         const newAssignment = await prisma.assignment.create({
             data: {
@@ -36,7 +47,7 @@ export const createAssignment = async (req: AuthRequest, res: Response): Promise
 
         res.status(201).json(newAssignment);
     } catch (error) {
-        console.error('Create Assignment error:', error);
+        logger.error('Create Assignment error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
@@ -44,9 +55,15 @@ export const createAssignment = async (req: AuthRequest, res: Response): Promise
 export const getAssignments = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { classId, search } = req.query;
+        const schoolId = req.user?.schoolId;
 
-        const where: any = {};
-        if (classId) where.classId = classId;
+        // Scope assignments to user's school
+        const where: Record<string, any> = {};
+        if (classId) {
+            where.classId = classId;
+        } else if (schoolId) {
+            where.class = { schoolId };
+        }
         if (search) {
             where.title = { contains: search as string };
         }
@@ -62,21 +79,35 @@ export const getAssignments = async (req: AuthRequest, res: Response): Promise<v
 
         res.json(assignments);
     } catch (error) {
-        console.error('Get Assignments error:', error);
+        logger.error('Get Assignments error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 export const updateAssignment = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const { title, description, dueDate, classId, fileUrl } = req.body;
+        const schoolId = req.user?.schoolId;
 
-        const updateData: any = {};
-        if (title) updateData.title = title;
+        // IDOR: Verify assignment belongs to user's school
+        if (schoolId) {
+            const assignment = await prisma.assignment.findFirst({
+                where: { id },
+                include: { class: true }
+            });
+            if (!assignment || assignment.class?.schoolId !== schoolId) {
+                res.status(404).json({ message: 'Assignment not found' });
+                return;
+            }
+        }
+
+        // Explicit field whitelisting
+        const updateData: Record<string, any> = {};
+        if (title !== undefined) updateData.title = title;
         if (description !== undefined) updateData.description = description;
-        if (dueDate) updateData.dueDate = new Date(dueDate);
-        if (classId) updateData.classId = classId;
+        if (dueDate !== undefined) updateData.dueDate = new Date(dueDate);
+        if (classId !== undefined) updateData.classId = classId;
         if (fileUrl !== undefined) updateData.fileUrl = fileUrl;
 
         const updated = await prisma.assignment.update({
@@ -87,14 +118,27 @@ export const updateAssignment = async (req: AuthRequest, res: Response): Promise
 
         res.json(updated);
     } catch (error) {
-        console.error('Update Assignment error:', error);
+        logger.error('Update Assignment error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 export const deleteAssignment = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
+        const schoolId = req.user?.schoolId;
+
+        // IDOR: Verify assignment belongs to user's school
+        if (schoolId) {
+            const assignment = await prisma.assignment.findFirst({
+                where: { id },
+                include: { class: true }
+            });
+            if (!assignment || assignment.class?.schoolId !== schoolId) {
+                res.status(404).json({ message: 'Assignment not found' });
+                return;
+            }
+        }
 
         // Delete submissions first
         await prisma.submission.deleteMany({ where: { assignmentId: id } });
@@ -102,7 +146,7 @@ export const deleteAssignment = async (req: AuthRequest, res: Response): Promise
 
         res.json({ message: 'Assignment deleted successfully' });
     } catch (error) {
-        console.error('Delete Assignment error:', error);
+        logger.error('Delete Assignment error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
@@ -110,7 +154,20 @@ export const deleteAssignment = async (req: AuthRequest, res: Response): Promise
 // Get submissions for an assignment
 export const getSubmissions = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
+        const schoolId = req.user?.schoolId;
+
+        // IDOR: Verify assignment belongs to user's school
+        if (schoolId) {
+            const assignment = await prisma.assignment.findFirst({
+                where: { id },
+                include: { class: true }
+            });
+            if (!assignment || assignment.class?.schoolId !== schoolId) {
+                res.status(404).json({ message: 'Assignment not found' });
+                return;
+            }
+        }
 
         const submissions = await prisma.submission.findMany({
             where: { assignmentId: id },
@@ -122,7 +179,7 @@ export const getSubmissions = async (req: AuthRequest, res: Response): Promise<v
 
         res.json(submissions);
     } catch (error) {
-        console.error('Get Submissions error:', error);
+        logger.error('Get Submissions error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
@@ -130,7 +187,7 @@ export const getSubmissions = async (req: AuthRequest, res: Response): Promise<v
 // Grade a submission
 export const gradeSubmission = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const { score, feedback } = req.body;
 
         if (score === undefined || score < 0 || score > 100) {
@@ -138,6 +195,7 @@ export const gradeSubmission = async (req: AuthRequest, res: Response): Promise<
             return;
         }
 
+        // Explicit field whitelisting — only accept score and feedback
         const updated = await prisma.submission.update({
             where: { id },
             data: {
@@ -152,12 +210,9 @@ export const gradeSubmission = async (req: AuthRequest, res: Response): Promise<
             }
         });
 
-        // TODO: Send notification to student about their grade
-
         res.json(updated);
     } catch (error) {
-        console.error('Grade Submission error:', error);
+        logger.error('Grade Submission error', { error });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-

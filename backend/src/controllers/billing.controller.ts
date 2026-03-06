@@ -1,28 +1,26 @@
 import { Response, Request } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
 import crypto from 'crypto';
 
-const prisma = new PrismaClient();
-
 // Define plans with pricing in Naira (kobo)
-const PLANS = {
+export const PLANS = {
     basic: {
         name: 'Basic',
-        monthlyAmount: 1999900, // ₦19,999
-        yearlyAmount: 19999000, // ₦199,990 (save 2 months)
+        monthlyAmount: 500000, // ₦5,000
+        yearlyAmount: 5000000, // ₦50,000 (save 2 months)
         features: ['Up to 100 Students', 'Basic Analytics', 'Email Support']
     },
     premium: {
         name: 'Premium Schools',
-        monthlyAmount: 4999900, // ₦49,999
-        yearlyAmount: 49999000, // ₦499,990
+        monthlyAmount: 1000000, // ₦10,000
+        yearlyAmount: 10000000, // ₦100,000 (save 2 months)
         features: ['Unlimited Students & Teachers', 'Advanced Analytics & Reports', 'Priority Support 24/7']
     },
     enterprise: {
         name: 'Enterprise',
-        monthlyAmount: 9999900, // ₦99,999
-        yearlyAmount: 99999000, // ₦999,990
+        monthlyAmount: 2000000, // ₦20,000
+        yearlyAmount: 20000000, // ₦200,000 (save 2 months)
         features: ['Everything in Premium', 'Custom Integrations', 'Dedicated Account Manager', 'SLA Guarantee']
     }
 };

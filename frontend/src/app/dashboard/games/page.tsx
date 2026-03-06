@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
+import RequirePlan from "@/components/RequirePlan";
 
 interface Game {
     id: string;
@@ -170,7 +171,17 @@ export default function GamesPage() {
     const subjects = ['Math', 'Phonics', 'English', 'Science'];
 
     return (
-        <div className="space-y-8">
+        <RequirePlan 
+            allowed={['premium', 'enterprise']} 
+            fallback={
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200 text-center px-4 mt-8">
+                    <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">lock</span>
+                    <h2 className="text-2xl font-bold text-slate-900 font-display">Premium Feature</h2>
+                    <p className="text-slate-500 mt-2 max-w-lg mx-auto">Interactive games are available on our Premium and Enterprise plans. Upgrade your school's subscription to unlock this feature.</p>
+                </div>
+            }
+        >
+            <div className="space-y-8">
             {/* Header */}
             <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                 <div>
@@ -472,6 +483,7 @@ export default function GamesPage() {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+        </RequirePlan>
     );
 }

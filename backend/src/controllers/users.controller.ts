@@ -1,8 +1,6 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth.middleware';
-
-const prisma = new PrismaClient();
 
 // Get users in the same school (optionally filtered by role)
 export const getUsers = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -58,7 +56,7 @@ export const getUsers = async (req: AuthRequest, res: Response): Promise<void> =
 // Delete a user (admin only)
 export const deleteUser = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const userId = req.user?.userId;
 
         if (!userId) {
@@ -101,7 +99,7 @@ export const deleteUser = async (req: AuthRequest, res: Response): Promise<void>
 // Update a user (admin only)
 export const updateUser = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const { name, email, role } = req.body;
         const userId = req.user?.userId;
 
@@ -154,7 +152,7 @@ export const updateUser = async (req: AuthRequest, res: Response): Promise<void>
 // Toggle user active status (admin only)
 export const toggleUserStatus = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const userId = req.user?.userId;
 
         if (!userId) {

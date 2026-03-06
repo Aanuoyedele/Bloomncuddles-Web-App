@@ -135,9 +135,9 @@ export default function StudentAccessPage({ params }: { params: Promise<{ token:
                     />
                     <defs>
                         <linearGradient id="wave-gradient-top-student" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#3b6cb5" />
+                            <stop offset="0%" stopColor="#486fa1" />
                             <stop offset="50%" stopColor="#5b8bd5" />
-                            <stop offset="100%" stopColor="#3b6cb5" />
+                            <stop offset="100%" stopColor="#486fa1" />
                         </linearGradient>
                     </defs>
                 </svg>
@@ -311,7 +311,7 @@ function HomeTab({ token, student, stats, setActiveTab }: {
     return (
         <div className="space-y-8">
             {/* Hero Section - Blue Gradient */}
-            <div className="bg-gradient-to-br from-[#3b6cb5] to-[#5b8bd5] rounded-3xl p-8 text-white relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#486fa1] to-[#5b8bd5] rounded-3xl p-8 text-white relative overflow-hidden">
                 {/* Decorative Rocket */}
                 <div className="absolute left-6 bottom-6 text-4xl opacity-80">🚀</div>
 
@@ -344,7 +344,7 @@ function HomeTab({ token, student, stats, setActiveTab }: {
                     {/* My Classes */}
                     <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all">
                         <div className="w-12 h-12 bg-[#e8f4fd] rounded-xl flex items-center justify-center mb-4">
-                            <span className="material-symbols-outlined text-[#3b6cb5] text-2xl">school</span>
+                            <span className="material-symbols-outlined text-[#486fa1] text-2xl">school</span>
                         </div>
                         <h3 className="font-bold text-slate-900 mb-1">My Classes</h3>
                         <p className="text-slate-500 text-sm mb-4">Join your teachers and friends!</p>
