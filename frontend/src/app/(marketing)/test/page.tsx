@@ -687,7 +687,7 @@ export default function TestPage() {
             </section>
 
             {/* ===== COMPREHENSIVE FEATURES - Scrollable Cards ===== */}
-            <section className="py-24 bg-primary relative overflow-hidden" id="features-showcase">
+            <section className="py-24 bg-[#0f2854] relative overflow-hidden" id="features-showcase">
                 {/* Background subtle patterns */}
                 <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
 
@@ -701,9 +701,10 @@ export default function TestPage() {
                             Comprehensive Features for Every Need in Early Years Education
                         </h2>
                     </div>
+                </div>
 
-                    {/* Scrollable Feature Cards - Infinite Marquee */}
-                    <style>{`
+                {/* Scrollable Feature Cards - Infinite Marquee */}
+                <style>{`
                         @keyframes infiniteScroll {
                             0% { transform: translateX(0); }
                             100% { transform: translateX(-50%); }
@@ -717,23 +718,23 @@ export default function TestPage() {
                         }
                     `}</style>
                     
-                    <div className="overflow-hidden pb-12 -mx-6 px-6">
+                    <div className="overflow-hidden pb-12 relative z-10">
                         <div className="animate-infinite-scroll flex gap-8">
                             {[
-                                { title: "Digital Classrooms", desc: "Create and manage vibrant digital classrooms tailored to early years curricula in minutes.", img: "/feature_classrooms_v2.png" },
-                                { title: "QR Code Access", desc: "Students join instantly by scanning a secure wall-mounted QR code. No emails, no passwords needed.", img: "/feature_qrcode_v2.png" },
-                                { title: "Growth Tracking", desc: "Monitor every child's developmental milestones with real-time analytics and visual progress reports.", img: "/feature_growth_v2.png" },
-                                { title: "Wellness Reminders", desc: "Automatic screen-break prompts encourage physical play, mindfulness, and healthy habits throughout the day.", img: "/feature_wellness_v2.png" },
-                                { title: "Parent Dashboard", desc: "Parents stay connected with real-time updates on their child's learning journey, milestones, and daily activities.", img: "/feature_parents_v2.png" },
+                                { title: "Digital Classrooms", desc: "Create and manage vibrant digital classrooms tailored to early years curricula in minutes.", img: "/feature_classrooms_v3.png" },
+                                { title: "QR Code Access", desc: "Students join instantly by scanning a secure wall-mounted QR code. No emails, no passwords needed.", img: "/feature_qrcode_v3.png" },
+                                { title: "Growth Tracking", desc: "Monitor every child's developmental milestones with real-time analytics and visual progress reports.", img: "/feature_growth_v3.png" },
+                                { title: "Wellness Reminders", desc: "Automatic screen-break prompts encourage physical play, mindfulness, and healthy habits throughout the day.", img: "/feature_wellness_v3.png" },
+                                { title: "Parent Dashboard", desc: "Parents stay connected with real-time updates on their child's learning journey, milestones, and daily activities.", img: "/feature_parents_v3.png" },
                                 // Duplicated for seamless infinite scroll
-                                { title: "Digital Classrooms", desc: "Create and manage vibrant digital classrooms tailored to early years curricula in minutes.", img: "/feature_classrooms_v2.png" },
-                                { title: "QR Code Access", desc: "Students join instantly by scanning a secure wall-mounted QR code. No emails, no passwords needed.", img: "/feature_qrcode_v2.png" },
-                                { title: "Growth Tracking", desc: "Monitor every child's developmental milestones with real-time analytics and visual progress reports.", img: "/feature_growth_v2.png" },
-                                { title: "Wellness Reminders", desc: "Automatic screen-break prompts encourage physical play, mindfulness, and healthy habits throughout the day.", img: "/feature_wellness_v2.png" },
-                                { title: "Parent Dashboard", desc: "Parents stay connected with real-time updates on their child's learning journey, milestones, and daily activities.", img: "/feature_parents_v2.png" }
+                                { title: "Digital Classrooms", desc: "Create and manage vibrant digital classrooms tailored to early years curricula in minutes.", img: "/feature_classrooms_v3.png" },
+                                { title: "QR Code Access", desc: "Students join instantly by scanning a secure wall-mounted QR code. No emails, no passwords needed.", img: "/feature_qrcode_v3.png" },
+                                { title: "Growth Tracking", desc: "Monitor every child's developmental milestones with real-time analytics and visual progress reports.", img: "/feature_growth_v3.png" },
+                                { title: "Wellness Reminders", desc: "Automatic screen-break prompts encourage physical play, mindfulness, and healthy habits throughout the day.", img: "/feature_wellness_v3.png" },
+                                { title: "Parent Dashboard", desc: "Parents stay connected with real-time updates on their child's learning journey, milestones, and daily activities.", img: "/feature_parents_v3.png" }
                             ].map((feat, idx) => (
-                                <div key={idx} className="w-[400px] md:w-[600px] flex-shrink-0 group">
-                                    <div className="bg-[#3d2d7a] rounded-[40px] overflow-hidden mb-8 h-[400px] md:h-[600px] w-full relative hover:scale-[1.02] transition-transform duration-500 shadow-2xl border border-white/5">
+                                <div key={idx} className="w-[300px] md:w-[500px] flex-shrink-0 group">
+                                    <div className="bg-[#486fa1] rounded-[40px] overflow-hidden mb-8 h-[300px] md:h-[500px] w-full relative hover:scale-[1.02] transition-transform duration-500 shadow-2xl border border-white/5">
                                         <Image src={feat.img} fill alt={feat.title} className="object-cover" />
                                         {/* Floating Arrow */}
                                         <div className="absolute top-6 right-6 w-14 h-14 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-2xl">
@@ -748,7 +749,7 @@ export default function TestPage() {
                             ))}
                         </div>
                     </div>
-                </div>
+                {/* </div> removed because we closed it above the marquee */}
             </section>
 
             {/* ===== TESTIMONIALS - Modern glassmorphism ===== */}
@@ -878,37 +879,152 @@ export default function TestPage() {
                 </div>
             </section>
 
-            {/* ===== CURRICULUM - Hover overlays ===== */}
-            <section className="py-28 bg-white" id="curriculum">
+            {/* ===== CURRICULUM - Bento Masonry Layout ===== */}
+            <section className="py-28 bg-[#fafcff]" id="curriculum">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest mb-6 border border-primary/10">
-                            <span className="material-symbols-outlined text-sm">menu_book</span>
-                            Curriculum
+                    {/* Header matching the reference design */}
+                    <div className="flex flex-col lg:flex-row gap-12 mb-16 items-start lg:items-center justify-between">
+                        <div className="max-w-2xl">
+                            <h2 className="text-[42px] md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.15] tracking-tight">
+                                Everything your institute needs—delivered free, fast, and future-proof
+                            </h2>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">Our Holistic Curriculum</h2>
-                        <p className="text-slate-500 max-w-2xl mx-auto text-lg">Expertly crafted modules that bridge the gap between academic foundation and emotional well-being.</p>
+                        <div className="max-w-md lg:ml-auto">
+                            <p className="text-slate-500 text-[15px] leading-relaxed">
+                                Bloomncuddles' robust feature set covers every aspect of early years education, ensuring you have the tools to succeed. Below is a glimpse of our holistic curriculum, inspired by our intuitive dashboards.
+                            </p>
+                        </div>
                     </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { img: 'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&h=400&fit=crop', title: 'Phonics & Language', desc: 'Building strong literacy foundations through interactive storytelling.', color: 'from-blue-600' },
-                            { img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop', title: 'Early Maths', desc: 'Numerical concepts through play-based discovery and reasoning.', color: 'from-emerald-600' },
-                            { img: 'https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&h=400&fit=crop', title: 'Wellness', desc: 'Guided mindfulness and physical activity for little minds.', color: 'from-violet-600' },
-                            { img: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop', title: 'Creative Arts', desc: 'Self-expression through digital painting and imaginative play.', color: 'from-rose-600' }
-                        ].map((c, i) => (
-                            <div key={i} className="group relative bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1">
-                                <div className="aspect-[4/3] overflow-hidden relative">
-                                    <Image src={c.img} alt={c.title} width={400} height={300} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                    {/* Hover overlay */}
-                                    <div className={`absolute inset-0 bg-gradient-to-t ${c.color}/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5`}>
-                                        <p className="text-white text-sm font-medium">{c.desc}</p>
-                                    </div>
+
+                    {/* Bento Grid */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                        
+                        {/* COLUMN 1 - Left */}
+                        <div className="flex flex-col gap-6">
+                            {/* Card 1 */}
+                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                    Literacy
                                 </div>
-                                <div className="p-6">
-                                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{c.title}</h3>
+                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
+                                    <span className="font-extrabold">Phonics &</span> Language
+                                </h3>
+                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
+                                    Interactive storytelling and games that develop early letter recognition.
+                                </p>
+                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
+                                    <span className="material-symbols-outlined text-lg">north_east</span>
+                                </div>
+                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                                    <Image src="/curr_phonics.png" fill alt="Phonics" className="object-cover object-top" />
                                 </div>
                             </div>
-                        ))}
+
+                            {/* Card 2 */}
+                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                    Discovery
+                                </div>
+                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
+                                    <span className="font-extrabold">Global</span> Awareness
+                                </h3>
+                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
+                                    Curiosity-driven modules introducing cultural appreciation and basic sciences.
+                                </p>
+                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
+                                    <span className="material-symbols-outlined text-lg">north_east</span>
+                                </div>
+                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                                    <Image src="/curr_science.png" fill alt="Science" className="object-cover object-top" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* COLUMN 2 - Center (Tall Dark Card) */}
+                        <div className="flex flex-col gap-6 h-full">
+                            {/* Card 3 (Tall) */}
+                            <div className="bg-[#1a0f3d] rounded-[32px] p-8 pb-0 border border-white/5 shadow-2xl hover:shadow-indigo-900/40 hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden h-full min-h-[500px]">
+                                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#6345d4]/20 rounded-full blur-[100px] pointer-events-none" />
+                                <div className="relative z-10">
+                                    <div className="bg-[#6345d4] text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                        Physical & Mental
+                                    </div>
+                                    <h3 className="text-[26px] xl:text-[30px] font-bold text-white leading-tight mb-4 tracking-tight">
+                                        <span className="text-white/80">✦</span> <span className="text-white font-extrabold">Holistic</span> Wellness
+                                    </h3>
+                                    <p className="text-[15.5px] text-slate-300 mb-8 leading-relaxed max-w-[95%]">
+                                        Guided mindfulness, stretching, and physical activity balancing digital learning with <span className="text-[#a78bfa] font-medium">healthy growth</span>.
+                                    </p>
+                                    <div className="w-10 h-10 rounded-full bg-[#6345d4] text-white flex items-center justify-center mb-6 shadow-md shadow-[#6345d4]/30 transition-transform group-hover:scale-110">
+                                        <span className="material-symbols-outlined text-lg">north_east</span>
+                                    </div>
+                                </div>
+                                <div className="mt-auto relative w-full h-[280px] rounded-t-3xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500 z-10">
+                                    <Image src="/curr_wellness.png" fill alt="Wellness" className="object-cover object-top" />
+                                </div>
+                            </div>
+
+                            {/* Card 6 (Added below the tall card) */}
+                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                    Growth
+                                </div>
+                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
+                                    <span className="font-extrabold">Social &</span> Emotional
+                                </h3>
+                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
+                                    Fostering empathy and teamwork via collaborative modules.
+                                </p>
+                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
+                                    <span className="material-symbols-outlined text-lg">north_east</span>
+                                </div>
+                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                                    <Image src="/curr_social.png" fill alt="Social" className="object-cover object-top" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* COLUMN 3 - Right */}
+                        <div className="flex flex-col gap-6">
+                            {/* Card 4 */}
+                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                    Numeracy
+                                </div>
+                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
+                                    <span className="font-extrabold">Early</span> Maths
+                                </h3>
+                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
+                                    Number concepts through play-based discovery and reasoning.
+                                </p>
+                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
+                                    <span className="material-symbols-outlined text-lg">north_east</span>
+                                </div>
+                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                                    <Image src="/curr_maths.png" fill alt="Maths" className="object-cover object-top" />
+                                </div>
+                            </div>
+
+                            {/* Card 5 */}
+                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
+                                    Creativity
+                                </div>
+                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
+                                    <span className="font-extrabold">Creative</span> Arts
+                                </h3>
+                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
+                                    Self-expression through digital painting and imaginative tools.
+                                </p>
+                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
+                                    <span className="material-symbols-outlined text-lg">north_east</span>
+                                </div>
+                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                                    <Image src="/curr_arts.png" fill alt="Arts" className="object-cover object-top" />
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
