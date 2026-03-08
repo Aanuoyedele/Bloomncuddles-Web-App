@@ -26,7 +26,7 @@ export default function AboutPage() {
                                 Empowering early years and primary <span className="text-primary">education</span>
                             </h1>
                             <p className="text-lg md:text-xl text-navy/60 leading-relaxed max-w-xl">
-                                We're building a safe, teacher-led digital learning platform that balances structured curriculum with child wellness and mental health.
+                                We&apos;re building a safe, teacher-led digital learning platform that balances structured curriculum with child wellness and mental health.
                             </p>
                         </div>
                         
@@ -44,7 +44,7 @@ export default function AboutPage() {
                             Our Philosophy
                         </h2>
                         <p className="text-lg text-navy/60 leading-relaxed max-w-2xl mx-auto">
-                            We believe in creating a digital environment that is accessible, simple, and focused entirely on the child's growth.
+                            We believe in creating a digital environment that is accessible, simple, and focused entirely on the child&apos;s growth.
                         </p>
                     </div>
 
@@ -125,10 +125,10 @@ export default function AboutPage() {
                                     Bloomncuddles was born from a simple belief: every child deserves access to safe, engaging, and effective digital learning tools.
                                 </p>
                                 <p>
-                                    Founded by parents and educators, we understand the challenges of balancing screen time with meaningful learning experiences. That's why we built a platform where teachers have full control, parents stay informed, and children learn through play.
+                                    Founded by parents and educators, we understand the challenges of balancing screen time with meaningful learning experiences. That&apos;s why we built a platform where teachers have full control, parents stay informed, and children learn through play.
                                 </p>
                                 <p>
-                                    Today, we're proud to serve thousands of schools across Africa and beyond, making premium early-years education accessible to all corners of the globe.
+                                    Today, we&apos;re proud to serve thousands of schools across Africa and beyond, making premium early-years education accessible to all corners of the globe.
                                 </p>
                             </div>
                         </div>
