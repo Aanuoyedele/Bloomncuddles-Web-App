@@ -546,7 +546,7 @@ export default function SchoolRegistration() {
                         {step < 2 && (
                             <button
                                 onClick={goNext}
-                                className="bg-primary text-white px-8 py-3 rounded-xl font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2"
+                                className="bg-primary text-white font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]"
                             >
                                 Continue
                                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -556,7 +556,7 @@ export default function SchoolRegistration() {
                         {step === 2 && (
                             <button
                                 onClick={goNext}
-                                className="bg-primary text-white px-8 py-3 rounded-xl font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2"
+                                className="bg-primary text-white font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]"
                             >
                                 Review & Pay
                                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -567,7 +567,7 @@ export default function SchoolRegistration() {
                             <button
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className="bg-primary text-white px-8 py-3 rounded-xl font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="bg-primary text-white font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed px-[15px] py-[15px] rounded-[6px]"
                             >
                                 {loading ? (
                                     <>

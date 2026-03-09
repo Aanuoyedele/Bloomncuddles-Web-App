@@ -366,11 +366,11 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
 
     if (!currentQ) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
-                <div className="text-center">
-                    <span className="material-symbols-outlined text-5xl text-slate-300">error</span>
-                    <p className="text-slate-600 mt-2">Game not found</p>
-                    <Link href="/games" className="mt-4 inline-block px-6 py-2 bg-primary text-white rounded-xl font-bold">
+            <div className="min-h-screen flex items-center justify-center bg-[#0f2854]">
+                <div className="text-center bg-white/5 backdrop-blur-sm p-8 rounded-[32px] border border-white/10">
+                    <span className="material-symbols-outlined text-5xl text-white/30">error</span>
+                    <p className="text-white/70 mt-2">Game not found</p>
+                    <Link href="/games" className="mt-4 inline-block bg-primary hover:bg-primary/90 transition-colors text-white font-bold shadow-lg shadow-primary/20 px-[15px] py-[15px] rounded-[6px]">
                         Back to Games
                     </Link>
                 </div>
@@ -384,15 +384,15 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
         const stars = percentage >= 80 ? 3 : percentage >= 60 ? 2 : percentage >= 40 ? 1 : 0;
 
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-                <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
+            <div className="min-h-screen flex items-center justify-center bg-[#0f2854] p-4">
+                <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-2xl p-8 max-w-md w-full text-center">
                     <div className="text-6xl mb-4">🎉</div>
-                    <h1 className="text-3xl font-bold text-slate-900 mb-2">Great Job!</h1>
-                    <p className="text-slate-500 mb-6">You completed {gameTitle}</p>
+                    <h1 className="text-3xl font-bold text-white mb-2">Great Job!</h1>
+                    <p className="text-white/60 mb-6">You completed {gameTitle}</p>
 
-                    <div className="bg-primary/5 rounded-2xl p-6 mb-6">
+                    <div className="bg-white/5 rounded-2xl p-6 mb-6">
                         <p className="text-5xl font-bold text-primary">{score}/{questions.length}</p>
-                        <p className="text-slate-600 mt-1">Correct Answers</p>
+                        <p className="text-white/70 mt-1">Correct Answers</p>
                         <div className="flex justify-center gap-2 mt-4">
                             {[1, 2, 3].map((s) => (
                                 <span key={s} className={`text-4xl ${s <= stars ? 'animate-bounce' : 'opacity-30'}`} style={{ animationDelay: `${s * 0.1}s` }}>
@@ -405,11 +405,11 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                     <div className="flex gap-3">
                         <button
                             onClick={resetGame}
-                            className="flex-1 py-3 border-2 border-primary text-primary rounded-xl font-bold hover:bg-primary/5 transition-colors"
+                            className="flex-1 border-2 border-white/20 text-white font-bold hover:bg-white/10 transition-colors px-[15px] py-[15px] rounded-[6px]"
                         >
                             Play Again
                         </button>
-                        <Link href="/games" className="flex-1 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-colors flex items-center justify-center">
+                        <Link href="/games" className="flex-1 bg-primary text-white font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 flex items-center justify-center px-[15px] py-[15px] rounded-[6px]">
                             More Games
                         </Link>
                     </div>
@@ -423,8 +423,8 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
         if (['quiz', 'drag_drop', 'logic'].includes(gameType)) {
             return (
                 <div className="space-y-6">
-                    <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-                        <p className="text-2xl font-bold text-slate-900">{currentQ.question}</p>
+                    <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-[32px] p-8 shadow-2xl text-center">
+                        <p className="text-2xl font-bold text-white">{currentQ.question}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         {currentQ.options.map((option: string, idx: number) => (
@@ -432,13 +432,13 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
                                 key={idx}
                                 onClick={() => handleQuizAnswer(idx)}
                                 disabled={showFeedback}
-                                className={`p-6 rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-lg ${showFeedback
+                                className={`px-[15px] py-[15px] rounded-[6px] text-xl font-bold transition-all transform hover:scale-105 shadow-xl ${showFeedback
                                     ? idx === currentQ.correctIndex
-                                        ? 'bg-green-500 text-white scale-105'
+                                        ? 'bg-green-500 text-white scale-105 border-green-500'
                                         : selectedAnswer === idx
-                                            ? 'bg-red-500 text-white'
-                                            : 'bg-white text-slate-600 opacity-50'
-                                    : 'bg-white text-slate-900 hover:bg-primary/5 border-2 border-transparent hover:border-primary'
+                                            ? 'bg-red-500 text-white border-red-500'
+                                            : 'bg-white/5 border border-white/10 text-white/50'
+                                    : 'bg-white/10 text-white hover:bg-white/20 border-2 border-transparent hover:border-white/30 backdrop-blur-sm'
                                     }`}
                             >
                                 {option}
@@ -571,27 +571,31 @@ export default function PublicGamePlayerPage({ params }: { params: Promise<{ id:
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4 md:p-8">
-            <div className="max-w-3xl mx-auto mb-8">
+        <div className="min-h-screen bg-[#0f2854] p-4 md:p-8 relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+            <div className="max-w-3xl mx-auto mb-8 relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                    <Link href="/games" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-medium">
+                    <Link href="/games" className="flex items-center gap-2 text-white/70 hover:text-white font-medium transition-colors">
                         <span className="material-symbols-outlined">arrow_back</span>
                         Exit Game
                     </Link>
-                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
-                        <span className="material-symbols-outlined text-yellow-500">star</span>
-                        <span className="font-bold text-slate-900">{score}</span>
+                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full shadow-lg">
+                        <span className="material-symbols-outlined text-yellow-400">star</span>
+                        <span className="font-bold text-white">{score}</span>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                    <div className="flex items-center justify-between mb-3">
-                        <h1 className="text-xl font-bold text-slate-900">{gameTitle}</h1>
-                        <span className="text-sm text-slate-500">Question {currentQuestion + 1} of {questions.length}</span>
+                <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-[32px] p-6 shadow-2xl">
+                    <div className="flex items-center justify-between mb-4">
+                        <h1 className="text-2xl font-bold text-white tracking-tight">{gameTitle}</h1>
+                        <span className="text-sm font-medium text-white/70 bg-white/5 px-3 py-1 rounded-full border border-white/5">Question {currentQuestion + 1} of {questions.length}</span>
                     </div>
-                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-4 bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner">
                         <div
-                            className="h-full bg-primary transition-all duration-500"
+                            className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out"
                             style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                         />
                     </div>

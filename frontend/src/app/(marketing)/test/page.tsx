@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function TestPage() {
     const [activePlan, setActivePlan] = useState<'monthly' | 'yearly'>('monthly');
+    const [activeTestimonialPage, setActiveTestimonialPage] = useState(0);
 
     return (
         <div className="overflow-x-hidden">
@@ -72,11 +73,11 @@ export default function TestPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                                <Link href="/register" className="group bg-white text-primary px-8 py-4 rounded-full text-lg font-bold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-0.5 transition-all text-center flex items-center justify-center gap-2">
+                                <Link href="/register" className="group bg-white text-primary text-lg font-bold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-0.5 transition-all text-center flex items-center justify-center gap-2 px-[15px] py-[15px] rounded-[6px]">
                                     Get Started, It&apos;s Free
                                     <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </Link>
-                                <Link href="#how-it-works" className="group flex items-center justify-center gap-3 text-white px-6 py-4 rounded-full text-lg font-bold hover:bg-white/10 transition-all">
+                                <Link href="#how-it-works" className="group flex items-center justify-center gap-3 text-white text-lg font-bold hover:bg-white/10 transition-all px-[15px] py-[15px] rounded-[6px]">
                                     <span className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white border border-white/20 group-hover:scale-110 transition-transform">
                                         <span className="material-symbols-outlined">play_arrow</span>
                                     </span>
@@ -242,7 +243,7 @@ export default function TestPage() {
                             </div>
                             
                             {/* Boy image - positioned on the left, overlapping the ring slightly */}
-                            <div className="relative z-10 mr-auto ml-0 lg:-mr-10">
+                            <div className="relative z-10 -translate-x-24 xl:-translate-x-40">
                                 <Image
                                     src="/kid-new.png"
                                     alt="Excited student jumping"
@@ -319,8 +320,8 @@ export default function TestPage() {
                                                 <span className="material-symbols-outlined text-lg">monitoring</span>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Revenue</p>
-                                                <p className="text-xl font-extrabold text-slate-900">{'\u20A6'}59,882</p>
+                                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Learning Hrs</p>
+                                                <p className="text-xl font-extrabold text-slate-900">124h</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-center gap-5 mt-2">
@@ -336,7 +337,7 @@ export default function TestPage() {
                                                     <circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" strokeWidth="3.5"/>
                                                     <circle cx="18" cy="18" r="14" fill="none" stroke="#ed5667" strokeWidth="3.5" strokeDasharray="55 33" strokeDashoffset="25" strokeLinecap="round"/>
                                                 </svg>
-                                                <p className="text-[8px] text-slate-400 font-bold mt-1">Revenue</p>
+                                                <p className="text-[8px] text-slate-400 font-bold mt-1">Activities</p>
                                             </div>
                                             <div className="text-center">
                                                 <svg width="64" height="64" viewBox="0 0 36 36">
@@ -386,9 +387,9 @@ export default function TestPage() {
                                 </div>
                                 <h3 className="text-2xl font-bold text-slate-900 mb-4">{feature.title}</h3>
                                 <p className="text-slate-500 leading-relaxed">{feature.desc}</p>
-                                <div className="mt-6 flex items-center gap-2 text-sm font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <Link href="/register" className="mt-6 flex items-center gap-2 text-sm font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     Learn more <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                </div>
+                                </Link>
                             </div>
                         ))}
                     </div>
@@ -421,7 +422,7 @@ export default function TestPage() {
                                         {/* Header: Avatar + Line */}
                                         <div className="flex items-center gap-3 mb-6">
                                             <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                                                <Image src="/student-details.png" width={32} height={32} alt="Student" className="object-cover" />
+                                                <Image src="/curr_maths.png" width={32} height={32} alt="Student" className="object-cover" />
                                             </div>
                                             <div className="text-[13px] font-bold text-slate-700">Student</div>
                                             <div className="w-full h-px bg-slate-200 ml-2 mt-1"></div>
@@ -492,20 +493,20 @@ export default function TestPage() {
                                         <div className="absolute inset-0 rounded-full border-[14px] border-[#333333]"></div>
                                         {/* Purple progress SVGs */}
                                         <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full transform -rotate-90">
-                                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#6345FF" strokeWidth="3" strokeDasharray="78, 100" />
+                                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#6345FF" strokeWidth="3" strokeDasharray="95, 100" />
                                         </svg>
-                                        <span className="font-light text-5xl tracking-tight relative">78%</span>
+                                        <span className="font-light text-5xl tracking-tight relative">95%</span>
                                     </div>
                                     <p className="text-[13px] text-slate-300 font-medium leading-[1.6]">
-                                        Avarage revenew growth for per succesful implementation
+                                        Average daily class attendance
                                     </p>
                                 </div>
 
                                 {/* Bottom Right: Pills */}
-                                <div className="absolute bottom-4 right-0 lg:bottom-16 lg:right-16 flex flex-col items-center justify-center gap-5 z-10 w-full lg:w-auto mt-[600px] lg:mt-0 pb-10 lg:pb-0">
-                                    <div className="bg-[#6345FF] text-white px-8 py-3 rounded-full text-[13px] font-bold shadow-xl hover:scale-105 transition-transform cursor-pointer relative top-2">100% Free Forever</div>
-                                    <div className="bg-[#222222] text-white px-8 py-3 rounded-full text-[13px] font-bold shadow-xl hover:scale-105 transition-transform cursor-pointer relative z-10 lg:right-8">Instant Insights</div>
-                                    <div className="bg-[#6345FF] text-white px-8 py-3 rounded-full text-[13px] font-bold shadow-xl hover:scale-105 transition-transform cursor-pointer relative lg:-left-4">Limitless Scale</div>
+                                <div className="absolute bottom-4 -right-12 xl:-right-24 lg:bottom-16 flex flex-col items-center justify-center z-10 w-full lg:w-auto mt-[600px] lg:mt-0 pb-10 lg:pb-0 translate-x-[50px]">
+                                    <div className="bg-[#6345FF] text-white text-[13px] font-bold shadow-xl hover:rotate-[20deg] transition-transform cursor-pointer relative top-2 px-[15px] py-[15px] rounded-[6px] mb-[20px]">Interactive Lessons</div>
+                                    <div className="bg-[#222222] text-white text-[13px] font-bold shadow-xl hover:rotate-[20deg] transition-transform cursor-pointer relative z-10 lg:right-8 px-[15px] py-[15px] rounded-[6px] mb-[20px]">Instant Insights</div>
+                                    <div className="bg-[#6345FF] text-white text-[13px] font-bold shadow-xl hover:rotate-[20deg] transition-transform cursor-pointer relative lg:-left-4 px-[15px] py-[15px] rounded-[6px]">Child-Safe Design</div>
                                 </div>
                                 </div> {/* End scale wrapper */}
                             </div>
@@ -622,17 +623,17 @@ export default function TestPage() {
 
                                 {/* CTA Bottom Row */}
                                 <div className="flex flex-wrap items-center gap-10">
-                                    <button className="bg-[#ed5667] hover:bg-[#d64958] text-white px-8 py-3.5 rounded-full font-bold text-sm transition-colors cursor-pointer shadow-lg hover:-translate-y-1 transform duration-300">
+                                    <Link href="/register" className="bg-[#ed5667] hover:bg-[#d64958] text-white .5 font-bold text-sm transition-colors cursor-pointer shadow-lg hover:-translate-y-1 transform duration-300 px-[15px] py-[15px] rounded-[6px]">
                                         Sign Up Now
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
 
                             {/* Right Side: Floating Collage */}
                             <div className="relative h-[650px] w-full mt-10 lg:mt-0">
                                 {/* Base Image of Teacher */}
-                                <div className="absolute bottom-0 right-10 lg:right-20 w-[400px] h-[550px] z-10 drop-shadow-2xl">
-                                    <Image src="/teacher_laptop.png" fill alt="Teacher using laptop" className="object-contain object-bottom" />
+                                <div className="absolute top-1/2 -translate-y-1/2 right-10 lg:right-20 w-[600px] h-[600px] z-10 drop-shadow-2xl">
+                                    <Image src="/teacher_laptop.png" fill alt="Teacher using laptop" className="object-contain object-center" />
                                 </div>
 
                                 {/* Top Floating Badge: Data Security */}
@@ -765,10 +766,16 @@ export default function TestPage() {
                     </div>
                     <div className="grid md:grid-cols-3 gap-8">
                         {[
-                            { quote: 'Bloomncuddles has completely transformed how we manage our curriculum. The children love the interface and I love the data insights.', name: 'Maria Rodriguez', role: 'Lead Educator, Sunny Day Preschool', emoji: '👩‍🏫', accent: 'border-blue-200 hover:border-blue-300' },
-                            { quote: 'The security features are top-notch. Knowing that our student data is protected while they enjoy high-quality content is invaluable.', name: 'James Wilson', role: 'Program Director, Urban Montessori', emoji: '👨‍💼', accent: 'border-emerald-200 hover:border-emerald-300' },
-                            { quote: 'The wellness reminders are a game changer. It helps us keep a healthy balance between digital exploration and physical activity.', name: 'Sarah Jenkins', role: 'Early Years Specialist', emoji: '👩‍🏫', accent: 'border-violet-200 hover:border-violet-300' }
-                        ].map((t, i) => (
+                            { quote: 'Bloomncuddles has completely transformed how we manage our curriculum. The children love the interface and I love the data insights.', name: 'Maria Rodriguez', role: 'Lead Educator', emoji: '👩‍🏫', accent: 'border-blue-200 hover:border-blue-300' },
+                            { quote: 'The security features are top-notch. Knowing that our student data is protected while they enjoy high-quality content is invaluable.', name: 'James Wilson', role: 'Program Director', emoji: '👨‍💼', accent: 'border-emerald-200 hover:border-emerald-300' },
+                            { quote: 'The wellness reminders are a game changer. It helps us keep a healthy balance between digital exploration and physical activity.', name: 'Sarah Jenkins', role: 'Early Years Specialist', emoji: '👩‍🏫', accent: 'border-violet-200 hover:border-violet-300' },
+                            { quote: 'The interactive games and daily check-ins have made a huge difference in how our kids engage. Absolutely love this platform!', name: 'David Chen', role: 'Preschool Teacher', emoji: '👨‍🏫', accent: 'border-rose-200 hover:border-rose-300' },
+                            { quote: 'Parents are more involved than ever thanks to the seamless dashboard updates. Best communication tool we\'ve used.', name: 'Emily Carter', role: 'Nursery Manager', emoji: '👩‍💼', accent: 'border-amber-200 hover:border-amber-300' },
+                            { quote: 'Simple, effective, and beautifully designed. Our students look forward to their Bloomncuddles time every single day.', name: 'Michael O\'Connor', role: 'Head of Early Years', emoji: '👨‍🏫', accent: 'border-indigo-200 hover:border-indigo-300' },
+                            { quote: 'The guided mindfulness sessions are incredible. We\'ve noticed a remarkable improvement in classroom behavior and focus.', name: 'Anita Patel', role: 'Child Psychologist', emoji: '👩‍⚕️', accent: 'border-teal-200 hover:border-teal-300' },
+                            { quote: 'As an administrator, the analytics give me exactly what I need to support our teachers effectively. Highly recommended.', name: 'Robert Fox', role: 'School Principal', emoji: '👨‍💼', accent: 'border-fuchsia-200 hover:border-fuchsia-300' },
+                            { quote: 'The child-safe design without personal logins is exactly what we were looking for. Finally, a platform that respects privacy.', name: 'Lisa Thompson', role: 'IT Coordinator', emoji: '👩‍💻', accent: 'border-cyan-200 hover:border-cyan-300' }
+                        ].slice(activeTestimonialPage * 3, activeTestimonialPage * 3 + 3).map((t, i) => (
                             <div key={i} className={`group p-8 rounded-3xl bg-white border-2 ${t.accent} shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden`}>
                                 {/* Quotation mark */}
                                 <div className="absolute -top-2 -left-1 text-[80px] font-serif text-slate-100 leading-none select-none pointer-events-none">&ldquo;</div>
@@ -786,6 +793,18 @@ export default function TestPage() {
                                     </div>
                                 </div>
                             </div>
+                        ))}
+                    </div>
+
+                    {/* Pagination Indicator */}
+                    <div className="flex items-center justify-center gap-2 mt-12">
+                        {[0, 1, 2].map((page) => (
+                            <button 
+                                key={page}
+                                onClick={() => setActiveTestimonialPage(page)}
+                                className={`h-2.5 rounded-full transition-all duration-300 ${activeTestimonialPage === page ? 'w-8 bg-slate-800' : 'w-2.5 bg-slate-200 hover:bg-slate-300'}`}
+                                aria-label={`View testimonials page ${page + 1}`}
+                            />
                         ))}
                     </div>
                 </div>
@@ -830,7 +849,7 @@ export default function TestPage() {
                                     </li>
                                 ))}
                             </ul>
-                            <Link href="/register" className="text-center w-full py-4 rounded-2xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all duration-300">Start Free Trial</Link>
+                            <Link href="/register" className="text-center w-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all duration-300 px-[15px] py-[15px] rounded-[6px]">Start Free Trial</Link>
                         </div>
 
                         {/* Premium */}
@@ -852,7 +871,7 @@ export default function TestPage() {
                                     </li>
                                 ))}
                             </ul>
-                            <Link href="/register" className="text-center w-full py-4 rounded-2xl bg-white text-primary font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">Get Started</Link>
+                            <Link href="/register" className="text-center w-full bg-white text-primary font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all px-[15px] py-[15px] rounded-[6px]">Get Started</Link>
                         </div>
 
                         {/* Enterprise */}
@@ -873,7 +892,7 @@ export default function TestPage() {
                                     </li>
                                 ))}
                             </ul>
-                            <Link href="/contact" className="text-center w-full py-4 rounded-2xl border-2 border-slate-900 text-slate-900 font-bold hover:bg-slate-900 hover:text-white transition-all duration-300">Contact Sales</Link>
+                            <Link href="/contact" className="text-center w-full border-2 border-slate-900 text-slate-900 font-bold hover:bg-slate-900 hover:text-white transition-all duration-300 px-[15px] py-[15px] rounded-[6px]">Contact Sales</Link>
                         </div>
                     </div>
                 </div>
@@ -891,7 +910,7 @@ export default function TestPage() {
                         </div>
                         <div className="max-w-md lg:ml-auto">
                             <p className="text-slate-500 text-[15px] leading-relaxed">
-                                Bloomncuddles' robust feature set covers every aspect of early years education, ensuring you have the tools to succeed. Below is a glimpse of our holistic curriculum, inspired by our intuitive dashboards.
+                                Bloomncuddles&apos; robust feature set covers every aspect of early years education, ensuring you have the tools to succeed. Below is a glimpse of our holistic curriculum, inspired by our intuitive dashboards.
                             </p>
                         </div>
                     </div>
@@ -947,39 +966,33 @@ export default function TestPage() {
                                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#6345d4]/20 rounded-full blur-[100px] pointer-events-none" />
                                 <div className="relative z-10">
                                     <div className="bg-[#6345d4] text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
-                                        Physical & Mental
+                                        Growth
                                     </div>
                                     <h3 className="text-[26px] xl:text-[30px] font-bold text-white leading-tight mb-4 tracking-tight">
-                                        <span className="text-white/80">✦</span> <span className="text-white font-extrabold">Holistic</span> Wellness
+                                        <span className="text-white/80">✦</span> <span className="text-white font-extrabold">Social &</span> Emotional
                                     </h3>
-                                    <p className="text-[15.5px] text-slate-300 mb-8 leading-relaxed max-w-[95%]">
-                                        Guided mindfulness, stretching, and physical activity balancing digital learning with <span className="text-[#a78bfa] font-medium">healthy growth</span>.
-                                    </p>
-                                    <div className="w-10 h-10 rounded-full bg-[#6345d4] text-white flex items-center justify-center mb-6 shadow-md shadow-[#6345d4]/30 transition-transform group-hover:scale-110">
+                                    <ul className="space-y-3 pt-2 mb-8">
+                                        {[
+                                            'Empathy-building scenario play',
+                                            'Daily mood check-ins',
+                                            'Conflict resolution stories',
+                                            'Guided meditation for kids',
+                                            'Positive reinforcement badges'
+                                        ].map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3">
+                                                <div className="mt-0.5 size-5 shrink-0 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                                                    <span className="material-symbols-outlined text-[12px] text-white font-bold">check</span>
+                                                </div>
+                                                <span className="text-slate-300 text-[14.5px] leading-snug">{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <div className="w-10 h-10 rounded-full bg-[#6345d4] text-white flex items-center justify-center mt-auto shadow-md shadow-[#6345d4]/30 transition-transform group-hover:scale-110">
                                         <span className="material-symbols-outlined text-lg">north_east</span>
                                     </div>
                                 </div>
-                                <div className="mt-auto relative w-full h-[280px] rounded-t-3xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500 z-10">
-                                    <Image src="/curr_wellness.png" fill alt="Wellness" className="object-cover object-top" />
-                                </div>
-                            </div>
-
-                            {/* Card 6 (Added below the tall card) */}
-                            <div className="bg-[#f0f4fa] rounded-[32px] p-8 pb-0 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group relative overflow-hidden">
-                                <div className="bg-slate-900 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full w-fit mb-6">
-                                    Growth
-                                </div>
-                                <h3 className="text-[22px] font-bold text-slate-900 leading-snug mb-3">
-                                    <span className="font-extrabold">Social &</span> Emotional
-                                </h3>
-                                <p className="text-[14.5px] text-slate-500 mb-8 leading-relaxed max-w-[95%]">
-                                    Fostering empathy and teamwork via collaborative modules.
-                                </p>
-                                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center mb-6 shadow-md transition-transform group-hover:scale-110">
-                                    <span className="material-symbols-outlined text-lg">north_east</span>
-                                </div>
-                                <div className="mt-2 relative w-full h-[180px] rounded-t-2xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
-                                    <Image src="/curr_social.png" fill alt="Social" className="object-cover object-top" />
+                                <div className="mt-6 relative w-full h-[380px] rounded-t-3xl overflow-hidden translate-y-4 group-hover:translate-y-2 transition-transform duration-500 z-10">
+                                    <Image src="/curr_social.png" fill alt="Social Emotional" className="object-cover object-top" />
                                 </div>
                             </div>
                         </div>
@@ -1044,7 +1057,7 @@ export default function TestPage() {
                         <form className="relative z-10 flex flex-col sm:flex-row gap-3 w-full max-w-md">
                             <label className="sr-only" htmlFor="test-newsletter-email">Email Address</label>
                             <input id="test-newsletter-email" className="flex-1 px-5 py-4 rounded-xl bg-white/10 border border-white/10 focus:ring-2 focus:ring-primary focus:border-primary text-white outline-none placeholder-white/30" placeholder="Your email address" type="email" />
-                            <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20 whitespace-nowrap" type="submit">Subscribe</button>
+                            <button className="bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-lg shadow-primary/20 whitespace-nowrap px-[15px] py-[15px] rounded-[6px]" type="submit">Subscribe</button>
                         </form>
                     </div>
                 </div>
@@ -1069,11 +1082,11 @@ export default function TestPage() {
                             Join hundreds of innovative schools and childcare centers. Get early access to the Bloomncuddles platform.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 relative z-10">
-                            <Link href="/register" className="group bg-white text-primary px-10 py-5 rounded-2xl text-lg font-bold shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                            <Link href="/register" className="group bg-white text-primary text-lg font-bold shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]">
                                 Get Started Free
                                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </Link>
-                            <Link href="/contact" className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-10 py-5 rounded-2xl text-lg font-bold hover:bg-white/20 transition-all">
+                            <Link href="/contact" className="bg-white/10 backdrop-blur-sm border border-white/20 text-white text-lg font-bold hover:bg-white/20 transition-all px-[15px] py-[15px] rounded-[6px]">
                                 Talk to Sales
                             </Link>
                         </div>

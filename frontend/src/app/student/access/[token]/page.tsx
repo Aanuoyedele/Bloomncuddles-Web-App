@@ -76,7 +76,7 @@ export default function StudentAccessPage({ params }: { params: Promise<{ token:
                     <p className="text-slate-600 mb-6">
                         This link is invalid or has expired. Please ask your teacher or parents for a new link.
                     </p>
-                    <Link href="/" className="inline-block px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors">
+                    <Link href="/" className="inline-block bg-primary text-white font-bold hover:bg-primary-dark transition-colors px-[15px] py-[15px] rounded-[6px]">
                         Go to Homepage
                     </Link>
                 </div>

@@ -31,13 +31,13 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                     <Link 
                         href="/login" 
-                        className="hidden sm:block px-5 py-2 text-sm font-semibold text-navy/70 hover:bg-ice/20 rounded-lg transition-all"
+                        className="hidden sm:block text-sm font-semibold text-navy/70 hover:bg-ice/20 transition-all px-[15px] py-[15px] rounded-[6px]"
                     >
                         Log In
                     </Link>
                     <Link 
                         href="/register" 
-                        className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2"
+                        className="bg-primary hover:bg-primary/90 text-white .5 text-sm font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]"
                     >
                         Request Access
                     </Link>

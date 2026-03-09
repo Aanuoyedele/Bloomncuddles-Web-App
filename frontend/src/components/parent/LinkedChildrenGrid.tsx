@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface Child {
     id: string;
@@ -34,12 +35,12 @@ export default function LinkedChildrenGrid({ children }: LinkedChildrenGridProps
                     <Link
                         key={child.id}
                         href={`/parent/children/${child.id}`}
-                        className="group relative p-4 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-lg transition-all text-center"
+                        className="group relative bg-slate-50 hover:bg-white hover:shadow-lg transition-all text-center px-[15px] py-[15px] rounded-[6px]"
                     >
                         {/* Avatar */}
                         <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${colors[index % colors.length]} flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-3`}>
                             {child.avatarUrl ? (
-                                <img src={child.avatarUrl} alt={child.name} className="w-full h-full rounded-full object-cover" />
+                                <Image src={child.avatarUrl} alt={child.name} width={64} height={64} className="w-full h-full rounded-full object-cover" />
                             ) : (
                                 child.name.charAt(0).toUpperCase()
                             )}
@@ -60,7 +61,7 @@ export default function LinkedChildrenGrid({ children }: LinkedChildrenGridProps
                 ))}
 
                 {/* Link Child Card */}
-                <button className="p-4 rounded-2xl border-2 border-dashed border-slate-200 hover:border-primary hover:bg-primary/5 transition-all text-center group">
+                <button className="border-2 border-dashed border-slate-200 hover:border-primary hover:bg-primary/5 transition-all text-center group px-[15px] py-[15px] rounded-[6px]">
                     <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 group-hover:bg-primary/10 flex items-center justify-center mb-3 transition-colors">
                         <span className="material-symbols-outlined text-slate-400 group-hover:text-primary text-2xl">add</span>
                     </div>

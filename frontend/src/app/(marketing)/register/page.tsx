@@ -22,7 +22,7 @@ export default function RegisterPage() {
                     {/* School Admin Card */}
                     <Link
                         href="/register/school"
-                        className="group bg-white border-2 border-slate-100 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 relative overflow-hidden"
+                        className="group bg-white border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 relative overflow-hidden px-[15px] py-[15px] rounded-[6px]"
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 group-hover:scale-125 transition-transform duration-500"></div>
                         <div className="relative z-10">
@@ -56,7 +56,7 @@ export default function RegisterPage() {
                     {/* Independent Teacher Card */}
                     <Link
                         href="/register/teacher"
-                        className="group bg-white border-2 border-slate-100 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:border-secondary/30 transition-all duration-300 relative overflow-hidden"
+                        className="group bg-white border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-secondary/30 transition-all duration-300 relative overflow-hidden px-[15px] py-[15px] rounded-[6px]"
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full -mr-8 -mt-8 group-hover:scale-125 transition-transform duration-500"></div>
                         <div className="relative z-10">

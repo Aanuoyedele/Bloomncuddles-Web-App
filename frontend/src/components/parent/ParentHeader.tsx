@@ -70,14 +70,14 @@ export default function ParentHeader({ userName, onLogout }: ParentHeaderProps) 
                                     </div>
                                     <Link
                                         href="/parent/settings"
-                                        className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-50"
+                                        className="flex items-center gap-2 text-slate-600 hover:bg-slate-50 px-[15px] py-[15px] rounded-[6px]"
                                     >
                                         <span className="material-symbols-outlined text-[18px]">settings</span>
                                         Settings
                                     </Link>
                                     <button
                                         onClick={onLogout}
-                                        className="flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 w-full text-left"
+                                        className="flex items-center gap-2 text-red-500 hover:bg-red-50 w-full text-left px-[15px] py-[15px] rounded-[6px]"
                                     >
                                         <span className="material-symbols-outlined text-[18px]">logout</span>
                                         Logout

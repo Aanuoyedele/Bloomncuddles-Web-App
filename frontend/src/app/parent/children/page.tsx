@@ -71,7 +71,7 @@ export default function ChildrenListPage() {
                         <Link
                             key={child.id}
                             href={`/parent/children/${child.id}`}
-                            className="bg-white rounded-2xl border border-slate-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all group"
+                            className="bg-white border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group px-[15px] py-[15px] rounded-[6px]"
                         >
                             <div className="flex items-center gap-4 mb-4">
                                 {/* Avatar */}

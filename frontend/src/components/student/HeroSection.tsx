@@ -32,7 +32,7 @@ export default function HeroSection({ studentName, funThingsCount = 5 }: HeroSec
                 </p>
                 <Link
                     href="/student/assignments"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    className="inline-flex items-center gap-2 bg-white text-primary font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 px-[15px] py-[15px] rounded-[6px]"
                 >
                     Continue Learning
                     <span className="material-symbols-outlined text-[20px]">arrow_forward</span>

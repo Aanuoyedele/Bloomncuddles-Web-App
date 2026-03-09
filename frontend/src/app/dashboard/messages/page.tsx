@@ -428,7 +428,7 @@ export default function DashboardMessagesPage() {
                                     <button
                                         type="submit"
                                         disabled={!newMessage.trim()}
-                                        className="p-3 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95"
+                                        className="bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95 px-[15px] py-[15px] rounded-[6px]"
                                     >
                                         <span className="material-symbols-outlined text-[20px] translate-x-0.5">send</span>
                                     </button>

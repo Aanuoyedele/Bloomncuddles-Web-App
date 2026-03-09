@@ -170,7 +170,7 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
                         {/* Right Side - Profile */}
                         <div className="flex items-center gap-3">
                             {/* Notifications */}
-                            <button className="relative p-2 rounded-xl hover:bg-slate-50 transition-colors">
+                            <button className="relative hover:bg-slate-50 transition-colors px-[15px] py-[15px] rounded-[6px]">
                                 <span className="material-symbols-outlined text-slate-600">notifications</span>
                                 <span className="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
                             </button>
@@ -200,7 +200,7 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
                                         </div>
                                         <Link
                                             href="/parent/settings"
-                                            className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-50"
+                                            className="flex items-center gap-2 text-slate-600 hover:bg-slate-50 px-[15px] py-[15px] rounded-[6px]"
                                             onClick={() => setShowProfile(false)}
                                         >
                                             <span className="material-symbols-outlined text-[18px]">settings</span>
@@ -208,7 +208,7 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
                                         </Link>
                                         <button
                                             onClick={handleLogout}
-                                            className="flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 w-full text-left"
+                                            className="flex items-center gap-2 text-red-500 hover:bg-red-50 w-full text-left px-[15px] py-[15px] rounded-[6px]"
                                         >
                                             <span className="material-symbols-outlined text-[18px]">logout</span>
                                             Logout

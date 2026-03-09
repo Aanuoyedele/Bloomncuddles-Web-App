@@ -73,7 +73,7 @@ export default function ParentSidebar({ userName, unreadMessages = 0 }: ParentSi
                     <p className="text-xs text-slate-600 mb-3">
                         Unlock detailed progress reports and more features!
                     </p>
-                    <button className="w-full py-2 bg-secondary text-white rounded-xl font-bold text-sm hover:bg-secondary-light transition-colors">
+                    <button className="w-full bg-secondary text-white font-bold text-sm hover:bg-secondary-light transition-colors px-[15px] py-[15px] rounded-[6px]">
                         Upgrade
                     </button>
                 </div>

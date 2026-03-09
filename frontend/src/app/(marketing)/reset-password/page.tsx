@@ -119,7 +119,7 @@ function ResetPasswordForm() {
                 <p className="text-slate-500 mb-6">{tokenError}</p>
                 <Link
                     href="/login"
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all"
+                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold transition-all px-[15px] py-[15px] rounded-[6px]"
                 >
                     <span className="material-symbols-outlined">arrow_back</span>
                     Back to Login

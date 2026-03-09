@@ -332,7 +332,7 @@ export default function LibraryPage() {
                             <button
                                 onClick={handleLoadMore}
                                 disabled={loading}
-                                className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-50 transition-all shadow-sm"
+                                className="flex items-center gap-2 border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-50 transition-all shadow-sm px-[15px] py-[15px] rounded-[6px]"
                             >
                                 {loading ? (
                                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>

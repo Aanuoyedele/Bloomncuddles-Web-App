@@ -273,7 +273,7 @@ export default function StudentAssignmentsPage() {
                                             Waiting for Teacher
                                         </div>
                                     ) : (
-                                        <button className="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl flex items-center justify-center gap-2">
+                                        <button className="w-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center gap-2 px-[15px] py-[15px] rounded-[6px]">
                                             View Feedback
                                             <span className="material-symbols-outlined text-[18px]">visibility</span>
                                         </button>
@@ -294,7 +294,7 @@ export default function StudentAssignmentsPage() {
                         <p className="text-slate-600 text-sm">Ask your teacher for guidance!</p>
                     </div>
                 </div>
-                <button className="px-5 py-2 bg-white text-slate-700 rounded-xl font-bold shadow-sm hover:shadow-md transition-all">
+                <button className="bg-white text-slate-700 font-bold shadow-sm hover:shadow-md transition-all px-[15px] py-[15px] rounded-[6px]">
                     Message Teacher
                 </button>
             </div>
@@ -338,7 +338,7 @@ export default function StudentAssignmentsPage() {
                             <button
                                 onClick={handleSubmit}
                                 disabled={!selectedFile || submitting}
-                                className="flex-1 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex-1 bg-primary text-white font-bold hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed px-[15px] py-[15px] rounded-[6px]"
                             >
                                 {submitting ? 'Submitting...' : 'Submit! 🚀'}
                             </button>

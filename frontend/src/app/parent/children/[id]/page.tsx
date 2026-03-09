@@ -106,11 +106,11 @@ export default function ChildProgressPage({ params }: { params: Promise<{ id: st
 
                     {/* Actions */}
                     <div className="flex gap-3">
-                        <button className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
+                        <button className="border border-slate-200 font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]">
                             <span className="material-symbols-outlined text-[18px]">download</span>
                             Download Report
                         </button>
-                        <button className="px-4 py-2 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center gap-2">
+                        <button className="bg-primary text-white font-bold hover:bg-primary-dark transition-colors flex items-center gap-2 px-[15px] py-[15px] rounded-[6px]">
                             <span className="material-symbols-outlined text-[18px]">mail</span>
                             Message Teacher
                         </button>

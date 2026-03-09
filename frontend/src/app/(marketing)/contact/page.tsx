@@ -6,10 +6,10 @@ export default function ContactPage() {
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 text-center">
                     <span className="text-secondary font-bold tracking-widest uppercase text-sm mb-4 block">Get in Touch</span>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-navy mb-6 tracking-tight">
-                        We're Here to <span className="text-primary">Help</span>
+                        We&apos;re Here to <span className="text-primary">Help</span>
                     </h1>
                     <p className="text-lg md:text-xl text-navy/60 leading-relaxed max-w-2xl mx-auto">
-                        Have questions about our platform? Need support? We're here to help early years educators and parents thrive.
+                        Have questions about our platform? Need support? We&apos;re here to help early years educators and parents thrive.
                     </p>
                 </div>
             </section>
@@ -27,7 +27,7 @@ export default function ContactPage() {
                                             Contact Information
                                         </h2>
                                         <p className="text-navy/60 leading-relaxed">
-                                            Whether you're a parent, teacher, or school administrator, our team is ready to assist you.
+                                            Whether you&apos;re a parent, teacher, or school administrator, our team is ready to assist you.
                                         </p>
                                     </div>
 
@@ -68,7 +68,7 @@ export default function ContactPage() {
                                 <div className="max-w-lg mx-auto lg:mx-0">
                                     <div className="mb-10">
                                         <h3 className="text-2xl font-bold text-navy mb-2">Send us a Message</h3>
-                                        <p className="text-slate-500">Fill out the form and we'll get back to you shortly.</p>
+                                        <p className="text-slate-500">Fill out the form and we&apos;ll get back to you shortly.</p>
                                     </div>
 
                                     <form className="space-y-6">
@@ -112,7 +112,7 @@ export default function ContactPage() {
 
                                         <div className="pt-4">
                                             <button 
-                                                className="group w-full flex items-center justify-center gap-2 py-4 px-8 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5" 
+                                                className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 px-[15px] py-[15px] rounded-[6px]" 
                                                 type="button"
                                             >
                                                 <span>Send Message</span>

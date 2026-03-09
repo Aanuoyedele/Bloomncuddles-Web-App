@@ -1,37 +1,41 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import AboutHeroSlider from "@/components/AboutHeroSlider";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
     return (
         <div className="overflow-x-hidden min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-16 pb-24 overflow-hidden bg-ice/20">
-                {/* Decorative Elements */}
-                <div className="absolute top-20 left-10 text-secondary/20 select-none hidden lg:block">
-                    <span className="material-symbols-outlined text-6xl">school</span>
-                </div>
-                <div className="absolute bottom-20 right-10 text-primary/20 select-none hidden lg:block">
-                    <span className="material-symbols-outlined text-7xl">psychology</span>
-                </div>
+            <section className="relative pt-24 pb-32 lg:pt-32 lg:pb-40 overflow-hidden bg-[#0f2854] h-[600px] flex items-center">
+                {/* Background Pattern Anchored to Left */}
+                <div 
+                    className="absolute z-0 opacity-30 mix-blend-screen pointer-events-none"
+                    style={{
+                        backgroundImage: 'url(/hero-grid-pattern.png)',
+                        backgroundPosition: 'left center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'auto 100%',
+                        inset: '0 auto 0 0',
+                        width: '55%'
+                    }}
+                />
                 
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col lg:flex-row items-center gap-16">
-                        <div className="flex-1 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider w-fit mb-6">
-                                <span className="material-symbols-outlined text-sm">verified</span>
-                                Our Mission
-                            </div>
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-navy mb-6 tracking-tight leading-[1.1]">
-                                Empowering early years and primary <span className="text-primary">education</span>
-                            </h1>
-                            <p className="text-lg md:text-xl text-navy/60 leading-relaxed max-w-xl">
-                                We&apos;re building a safe, teacher-led digital learning platform that balances structured curriculum with child wellness and mental health.
-                            </p>
-                        </div>
-                        
-                        <AboutHeroSlider />
+                <div className="max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center justify-center text-center">
+                    <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/5 text-white/90 text-[11px] font-medium tracking-wide mb-8 lg:mb-10 border border-white/5 shadow-sm">
+                        Our Mission: Education Without Barriers
                     </div>
+                    
+                    <h1 className="text-4xl md:text-6xl lg:text-[72px] font-bold text-white mb-8 lg:mb-10 tracking-tight leading-[1.05]">
+                        Building the Future <span className="font-light text-white/90">of Early</span><br />
+                        <span className="font-bold">Education</span>
+                    </h1>
+                    
+                    <p className="text-[14px] md:text-[15px] lg:text-[16px] text-white/90 leading-[1.7] max-w-4xl mx-auto font-medium">
+                        We started Bloomncuddles with a simple, yet powerful idea: <span className="text-[#486fa1]">to give every educator and child access to a safe, joyful, and holistic digital learning experience.</span><br />
+                        This commitment drives our innovation, security, and child-centered focus every single day.
+                    </p>
                 </div>
             </section>
 
@@ -136,9 +140,9 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Team Values Section */}
-            <section className="py-24 bg-white border-y border-navy/5">
-                <div className="max-w-7xl mx-auto px-6">
+            {/* Team Values Section -> Animated Timeline */}
+            <section className="py-24 bg-white border-y border-navy/5 overflow-hidden">
+                <div className="max-w-4xl mx-auto px-6">
                     <div className="text-center mb-16 flex flex-col items-center">
                         <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4">Core Principles</span>
                         <h2 className="text-4xl font-extrabold text-navy mb-4">
@@ -146,37 +150,62 @@ export default function AboutPage() {
                         </h2>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="relative border-l-4 border-slate-200 ml-8 md:ml-12 pl-10">
                         {[
-                            { icon: 'shield', title: 'Safety First', desc: 'Every feature is designed with child safety at the forefront.' },
-                            { icon: 'favorite', title: 'Love for Learning', desc: 'Making education inherently enjoyable and accessible.' },
-                            { icon: 'groups', title: 'Community', desc: 'Building strong bonds between teachers, parents, and students.' },
-                            { icon: 'lightbulb', title: 'Innovation', desc: 'Constantly evolving to meet dynamic educational needs.' }
+                            { icon: 'lightbulb', title: 'The Visionary Spark', desc: 'It started with a simple belief: every child deserves access to safe, engaging, and effective digital learning tools.' },
+                            { icon: 'rocket_launch', title: 'The Global Debut', desc: 'Launching the platform with core holistic and phonics features to eager classrooms around the world.' },
+                            { icon: 'public', title: 'First Global Footprint', desc: 'Partnering with hundreds of early-education centers, establishing our impact internationally.' },
+                            { icon: 'trending_up', title: 'Viral Growth', desc: 'A rapid expansion period driven by organic educator recommendations and high parental satisfaction.' },
+                            { icon: 'hub', title: 'The Ecosystem Expands', desc: 'Growing from a tool into a full curriculum ecosystem, including parental dashboards, wellness tracking, and more.' }
                         ].map((value, i) => (
-                            <div key={i} className="text-center group">
-                                <div className="size-20 bg-ice/15 border border-navy/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
-                                    <span className="material-symbols-outlined text-3xl text-navy/40 group-hover:text-white transition-colors">{value.icon}</span>
+                            <motion.div 
+                                key={i} 
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-100px" }}
+                                transition={{ duration: 0.6, delay: i * 0.2 }}
+                                className="relative flex flex-col mb-16 last:mb-0"
+                            >
+                                {/* Left Track Icon */}
+                                <div className="absolute -left-[75px] top-0 size-[54px] bg-primary text-white rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_rgba(99,69,255,0.4)] border-4 border-white transition-transform duration-300 hover:scale-110">
+                                    <span className="material-symbols-outlined text-2xl">{value.icon}</span>
                                 </div>
-                                <h3 className="text-xl font-bold text-navy mb-3">{value.title}</h3>
-                                <p className="text-navy/60">{value.desc}</p>
-                            </div>
+                                
+                                <div className="w-full xl:w-4/5 pt-1">
+                                    <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all border border-slate-100 relative group overflow-hidden">
+                                        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
+                                        <h3 className="text-2xl font-extrabold text-slate-800 mb-3">{value.title}</h3>
+                                        <p className="text-slate-500 text-lg leading-relaxed">{value.desc}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-ice/10">
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-4xl font-extrabold text-navy mb-6">
+            <section className="py-24 bg-[#486fa1] relative overflow-hidden flex items-center min-h-[500px]">
+                <div 
+                    className="absolute inset-0 z-0 opacity-30 mix-blend-screen pointer-events-none"
+                    style={{ 
+                        backgroundImage: 'url(/hero-grid-pattern.png)', 
+                        backgroundPosition: 'left center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'auto 100%',
+                        width: '50%'
+                    }}
+                />
+                <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                    <h2 className="text-4xl font-extrabold text-white mb-6">
                         Ready to Transform Your Classroom?
                     </h2>
-                    <p className="text-lg text-navy/60 mb-10 max-w-2xl mx-auto">
+                    <p className="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
                         Join the schools already using Bloomncuddles to enhance early childhood education with ease, security, and inclusivity.
                     </p>
                     <Link 
                         href="/register" 
-                        className="inline-flex h-14 items-center justify-center rounded-xl bg-primary px-10 text-lg font-bold text-white shadow-xl shadow-primary/20 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30"
+                        className="inline-flex h-14 items-center justify-center bg-[#0f2854] text-lg font-bold text-white shadow-xl shadow-navy/20 transition-all hover:shadow-2xl hover:shadow-navy/40 px-[15px] py-[15px] rounded-[6px]"
                     >
                         Join the Platform
                     </Link>

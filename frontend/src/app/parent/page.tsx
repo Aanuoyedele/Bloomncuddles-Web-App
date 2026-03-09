@@ -36,7 +36,7 @@ export default function ParentDashboard() {
     const [assignments, setAssignments] = useState<Assignment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<{name: string, email: string} | null>(null);
     const [dailyQuote, setDailyQuote] = useState<typeof quotes[0] | null>(null);
 
     useEffect(() => {
@@ -62,8 +62,8 @@ export default function ParentDashboard() {
             } catch {
                 console.log('Could not fetch assignments');
             }
-        } catch (err: any) {
-            setError(err.message || 'Failed to load data');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Failed to load data');
         } finally {
             setLoading(false);
         }
@@ -150,7 +150,7 @@ export default function ParentDashboard() {
                             Welcome back, {firstName}! 👋
                         </h1>
                         <p className="text-white/80">
-                            Here's a quick look at your children's school week.
+                            Here&apos;s a quick look at your children&apos;s school week.
                         </p>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ export default function ParentDashboard() {
                             </div>
                             <div>
                                 <p className="text-slate-700 font-medium italic mb-2">
-                                    "{dailyQuote.text}"
+                                    &quot;{dailyQuote.text}&quot;
                                 </p>
                                 <p className="text-slate-500 text-sm">— {dailyQuote.author}</p>
                             </div>
@@ -188,7 +188,7 @@ export default function ParentDashboard() {
                         <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">family_restroom</span>
                         <h2 className="text-xl font-bold text-slate-700 mb-2">No Children Linked Yet</h2>
                         <p className="text-slate-500 max-w-md mx-auto">
-                            Ask your child's teacher to add your email address ({user?.email}) as the parent email
+                            Ask your child&apos;s teacher to add your email address ({user?.email}) as the parent email
                             for your child. They will automatically appear here!
                         </p>
                         <div className="mt-6 p-4 bg-blue-50 rounded-xl inline-block">
@@ -216,7 +216,7 @@ export default function ParentDashboard() {
                                     <Link
                                         key={child.id}
                                         href={`/parent/children/${child.id}`}
-                                        className="group relative p-4 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-lg transition-all text-center"
+                                        className="group relative bg-slate-50 hover:bg-white hover:shadow-lg transition-all text-center px-[15px] py-[15px] rounded-[6px]"
                                     >
                                         <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${colors[index % colors.length]} flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-3`}>
                                             {child.name.charAt(0).toUpperCase()}
@@ -319,13 +319,13 @@ export default function ParentDashboard() {
                                         <Link
                                             key={child.id}
                                             href={`/student/access/${child.accessToken}`}
-                                            className="flex items-center gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all group"
+                                            className="flex items-center gap-4 bg-white hover:shadow-lg transition-all group px-[15px] py-[15px] rounded-[6px]"
                                         >
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center text-white font-bold">
                                                 {child.name.charAt(0)}
                                             </div>
                                             <div className="flex-1">
-                                                <p className="font-bold text-slate-800 text-sm">Access {child.name}'s Portal</p>
+                                                <p className="font-bold text-slate-800 text-sm">Access {child.name}&apos;s Portal</p>
                                                 <p className="text-xs text-slate-500">View learning activities</p>
                                             </div>
                                             <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">
@@ -349,14 +349,14 @@ export default function ParentDashboard() {
                         <div className="p-4 bg-white rounded-xl">
                             <p className="font-medium text-slate-700 mb-1">Missing a child?</p>
                             <p className="text-slate-500 text-sm">
-                                Contact your child's teacher and ask them to add your email address
+                                Contact your child&apos;s teacher and ask them to add your email address
                                 as the parent email.
                             </p>
                         </div>
                         <div className="p-4 bg-white rounded-xl">
                             <p className="font-medium text-slate-700 mb-1">Need support?</p>
                             <p className="text-slate-500 text-sm">
-                                Email us at support@bloomncuddles.com and we'll help you out.
+                                Email us at support@bloomncuddles.com and we&apos;ll help you out.
                             </p>
                         </div>
                     </div>

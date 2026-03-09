@@ -222,7 +222,7 @@ export default function BillingPage() {
                                         {isActive && (
                                             <button
                                                 onClick={handleCancel}
-                                                className="border border-white/20 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-white/10 transition-colors"
+                                                className="border border-white/20 text-white .5 font-bold hover:bg-white/10 transition-colors px-[15px] py-[15px] rounded-[6px]"
                                             >
                                                 Cancel
                                             </button>

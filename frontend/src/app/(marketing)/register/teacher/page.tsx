@@ -199,7 +199,7 @@ export default function TeacherRegistration() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full bg-primary text-white .5 font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 px-[15px] py-[15px] rounded-[6px]"
                                 >
                                     {loading ? (
                                         <>

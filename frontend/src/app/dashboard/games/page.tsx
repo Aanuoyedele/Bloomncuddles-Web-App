@@ -257,7 +257,7 @@ export default function GamesPage() {
                     <p className="text-slate-500 mt-1 mb-4">Seed the games library to get started!</p>
                     <button
                         onClick={seedGames}
-                        className="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors"
+                        className="bg-primary text-white font-bold hover:bg-primary/90 transition-colors px-[15px] py-[15px] rounded-[6px]"
                     >
                         Seed 10 Games
                     </button>
@@ -322,7 +322,7 @@ export default function GamesPage() {
                     <div className="bg-white rounded-2xl w-full max-w-lg p-0 shadow-xl animate-in fade-in zoom-in duration-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
                         <div className="relative h-56 bg-slate-100">
                             <img src={previewGame.imageUrl} alt={previewGame.title} className="h-full w-full object-cover" />
-                            <button onClick={() => setPreviewGame(null)} className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg text-slate-600 hover:text-slate-900">
+                            <button onClick={() => setPreviewGame(null)} className="absolute top-4 right-4 bg-white shadow-lg text-slate-600 hover:text-slate-900 px-[15px] py-[15px] rounded-[6px]">
                                 <span className="material-symbols-outlined">close</span>
                             </button>
                         </div>

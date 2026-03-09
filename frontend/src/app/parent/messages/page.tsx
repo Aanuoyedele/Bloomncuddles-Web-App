@@ -229,10 +229,10 @@ export default function MessagesPage() {
                                 </div>
                             </div>
                             <div className="flex gap-2">
-                                <button className="p-2 text-slate-400 hover:text-primary rounded-lg hover:bg-white transition-colors">
+                                <button className="text-slate-400 hover:text-primary hover:bg-white transition-colors px-[15px] py-[15px] rounded-[6px]">
                                     <span className="material-symbols-outlined">call</span>
                                 </button>
-                                <button className="p-2 text-slate-400 hover:text-primary rounded-lg hover:bg-white transition-colors">
+                                <button className="text-slate-400 hover:text-primary hover:bg-white transition-colors px-[15px] py-[15px] rounded-[6px]">
                                     <span className="material-symbols-outlined">more_vert</span>
                                 </button>
                             </div>
@@ -337,7 +337,7 @@ export default function MessagesPage() {
                                     <button
                                         type="submit"
                                         disabled={!newMessage.trim()}
-                                        className="p-3 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95"
+                                        className="bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20 transition-all hover:scale-105 active:scale-95 px-[15px] py-[15px] rounded-[6px]"
                                     >
                                         <span className="material-symbols-outlined text-[20px] translate-x-0.5">send</span>
                                     </button>

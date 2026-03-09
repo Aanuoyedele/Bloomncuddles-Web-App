@@ -35,21 +35,21 @@ export default function PublicGamesPage() {
     return (
         <div className="min-h-screen bg-slate-50 font-sans">
             {/* Hero Section */}
-            <div className="relative bg-white overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div className="relative bg-[#1d1144] overflow-hidden pt-20">
+                <div className="absolute inset-0 opacity-10 mix-blend-plus-lighter" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 69px, #94a3b8 69px, #94a3b8 70px), repeating-linear-gradient(90deg, transparent, transparent 69px, #94a3b8 69px, #94a3b8 70px)', backgroundSize: '70px 70px' }} />
+                <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] pointer-events-none"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 text-center">
                     <span className="inline-block py-1 px-3 rounded-full bg-secondary/10 text-secondary font-bold text-sm mb-6 animate-bounce">
                         🎮 Free for Everyone!
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6 font-display tracking-tight">
-                        Game <span className="text-primary">Zone</span>
+                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 font-display tracking-tight">
+                        Game <span className="text-[#b7e1ef]">Zone</span>
                     </h1>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    <p className="text-xl text-white/80 max-w-2xl mx-auto mb-8 leading-relaxed">
                         Interactive phonics and math games for Primary 1-3 students.
-                        <span className="font-bold text-primary"> 20 questions per game!</span>
+                        <span className="font-bold text-[#b7e1ef]"> 20 questions per game!</span>
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -72,9 +72,9 @@ export default function PublicGamesPage() {
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-6 py-3 rounded-full font-bold text-sm transition-all transform hover:scale-105 ${selectedCategory === cat
-                                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20'
-                                    : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                                className={`px-[15px] py-[15px] rounded-[6px] font-bold text-sm transition-all transform hover:scale-105 ${selectedCategory === cat
+                                    ? 'bg-white text-[#1d1144] shadow-lg shadow-white/20'
+                                    : 'bg-white/10 text-white backdrop-blur-sm border border-white/20 hover:bg-white/20'
                                     }`}
                             >
                                 {cat === 'Math' ? '🧮 Math' : cat === 'Phonics' ? '📚 Phonics' : '🎮 All Games'}
@@ -86,41 +86,46 @@ export default function PublicGamesPage() {
 
             {/* Games Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredGames.map((game) => (
-                        <div key={game.id} className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100">
-                            <div className="relative h-40 bg-slate-100 overflow-hidden">
+                        <div key={game.id} className="group bg-white rounded-[32px] overflow-hidden shadow-2xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full border border-slate-100">
+                            <div className="relative h-48 bg-slate-100 overflow-hidden w-full">
                                 <img
                                     src={game.imageUrl}
                                     alt={game.title}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
-                                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-slate-700 text-xs font-bold">
-                                    {game.grade}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                                <div className="absolute top-4 right-4 flex gap-2 z-20">
+                                    <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[#1d1144] text-xs font-bold shadow-sm">
+                                        {game.grade}
+                                    </div>
                                 </div>
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-white/90 rounded-full p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer" onClick={() => handlePlay(game.id)}>
-                                        <span className="material-symbols-outlined text-primary text-3xl">play_arrow</span>
-                                    </div>
+                                    <button 
+                                        className="size-16 bg-white rounded-full flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:scale-110 group/btn" 
+                                        onClick={() => handlePlay(game.id)}
+                                    >
+                                        <span className="material-symbols-outlined text-[#0f2854] text-3xl ml-1 group-hover/btn:text-primary transition-colors">play_arrow</span>
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="px-2">
-                                <div className="flex justify-between items-start mb-2">
+                            
+                            <div className="p-8 flex flex-col flex-grow">
+                                <div className="flex justify-between items-start mb-3">
                                     <div>
-                                        <p className="text-xs font-bold text-primary uppercase tracking-wider mb-1">{game.category}</p>
-                                        <h3 className="text-xl font-bold text-slate-900 leading-tight">{game.title}</h3>
+                                        <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">{game.category}</p>
+                                        <h3 className="text-2xl font-extrabold text-slate-900 leading-tight group-hover:text-primary transition-colors">{game.title}</h3>
                                     </div>
                                 </div>
-                                <p className="text-slate-500 text-sm mb-4">{game.description}</p>
+                                <p className="text-slate-500 text-[15px] leading-relaxed mb-8 flex-grow">{game.description}</p>
 
                                 <button
                                     onClick={() => handlePlay(game.id)}
-                                    className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-green-500/30"
+                                    className="w-full bg-[#0f2854] hover:bg-opacity-90 text-white font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-navy/20 group/btn mt-auto px-[15px] py-[15px] rounded-[6px]"
                                 >
-                                    <span className="material-symbols-outlined">play_arrow</span>
-                                    Play Now
+                                    <span className="material-symbols-outlined group-hover/btn:translate-x-1 transition-transform">sports_esports</span>
+                                    Play Interactive Game
                                 </button>
                             </div>
                         </div>
@@ -137,7 +142,7 @@ export default function PublicGamesPage() {
                     </p>
                     <Link
                         href="/register"
-                        className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+                        className="inline-flex items-center gap-2 bg-white text-primary font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all px-[15px] py-[15px] rounded-[6px]"
                     >
                         <span>Get Started Free</span>
                         <span className="material-symbols-outlined">arrow_forward</span>

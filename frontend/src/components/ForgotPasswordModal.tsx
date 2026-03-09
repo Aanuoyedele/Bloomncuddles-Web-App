@@ -89,7 +89,7 @@ export default function ForgotPasswordModal({ isOpen, onClose }: ForgotPasswordM
                         </p>
                         <button
                             onClick={handleClose}
-                            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all"
+                            className="w-full bg-primary hover:bg-primary/90 text-white font-bold transition-all px-[15px] py-[15px] rounded-[6px]"
                         >
                             Back to Login
                         </button>

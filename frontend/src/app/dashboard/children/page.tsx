@@ -85,10 +85,10 @@ export default function ChildrenPage() {
                         </div>
 
                         <div className="mt-8 flex gap-3">
-                            <button className="flex-1 py-2.5 rounded-xl border border-slate-200 font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-sm">
+                            <button className="flex-1 .5 border border-slate-200 font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-sm px-[15px] py-[15px] rounded-[6px]">
                                 View Report Card
                             </button>
-                            <button className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10 text-sm">
+                            <button className="flex-1 .5 bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10 text-sm px-[15px] py-[15px] rounded-[6px]">
                                 View Full Profile
                             </button>
                         </div>
@@ -96,7 +96,7 @@ export default function ChildrenPage() {
                 ))}
 
                 {/* Add Child Card */}
-                <button className="flex flex-col items-center justify-center min-h-[300px] rounded-2xl border-2 border-dashed border-slate-300 hover:border-primary hover:bg-primary/5 transition-all duration-300 group">
+                <button className="flex flex-col items-center justify-center min-h-[300px] border-2 border-dashed border-slate-300 hover:border-primary hover:bg-primary/5 transition-all duration-300 group px-[15px] py-[15px] rounded-[6px]">
                     <div className="size-16 rounded-full bg-slate-100 group-hover:bg-white flex items-center justify-center mb-4 transition-colors shadow-sm group-hover:scale-110 duration-300">
                         <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">add</span>
                     </div>

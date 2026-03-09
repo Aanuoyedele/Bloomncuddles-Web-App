@@ -145,7 +145,7 @@ export default function LoginPage() {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <button className="flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 bg-white hover:bg-slate-50 rounded-xl transition-all group">
+                            <button className="flex items-center justify-center gap-3 border border-slate-200 bg-white hover:bg-slate-50 transition-all group px-[15px] py-[15px] rounded-[6px]">
                                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -154,7 +154,7 @@ export default function LoginPage() {
                                 </svg>
                                 <span className="text-sm font-bold text-slate-700">Google</span>
                             </button>
-                            <button className="flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 bg-white hover:bg-slate-50 rounded-xl transition-all group">
+                            <button className="flex items-center justify-center gap-3 border border-slate-200 bg-white hover:bg-slate-50 transition-all group px-[15px] py-[15px] rounded-[6px]">
                                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform text-slate-900" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17.05 20.28c-.98.95-2.05.88-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.1 2.69-.99 3.85-.68 1.45.28 2.5.95 3.3 2.08-2.91 1.66-2.43 5.36.43 6.6-1.14 2.53-2.12 3.69-2.66 4.17zm-1.87-14.4c.53-2.31 2.39-4.01 4.54-4.14.3.46.99 3.55-2.67 5.25-1.25.59-3.26-.06-1.87-1.11z" />
                                 </svg>

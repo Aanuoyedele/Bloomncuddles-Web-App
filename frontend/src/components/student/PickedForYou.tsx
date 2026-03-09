@@ -90,7 +90,7 @@ export default function PickedForYou({ activities }: PickedForYouProps) {
                             <Link
                                 key={activity.id}
                                 href={activity.href}
-                                className="flex-shrink-0 w-[200px] bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group/card"
+                                className="flex-shrink-0 w-[200px] bg-white overflow-hidden border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group/card px-[15px] py-[15px] rounded-[6px]"
                             >
                                 {/* Image */}
                                 <div className="aspect-[4/3] bg-slate-100 overflow-hidden">
@@ -118,7 +118,7 @@ export default function PickedForYou({ activities }: PickedForYouProps) {
                                         )}
                                     </div>
                                     <h3 className="font-bold text-slate-800 text-sm line-clamp-2">{activity.title}</h3>
-                                    <button className="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-colors">
+                                    <button className="mt-3 w-full bg-slate-100 text-slate-700 text-sm font-bold hover:bg-primary hover:text-white transition-colors px-[15px] py-[15px] rounded-[6px]">
                                         {activity.type === 'game' || activity.type === 'quiz' ? 'Start Game' :
                                             activity.type === 'video' ? 'Watch Video' : 'Open Book'}
                                     </button>

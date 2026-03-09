@@ -116,7 +116,7 @@ function InviteFormContent() {
                     <p className="text-slate-600 mb-6">{error}</p>
                     <Link
                         href="/login"
-                        className="inline-block bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors"
+                        className="inline-block bg-primary text-white font-bold hover:bg-primary/90 transition-colors px-[15px] py-[15px] rounded-[6px]"
                     >
                         Go to Login
                     </Link>

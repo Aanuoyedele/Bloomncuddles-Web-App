@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 interface StudentHeaderProps {
@@ -38,7 +39,7 @@ export default function StudentHeader({ studentName, avatarUrl }: StudentHeaderP
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-600 hover:bg-primary/10 hover:text-primary font-medium transition-all"
+                                className="flex items-center gap-2 text-slate-600 hover:bg-primary/10 hover:text-primary font-medium transition-all px-[15px] py-[15px] rounded-[6px]"
                             >
                                 <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
                                 {link.name}
@@ -54,7 +55,7 @@ export default function StudentHeader({ studentName, avatarUrl }: StudentHeaderP
                         >
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-pink-400 flex items-center justify-center text-white font-bold shadow-md">
                                 {avatarUrl ? (
-                                    <img src={avatarUrl} alt={studentName} className="w-full h-full rounded-full object-cover" />
+                                    <Image src={avatarUrl} alt={studentName} width={40} height={40} className="w-full h-full rounded-full object-cover" />
                                 ) : (
                                     studentName.charAt(0).toUpperCase()
                                 )}
@@ -69,14 +70,14 @@ export default function StudentHeader({ studentName, avatarUrl }: StudentHeaderP
                                 </div>
                                 <Link
                                     href="/student/profile"
-                                    className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-50"
+                                    className="flex items-center gap-2 text-slate-600 hover:bg-slate-50 px-[15px] py-[15px] rounded-[6px]"
                                 >
                                     <span className="material-symbols-outlined text-[18px]">person</span>
                                     My Profile
                                 </Link>
                                 <Link
                                     href="/student/settings"
-                                    className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-50"
+                                    className="flex items-center gap-2 text-slate-600 hover:bg-slate-50 px-[15px] py-[15px] rounded-[6px]"
                                 >
                                     <span className="material-symbols-outlined text-[18px]">settings</span>
                                     Settings

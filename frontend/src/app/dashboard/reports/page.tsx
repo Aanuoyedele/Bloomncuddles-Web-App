@@ -94,7 +94,7 @@ export default function ReportsPage() {
                     <button
                         onClick={handleExportPDF}
                         disabled={exporting}
-                        className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                        className="flex items-center gap-2 border border-slate-200 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors px-[15px] py-[15px] rounded-[6px]"
                     >
                         <span className="material-symbols-outlined text-[20px]">download</span>
                         {exporting ? 'Exporting...' : 'Export PDF'}

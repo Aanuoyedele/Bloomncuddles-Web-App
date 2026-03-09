@@ -87,10 +87,10 @@ function CallbackContent() {
                         <h2 className="text-xl font-bold text-navy mb-3">Payment Issue</h2>
                         <p className="text-slate-500 mb-6">{message}</p>
                         <div className="flex gap-3 justify-center">
-                            <Link href="/register/school" className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all">
+                            <Link href="/register/school" className="bg-primary text-white .5 font-bold text-sm hover:translate-y-[-1px] shadow-lg shadow-primary/25 transition-all px-[15px] py-[15px] rounded-[6px]">
                                 Try Again
                             </Link>
-                            <Link href="/contact" className="bg-slate-100 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+                            <Link href="/contact" className="bg-slate-100 text-slate-600 .5 font-bold text-sm hover:bg-slate-200 transition-all px-[15px] py-[15px] rounded-[6px]">
                                 Contact Support
                             </Link>
                         </div>

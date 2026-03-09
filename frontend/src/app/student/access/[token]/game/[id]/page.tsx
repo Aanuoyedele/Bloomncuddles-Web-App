@@ -319,7 +319,7 @@ export default function StudentGamePlayerPage({ params }: { params: Promise<{ to
                 <div className="text-center">
                     <span className="material-symbols-outlined text-5xl text-slate-300">error</span>
                     <p className="text-slate-600 mt-2">Game not found or loading...</p>
-                    <button onClick={() => router.push(`/student/access/${resolvedParams.token}`)} className="mt-4 px-6 py-2 bg-primary text-white rounded-xl font-bold">
+                    <button onClick={() => router.push(`/student/access/${resolvedParams.token}`)} className="mt-4 bg-primary text-white font-bold px-[15px] py-[15px] rounded-[6px]">
                         Back to Portal
                     </button>
                 </div>
@@ -353,7 +353,7 @@ export default function StudentGamePlayerPage({ params }: { params: Promise<{ to
                     <div className="flex gap-3">
                         <button
                             onClick={resetGame}
-                            className="flex-1 py-3 border-2 border-primary text-primary rounded-xl font-bold hover:bg-primary/5 transition-colors"
+                            className="flex-1 border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-colors px-[15px] py-[15px] rounded-[6px]"
                         >
                             Play Again
                         </button>

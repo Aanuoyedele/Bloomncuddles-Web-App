@@ -213,7 +213,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                 </nav>
 
                 <div className="mt-auto pt-6 border-t border-slate-100 space-y-1">
-                    <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary rounded-xl transition-colors font-medium">
+                    <Link href="/dashboard/settings" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors font-medium px-[15px] py-[15px] rounded-[6px]">
                         <span className="material-symbols-outlined">settings</span>
                         <span>Settings</span>
                     </Link>
