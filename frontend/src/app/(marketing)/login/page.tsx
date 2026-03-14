@@ -56,9 +56,18 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden bg-ice/20">
+        <div className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden bg-slate-50">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+            
+            {/* Ambient Background Glows */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px] pointer-events-none animate-pulse" style={{ animationDuration: '4s' }} />
+
             <main className="relative w-full max-w-[520px] z-10 my-20">
-                <div className="bg-white border border-navy/5 shadow-2xl rounded-[2rem] p-8 sm:p-12 transition-all relative overflow-hidden">
+                <div className="bg-white/95 backdrop-blur-md border border-slate-200/50 shadow-2xl shadow-slate-200/50 rounded-[2rem] p-8 sm:p-12 transition-all relative overflow-hidden">
+                    {/* Inner subtle pattern for the card */}
+                    <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none"></div>
+
                     <div className="relative z-10">
                         <div className="text-center mb-10">
                             <div className="size-16 mx-auto bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">

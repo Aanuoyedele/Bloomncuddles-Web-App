@@ -163,19 +163,19 @@ export default function ReportsPage() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                    { title: 'Class Average', value: `${data?.stats.classAverage || 0}%`, icon: 'school', color: 'text-primary', bg: 'bg-primary/10' },
-                    { title: 'Completion Rate', value: `${data?.stats.completionRate || 0}%`, icon: 'assignment_turned_in', color: 'text-blue-600', bg: 'bg-blue-100' },
-                    { title: 'Needs Attention', value: `${data?.stats.needsAttention || 0} Students`, icon: 'warning', color: 'text-secondary', bg: 'bg-secondary/10' }
+                    { title: 'Class Average', value: `${data?.stats.classAverage || 0}%`, icon: 'school', cardBg: 'bg-[#D0C3FA]', borderColor: 'border-[#C2B2F9]/50', textColor: 'text-[#1A1C20]', iconBg: 'bg-white/30', iconColor: 'text-[#4A3C8B]', titleColor: 'text-[#4A3C8B]/80' },
+                    { title: 'Completion Rate', value: `${data?.stats.completionRate || 0}%`, icon: 'assignment_turned_in', cardBg: 'bg-[#8EEBBA]', borderColor: 'border-[#71E4A6]/50', textColor: 'text-[#1A1C20]', iconBg: 'bg-white/40', iconColor: 'text-[#1E7044]', titleColor: 'text-[#1E7044]/80' },
+                    { title: 'Needs Attention', value: `${data?.stats.needsAttention || 0} Students`, icon: 'warning', cardBg: 'bg-[#2C8A85]', borderColor: 'border-[#216A66]/50', textColor: 'text-white', iconBg: 'bg-white/20', iconColor: 'text-white', titleColor: 'text-white/70' }
                 ].map((stat, i) => (
-                    <div key={i} className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div key={i} className={`flex flex-col gap-4 rounded-[24px] border ${stat.borderColor} ${stat.cardBg} p-6 shadow-sm transition-transform hover:-translate-y-1`}>
                         <div className="flex items-center justify-between">
-                            <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.bg} ${stat.color}`}>
+                            <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconBg} ${stat.iconColor}`}>
                                 <span className="material-symbols-outlined text-2xl">{stat.icon}</span>
                             </div>
                         </div>
                         <div>
-                            <p className="text-slate-500 text-sm font-bold">{stat.title}</p>
-                            <p className="text-slate-900 text-3xl font-black tracking-tight mt-1">{stat.value}</p>
+                            <p className={`${stat.titleColor} text-sm font-bold`}>{stat.title}</p>
+                            <p className={`${stat.textColor} text-3xl font-black tracking-tight mt-1`}>{stat.value}</p>
                         </div>
                     </div>
                 ))}

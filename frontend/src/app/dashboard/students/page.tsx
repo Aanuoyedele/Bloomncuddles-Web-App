@@ -167,21 +167,21 @@ export default function StudentsPage() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {[
-                    { label: 'Total Students', value: studentStats.total.toString(), sub: 'Enrolled', subIcon: 'groups', icon: 'groups', color: 'text-primary', bg: 'bg-primary/10', subColor: 'text-slate-500' },
-                    { label: 'Active Today', value: studentStats.activeToday.toString(), sub: 'Submitted work today', subIcon: 'check_circle', icon: 'check_circle', color: 'text-green-500', bg: 'bg-green-500/10', subColor: 'text-slate-500' },
-                    { label: 'Needs Attention', value: studentStats.needsAttention.toString(), sub: 'Missing assignments', subIcon: 'priority_high', icon: 'priority_high', color: 'text-secondary', bg: 'bg-secondary/10', subColor: studentStats.needsAttention > 0 ? 'text-secondary' : 'text-slate-500' }
+                    { label: 'Total Students', value: studentStats.total.toString(), sub: 'Enrolled', subIcon: 'groups', icon: 'groups', color: 'text-[#4A3C8B]', iconBg: 'bg-white/30', cardBg: 'bg-[#D0C3FA]', borderColor: 'border-[#C2B2F9]/50', textColor: 'text-[#1A1C20]', subColor: 'text-[#4A3C8B]/80' },
+                    { label: 'Active Today', value: studentStats.activeToday.toString(), sub: 'Submitted work today', subIcon: 'check_circle', icon: 'check_circle', color: 'text-[#1E7044]', iconBg: 'bg-white/40', cardBg: 'bg-[#8EEBBA]', borderColor: 'border-[#71E4A6]/50', textColor: 'text-[#1A1C20]', subColor: 'text-[#1E7044]/80' },
+                    { label: 'Needs Attention', value: studentStats.needsAttention.toString(), sub: 'Missing assignments', subIcon: 'priority_high', icon: 'priority_high', color: 'text-white', iconBg: 'bg-white/20', cardBg: 'bg-[#2C8A85]', borderColor: 'border-[#216A66]/50', textColor: 'text-white', subColor: 'text-white/70' }
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col gap-2">
+                    <div key={i} className={`${stat.cardBg} rounded-[24px] p-6 border ${stat.borderColor} shadow-sm flex flex-col gap-2 transition-transform hover:-translate-y-1`}>
                         <div className="flex items-center justify-between">
-                            <p className="text-slate-500 font-bold text-sm uppercase tracking-wide">{stat.label}</p>
-                            <div className={`p-2 rounded-lg ${stat.bg} ${stat.color}`}>
-                                <span className="material-symbols-outlined text-xl">{stat.icon}</span>
+                            <div className={`flex items-center gap-2 ${stat.color} font-bold text-sm ${stat.iconBg} px-3 py-1.5 rounded-full`}>
+                                <span className="material-symbols-outlined text-[16px]">{stat.icon}</span>
+                                {stat.label}
                             </div>
                         </div>
-                        <div>
-                            <p className="text-4xl font-extrabold text-slate-900 font-display">{stat.value}</p>
-                            <p className={`text-xs font-semibold flex items-center gap-1 mt-2 ${stat.subColor}`}>
-                                <span className="material-symbols-outlined text-sm">{stat.subIcon}</span> {stat.sub}
+                        <div className="mt-2">
+                            <p className={`${stat.textColor} text-[32px] font-extrabold tracking-tight leading-none`}>{stat.value}</p>
+                            <p className={`text-[11px] font-bold flex items-center gap-1 mt-3 ${stat.subColor}`}>
+                                <span className="material-symbols-outlined text-[14px]">{stat.subIcon}</span> {stat.sub}
                             </p>
                         </div>
                     </div>
